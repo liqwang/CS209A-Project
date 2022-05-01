@@ -6,9 +6,9 @@
 
 
 
-## Most popular Java projects changes by time
+## (Most popular Java projects)
 
-## Frameworks or techniques changes by time
+## Which dependencies are mostly used？
 
 ## (Java's popularation in different countries)
 
