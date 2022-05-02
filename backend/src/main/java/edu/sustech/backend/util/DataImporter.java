@@ -22,14 +22,16 @@ public class DataImporter {
 	public static void main(String[] args) throws IOException {
 		for (int page = 1; page <= PAGES; page++) {
 			String url = "https://github.com/search?l=Maven+POM&p="+page+"&q=filename%3Apom.xml&type=Code";
+			System.out.println("\n正在查询第"+page+"页...");
 			Document document = Jsoup.parse(getHtml(url));
 			Element codeList = document.select("#code_search_results > div.code-list").get(0);
-			System.out.println("已查询到第"+page+"页的"+codeList.children().size()+"个pom.xml文件");
-			for (Element file : codeList.children()) {
-				String href = file.select("div > p > a").attr("href");
+			System.out.println("第"+page+"页共有"+codeList.children().size()+"个pom.xml文件");
+			for (int i=1;i<=codeList.children().size();i++) {
+				String href = codeList.child(i-1).select("div > p > a").attr("href");
 				String pomUrl = "https://raw.githubusercontent.com" + href.replace("/blob", "");
+				System.out.println("正在查询第"+i+"个:"+pomUrl+"...");
 				String pom = getHtml(pomUrl);
-				System.out.println("已获得"+pom+"的pom.xml文件");
+				System.out.println("已获得"+pomUrl);
 				for (String dependency : getContents(pom, "dependency")) {
 					System.out.println(getContents(dependency, "groupId").get(0));
 					System.out.println(getContents(dependency, "artifactId").get(0));
