@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -30,17 +28,26 @@ public class DataImporter {
 				String href = codeList.child(i-1).select("div > p > a").attr("href");
 				String pomUrl = "https://raw.githubusercontent.com" + href.replace("/blob", "");
 				System.out.println("正在查询第"+i+"个:"+pomUrl+"...");
-				String pom = getHtml(pomUrl);
-				System.out.println("已获得"+pomUrl);
-				for (String dependency : getContents(pom, "dependency")) {
-					System.out.println(getContents(dependency, "groupId").get(0));
-					System.out.println(getContents(dependency, "artifactId").get(0));
+				try {
+					String pom = getHtml(pomUrl);
+					System.out.println("已获得" + pomUrl);
+					for (String dependency : getContents(pom, "dependency")) {
+						String group = getContents(dependency, "groupId").get(0);
+						String artifact = getContents(dependency, "artifactId").get(0);
+						List<String> versionRes = getContents(dependency, "version");
+						String version="NULL";
+						if(!versionRes.isEmpty())
+							version = versionRes.get(0);
+						
+					}
+				}catch (IOException e){
+					System.out.println("查询超时");
 				}
 			}
 		}
 	}
 
-	private static String getHtml(String url) throws IOException{
+	private static String getHtml(String url) throws IOException {
 		HttpURLConnection con = (HttpURLConnection)new URL(url).openConnection();
 		con.setRequestMethod("GET");
 		con.setRequestProperty("cookie",COOKIE);
