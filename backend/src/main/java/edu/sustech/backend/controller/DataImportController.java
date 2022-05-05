@@ -55,14 +55,11 @@ public class DataImportController {
 
 				//Using repos API, parse the json file returned, locate the "created_at" entry, then parse the date.
 				String repositoryUrl = "https://api.github.com/repos" + href.substring(0, href.indexOf("/blob"));
-				System.out.println(repositoryUrl);
-				System.out.println(getHtml(repositoryUrl, false));
 				String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-
 				String htmlContent = getHtml(repositoryUrl, false);
 				Date creationDate = simpleDateFormat.parse(htmlContent, new ParsePosition(htmlContent.indexOf("\"created_at\": \"") + "\"created_at\": \"".length()));
-				
+
 				try {
 					String pom = getHtml(pomUrl,false);
 					System.out.println("已获得" + pomUrl);
