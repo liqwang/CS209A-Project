@@ -44,7 +44,7 @@ public class DataImportController {
 		for (int page = 1; page <= PAGES; page++) {
 			String url = "https://github.com/search?l=Maven+POM&p="+page+"&q=filename%3Apom.xml&type=Code";
 			System.out.println("\n正在查询第"+page+"页...");
-			Document document = Jsoup.parse(getHtml(url,true));
+			Document document = Jsoup.parse(getHtml(url));
 			Element codeList = document.select("#code_search_results > div.code-list").get(0);
 			System.out.println("第"+page+"页共有"+codeList.children().size()+"个pom.xml文件");
 			for (int i=1;i<=codeList.children().size();i++) {
@@ -57,11 +57,11 @@ public class DataImportController {
 				String repositoryUrl = "https://api.github.com/repos" + href.substring(0, href.indexOf("/blob"));
 				String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-				String htmlContent = getHtml(repositoryUrl, false);
+				String htmlContent = getHtml(repositoryUrl);
 				Date creationDate = simpleDateFormat.parse(htmlContent, new ParsePosition(htmlContent.indexOf("\"created_at\": \"") + "\"created_at\": \"".length()));
 
 				try {
-					String pom = getHtml(pomUrl,false);
+					String pom = getHtml(pomUrl);
 					System.out.println("已获得" + pomUrl);
 					for (String dependency : getContents(pom, "dependency")) {
 						String groupName = getContents(dependency, "groupId").get(0);
@@ -96,13 +96,10 @@ public class DataImportController {
 		}
 	}
 
-	private static String getHtml(String url,boolean useCookie) throws IOException {
+	private static String getHtml(String url) throws IOException {
 		HttpURLConnection con = (HttpURLConnection)new URL(url).openConnection();
 		con.setRequestMethod("GET");
-		con.setRequestProperty("user-agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36");
-		con.setRequestProperty("accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
-		if(useCookie)
-			con.setRequestProperty("cookie",COOKIE);
+		con.setRequestProperty("cookie",COOKIE);
 
 		StringBuilder sb = new StringBuilder();
 		BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
