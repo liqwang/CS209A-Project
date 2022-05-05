@@ -18,7 +18,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,6 +51,18 @@ public class DataImportController {
 				String href = codeList.child(i-1).select("div > p > a").attr("href");
 				String pomUrl = "https://raw.githubusercontent.com" + href.replace("/blob", "");
 				System.out.println("正在查询第"+i+"个:"+pomUrl+"...");
+
+
+				//Using repos API, parse the json file returned, locate the "created_at" entry, then parse the date.
+				String repositoryUrl = "https://api.github.com/repos" + href.substring(0, href.indexOf("/blob"));
+				System.out.println(repositoryUrl);
+				System.out.println(getHtml(repositoryUrl, false));
+				String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+				String htmlContent = getHtml(repositoryUrl, false);
+				Date creationDate = simpleDateFormat.parse(htmlContent, new ParsePosition(htmlContent.indexOf("\"created_at\": \"") + "\"created_at\": \"".length()));
+				
 				try {
 					String pom = getHtml(pomUrl,false);
 					System.out.println("已获得" + pomUrl);
