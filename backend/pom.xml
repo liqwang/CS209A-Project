@@ -34,6 +34,9 @@
             <version>1.14.3</version>
         </dependency>
 
+        <!-- Note that for this dependency to work, you need to manually add the GitHub server configuration to maven
+         with PAT, or personal access tokens, to install this package. Note that you must first grant the permission
+         to access it-->
         <dependency>
             <groupId>edu.sustech</groupId>
             <artifactId>githubsearchengine</artifactId>
