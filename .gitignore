@@ -25,3 +25,4 @@ hs_err_pid*
 #IdeaProjectConfig
 .idea
 Java2-Project.iml
+/backend/src/test/samples/
