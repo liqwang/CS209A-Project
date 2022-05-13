@@ -1,5 +1,7 @@
 package edu.sustech.search.engine.github.API;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import edu.sustech.search.engine.github.models.repository.Repository;
 import edu.sustech.search.engine.github.models.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 public class UserAPI extends RestAPI {
 
@@ -20,6 +23,20 @@ public class UserAPI extends RestAPI {
 
     UserAPI() {
         this(null);
+    }
+
+
+    public List<Repository> getStarredRepo(String username) throws IOException, InterruptedException {
+        return getStarredRepo(URI.create("https://api.github.com/users/" + username + "/starred"));
+    }
+
+    public List<Repository> getStarredRepo(User user) throws IOException, InterruptedException {
+        return getStarredRepo(URI.create(user.getStarredUrl()));
+    }
+
+    public List<Repository> getStarredRepo(URI uri) throws IOException, InterruptedException {
+        return objectMapper.readValue(getHttpResponseRaw(uri), new TypeReference<>() {
+        });
     }
 
     public User getUser(URI uri) throws IOException, InterruptedException {

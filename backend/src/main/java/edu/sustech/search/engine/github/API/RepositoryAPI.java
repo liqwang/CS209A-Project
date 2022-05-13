@@ -48,6 +48,10 @@ public class RepositoryAPI extends RestAPI {
         }
     }
 
+    public List<Entry<User, Date>> getStarGazers(String repoFullName) throws IOException, InterruptedException {
+        return getStarGazers("https://api.github.com/repos/" + repoFullName + "/stargazers");
+    }
+
     public List<Entry<User, Date>> getStarGazers(Repository r) throws IOException, InterruptedException {
         return getStarGazers(r.getStargazersUrl());
     }

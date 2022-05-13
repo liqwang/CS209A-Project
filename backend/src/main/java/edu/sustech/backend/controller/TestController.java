@@ -40,6 +40,19 @@ public class TestController {
         return sb.toString();
     }
 
+    @GetMapping("starredrepo")
+    public String testStarredRepo(@RequestParam(value = "username", defaultValue = "IskXCr") String username) throws IOException, InterruptedException {
+        GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
+        List<Repository> repo = gitHubAPI.userAPI.getStarredRepo(username);
+
+        StringBuilder res = new StringBuilder();
+        res.append("Repositories that " + username + " has starred: <br>");
+        for (Repository r : repo) {
+            res.append("-------" + r.getFullName() + "<br>");
+        }
+        return res.toString();
+    }
+
     @GetMapping("starhistory")
     public String testStarHistory(@RequestParam(value = "count", defaultValue = "100") Integer count) throws IOException, InterruptedException {
         GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
@@ -58,9 +71,9 @@ public class TestController {
             res.append(r.getFullName() + ", Stargazers: ").append("<br>");
             List<Entry<User, Date>> userList = gitHubAPI.repositoryAPI.getStarGazers(r);
             int deadLockCount = 0;
-            while (userList.size() == 0 && deadLockCount < 5) {
+            while (userList.size() == 0 && deadLockCount < 2) {
                 deadLockCount++;
-                Thread.sleep(1200);
+                Thread.sleep(1000);
                 userList = gitHubAPI.repositoryAPI.getStarGazers(r);
             }
             for (Entry<User, Date> entry : userList) {
