@@ -1,9 +1,7 @@
 package edu.sustech.search.engine.github.models.code;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Consumer;
 import javax.annotation.processing.Generated;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -21,7 +19,8 @@ import edu.sustech.search.engine.github.models.AppendableResult;
         "items"
 })
 @Generated("jsonschema2pojo")
-public class CodeResult implements AppendableResult {
+public class CodeResult implements AppendableResult,
+        Iterable<CodeItem> {
 
     /**
      * (Required)
@@ -171,4 +170,19 @@ public class CodeResult implements AppendableResult {
         return (((((this.incompleteResults == rhs.incompleteResults) || ((this.incompleteResults != null) && this.incompleteResults.equals(rhs.incompleteResults))) && ((this.additionalProperties == rhs.additionalProperties) || ((this.additionalProperties != null) && this.additionalProperties.equals(rhs.additionalProperties)))) && ((this.totalCount == rhs.totalCount) || ((this.totalCount != null) && this.totalCount.equals(rhs.totalCount)))) && ((this.codeItems == rhs.codeItems) || ((this.codeItems != null) && this.codeItems.equals(rhs.codeItems))));
     }
 
+    @Override
+    public Iterator<CodeItem> iterator() {
+        return new Iterator<CodeItem>() {
+            int cursor = 0;
+
+            @Override
+            public boolean hasNext() {
+                return cursor <= codeItems.size() - 1;
+            }
+
+            @Override
+            public CodeItem next() {
+                return cursor < codeItems.size() ? codeItems.get(cursor++) : null;            }
+        };
+    }
 }

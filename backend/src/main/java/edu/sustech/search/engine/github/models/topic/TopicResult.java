@@ -1,10 +1,7 @@
 
 package edu.sustech.search.engine.github.models.topic;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.annotation.processing.Generated;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -14,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import edu.sustech.search.engine.github.models.AppendableResult;
+import edu.sustech.search.engine.github.models.code.CodeItem;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -22,7 +20,8 @@ import edu.sustech.search.engine.github.models.AppendableResult;
         "items"
 })
 @Generated("jsonschema2pojo")
-public class TopicResult implements AppendableResult {
+public class TopicResult implements AppendableResult,
+        Iterable<Topic> {
 
     /**
      * (Required)
@@ -170,4 +169,20 @@ public class TopicResult implements AppendableResult {
         return (((((this.incompleteResults == rhs.incompleteResults) || ((this.incompleteResults != null) && this.incompleteResults.equals(rhs.incompleteResults))) && ((this.additionalProperties == rhs.additionalProperties) || ((this.additionalProperties != null) && this.additionalProperties.equals(rhs.additionalProperties)))) && ((this.totalCount == rhs.totalCount) || ((this.totalCount != null) && this.totalCount.equals(rhs.totalCount)))) && ((this.topics == rhs.topics) || ((this.topics != null) && this.topics.equals(rhs.topics))));
     }
 
+    @Override
+    public Iterator<Topic> iterator() {
+        return new Iterator<Topic>() {
+            int cursor = 0;
+
+            @Override
+            public boolean hasNext() {
+                return cursor <= topics.size() - 1;
+            }
+
+            @Override
+            public Topic next() {
+                return cursor < topics.size() ? topics.get(cursor++) : null;
+            }
+        };
+    }
 }

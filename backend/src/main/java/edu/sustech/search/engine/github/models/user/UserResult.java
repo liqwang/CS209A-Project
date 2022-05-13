@@ -1,9 +1,6 @@
 package edu.sustech.search.engine.github.models.user;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.annotation.processing.Generated;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import edu.sustech.search.engine.github.models.AppendableResult;
+import edu.sustech.search.engine.github.models.code.CodeItem;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -21,7 +19,8 @@ import edu.sustech.search.engine.github.models.AppendableResult;
         "items"
 })
 @Generated("jsonschema2pojo")
-public class UserResult implements AppendableResult {
+public class UserResult implements AppendableResult,
+        Iterable<User> {
 
     /**
      * (Required)
@@ -172,4 +171,20 @@ public class UserResult implements AppendableResult {
         return (((((this.incompleteResults == rhs.incompleteResults) || ((this.incompleteResults != null) && this.incompleteResults.equals(rhs.incompleteResults))) && ((this.additionalProperties == rhs.additionalProperties) || ((this.additionalProperties != null) && this.additionalProperties.equals(rhs.additionalProperties)))) && ((this.totalCount == rhs.totalCount) || ((this.totalCount != null) && this.totalCount.equals(rhs.totalCount)))) && ((this.users == rhs.users) || ((this.users != null) && this.users.equals(rhs.users))));
     }
 
+    @Override
+    public Iterator<User> iterator() {
+        return new Iterator<User>() {
+            int cursor = 0;
+
+            @Override
+            public boolean hasNext() {
+                return cursor <= users.size() - 1;
+            }
+
+            @Override
+            public User next() {
+                return cursor < users.size() ? users.get(cursor++) : null;
+            }
+        };
+    }
 }

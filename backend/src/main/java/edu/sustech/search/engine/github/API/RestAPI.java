@@ -19,7 +19,8 @@ public class RestAPI {
     public static final Duration timeout = Duration.ofSeconds(10);
     private static final Logger logger = LogManager.getLogger(RestAPI.class);
     private static final ObjectMapper staticObjectMapper = new ObjectMapper();
-    static{
+
+    static {
         staticObjectMapper.addHandler(new DeserializationProblemHandler() {
             @Override
             public Object handleWeirdStringValue(DeserializationContext ctxt, Class<?> targetType, String valueToConvert, String failureMsg) throws IOException {
@@ -70,13 +71,23 @@ public class RestAPI {
         return getHttpResponse(uri).body();
     }
 
-    public HttpResponse<String> getHttpResponse(URI uri) throws IOException, InterruptedException {
+    public String getHttpResponseRaw(URI uri, String acceptSchema) throws IOException, InterruptedException {
+        return getHttpResponse(uri, acceptSchema).body();
+    }
 
+    public HttpResponse<String> getHttpResponse(URI uri) throws IOException, InterruptedException {
+        return getHttpResponse(uri, "application/vnd.github.v3+json");
+    }
+
+    public HttpResponse<String> getHttpResponse(URI uri, String acceptSchema) throws IOException, InterruptedException {
         HttpRequest.Builder builder = HttpRequest.newBuilder();
         if (token != null) {
             builder.headers("Authorization", "token " + token);
         }
-        HttpRequest httpRequest = builder.headers("Accept", "application/vnd.github.v3+json")
+        if (acceptSchema == null) {
+            acceptSchema = "application/vnd.github.v3+json";
+        }
+        HttpRequest httpRequest = builder.headers("Accept", acceptSchema)
                 .uri(uri).timeout(timeout).build();
         logger.info("Sending request: " + httpRequest.uri());
         client = HttpClient.newHttpClient();
@@ -105,9 +116,9 @@ public class RestAPI {
      * @param isErrorSuppressed
      */
     public void setSuppressError(boolean isErrorSuppressed) {
-        if(isErrorSuppressed){
+        if (isErrorSuppressed) {
             logger.warn("Error suppression on http response is " + true + ". This may cause hidden problems.");
-        }else{
+        } else {
             logger.warn("Error suppression on http response has been recovered.");
         }
         suppressError = isErrorSuppressed;

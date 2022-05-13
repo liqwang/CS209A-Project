@@ -1,6 +1,6 @@
 package edu.sustech.search.engine.github.models;
 
-public interface AppendableResult {
+public interface AppendableResult{
 
     /**
      *
