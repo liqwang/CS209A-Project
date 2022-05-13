@@ -58,6 +58,7 @@ public class SearchRequest {
 
     /**
      * The default value is <code>100</code>
+     * This method contains the parameter validation, and therefore, any value of input can be accepted.
      */
     public void setResultPerPage(int count) {
         if (count <= 0 || count >= 100) {

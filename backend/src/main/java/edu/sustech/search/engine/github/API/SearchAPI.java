@@ -179,6 +179,7 @@ public class SearchAPI extends RestAPI {
 
         SearchRequest request = new SearchRequest(request1);
         logger.info("Starting to fetch results on request[" + request.getRequestStringRaw() + "]. Target number: " + count);
+        request.setResultPerPage(count);
 
         int cnt = 0;
         int endPage = Integer.MAX_VALUE;

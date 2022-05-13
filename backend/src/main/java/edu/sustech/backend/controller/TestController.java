@@ -62,9 +62,7 @@ public class TestController {
                 .addSearchKeyword("Data")
                 .addLanguageOption("Maven POM").build();
 
-        if (count < req.getResultPerPage() && count > 0) {
-            req.setResultPerPage(count);
-        }
+        req.setResultPerPage(count);
 
         RepositoryResult result = gitHubAPI.searchAPI.searchRepo(req, count);
         StringBuilder res = new StringBuilder();
@@ -95,9 +93,7 @@ public class TestController {
                 .addSearchKeyword("Data")
                 .addLanguageOption("Maven POM").build();
 
-        if (count < req.getResultPerPage() && count > 0) {
-            req.setResultPerPage(count);
-        }
+        req.setResultPerPage(count);
 
         RepositoryResult result = gitHubAPI.searchAPI.searchRepo(req, count);
         StringBuilder res = new StringBuilder();
