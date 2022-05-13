@@ -10,6 +10,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import edu.sustech.search.engine.github.models.APIErrorMessage;
@@ -89,23 +90,30 @@ public class RestAPI {
         }
         HttpRequest httpRequest = builder.headers("Accept", acceptSchema)
                 .uri(uri).timeout(timeout).build();
-        logger.info("Sending request: " + httpRequest.uri());
+        logger.debug("Sending request: " + httpRequest.uri());
         client = HttpClient.newHttpClient();
-        HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-        if (response.statusCode() != 200 && !suppressError) {
-            logger.error("Error upon receiving REST response from API. Check parameters, request intervals and etc. You may try again.");
-            logger.error("Request URL = " + uri.toString());
-            logger.error("Http response code: " + response.statusCode());
+        HttpResponse<String> response;
+        do {
+            response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-            APIErrorMessage message = objectMapper.readValue(response.body(), APIErrorMessage.class);
-            logger.warn(message.getMessage());
+            if (response.statusCode() != 200) {
+                if (!suppressError) {
+                    logger.error("Error upon receiving REST response from API. Check parameters, request intervals and etc. You may try again.");
+                    logger.error("Request URL = " + uri.toString());
+                    logger.error("Http response code: " + response.statusCode());
+                }
 
-            if (message.getMessage().contains("secondary rate limit")) {
-                logger.error("Secondary rate limit exceeded.", new RequestRateExceededException());
+                APIErrorMessage message = objectMapper.readValue(response.body(), APIErrorMessage.class);
+                logger.warn(message.getMessage());
+
+                if (message.getMessage().contains("secondary rate limit")) {
+                    logger.error("Secondary rate limit exceeded.", new RequestRateExceededException());
+                    printRateLimit(response);
+                }
+
             }
-
-        }
+        } while (response.statusCode() != 200);
         return response;
     }
 
@@ -131,6 +139,15 @@ public class RestAPI {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void printRateLimit(HttpResponse<String> response) {
+        response.headers().firstValue("x-ratelimit-reset")
+                .ifPresent(e -> logger.error("The rate will be reset on " + new Date(Long.parseLong(e))));
+        response.headers().firstValueAsLong("x-ratelimit-limit")
+                .ifPresent(e -> logger.error("The rate limit maximum is " + e));
+        response.headers().firstValueAsLong("x-ratelimit-remaining")
+                .ifPresent(e -> logger.error("The rate limit remaining is " + e));
     }
 
 }

@@ -208,6 +208,9 @@ public class SearchAPI extends RestAPI {
                 if (incr != 0) {
                     request.incrResultPage(1);
                     cnt += incr;
+                } else {
+                    printRateLimit(response);
+                    Thread.sleep(500);
                 }
             }
 
