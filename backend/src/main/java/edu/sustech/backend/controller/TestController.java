@@ -6,6 +6,7 @@ import edu.sustech.search.engine.github.models.Entry;
 import edu.sustech.search.engine.github.models.repository.Repository;
 import edu.sustech.search.engine.github.models.repository.RepositoryResult;
 import edu.sustech.search.engine.github.models.user.User;
+import org.apache.ibatis.javassist.compiler.ast.Pair;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,12 +44,12 @@ public class TestController {
     @GetMapping("starredrepo")
     public String testStarredRepo(@RequestParam(value = "username", defaultValue = "IskXCr") String username) throws IOException, InterruptedException {
         GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
-        List<Repository> repo = gitHubAPI.userAPI.getStarredRepo(username);
+        List<Entry<Repository, Date>> repo = gitHubAPI.userAPI.getStarredRepo(username);
 
         StringBuilder res = new StringBuilder();
         res.append("Repositories that " + username + " has starred: <br>");
-        for (Repository r : repo) {
-            res.append("-------" + r.getFullName() + "<br>");
+        for (Entry<Repository, Date> p : repo) {
+            res.append("-------" + p.getKey().getFullName() + "<br>");
         }
         return res.toString();
     }

@@ -36,6 +36,14 @@ class APITest {
     }
 
     @Test
+    void testStarredRepo() throws IOException, InterruptedException{
+        String OAuthToken = Files.readString(Path.of("src/test/samples/TestToken.txt"));
+        GitHubAPI gitHubAPI = GitHubAPI.registerAPI(OAuthToken);
+        List<Entry<Repository, Date>>  result = gitHubAPI.userAPI.getStarredRepo(URI.create("https://api.github.com/users/IskXCr/starred"));
+        System.out.println(result.size());
+    }
+
+    @Test
     void testStargazerList() throws IOException, InterruptedException {
         String OAuthToken = Files.readString(Path.of("src/test/samples/TestToken.txt"));
         GitHubAPI gitHubAPI = GitHubAPI.registerAPI(OAuthToken);
