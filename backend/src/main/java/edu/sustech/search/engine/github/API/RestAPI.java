@@ -11,6 +11,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import edu.sustech.search.engine.github.models.APIErrorMessage;
@@ -81,6 +82,9 @@ public class RestAPI {
     }
 
     public HttpResponse<String> getHttpResponse(URI uri, String acceptSchema) throws IOException, InterruptedException {
+        String tmpUri = uri.toString().replace("[", "%5b").replace("]", "%5d");
+        uri = URI.create(tmpUri);
+
         HttpRequest.Builder builder = HttpRequest.newBuilder();
         if (token != null) {
             builder.headers("Authorization", "token " + token);

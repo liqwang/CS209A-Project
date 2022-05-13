@@ -234,7 +234,7 @@ public class SearchAPI extends RestAPI {
 
     @FunctionalInterface
     public interface AppendableResultParser {
-        public AppendableResult parse(String s);
+        AppendableResult parse(String s);
     }
 
     /**

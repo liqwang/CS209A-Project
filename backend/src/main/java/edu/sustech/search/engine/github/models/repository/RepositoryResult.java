@@ -37,7 +37,7 @@ public class RepositoryResult implements AppendableResult,
      * (Required)
      */
     @JsonProperty("items")
-    private List<edu.sustech.search.engine.github.models.repository.Repository> repositories = new ArrayList<edu.sustech.search.engine.github.models.repository.Repository>();
+    private List<Repository> repositories = new ArrayList<edu.sustech.search.engine.github.models.repository.Repository>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,7 +77,7 @@ public class RepositoryResult implements AppendableResult,
      * (Required)
      */
     @JsonProperty("items")
-    public List<edu.sustech.search.engine.github.models.repository.Repository> getItems() {
+    public List<Repository> getItems() {
         return repositories;
     }
 
@@ -85,7 +85,7 @@ public class RepositoryResult implements AppendableResult,
      * (Required)
      */
     @JsonProperty("items")
-    public void setItems(List<edu.sustech.search.engine.github.models.repository.Repository> repositories) {
+    public void setItems(List<Repository> repositories) {
         this.repositories = repositories;
     }
 
@@ -173,7 +173,7 @@ public class RepositoryResult implements AppendableResult,
 
     @Override
     public Iterator<Repository> iterator() {
-        return new Iterator<Repository>() {
+        return new Iterator<>() {
             int cursor = 0;
 
             @Override

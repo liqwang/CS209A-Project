@@ -17,7 +17,6 @@ import edu.sustech.search.engine.github.models.Permissions;
 /**
  * Repo Search Result Item
  * <p>
- * Repo Search Result Item
  * 
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
