@@ -94,6 +94,7 @@ public class RestAPI {
         client = HttpClient.newHttpClient();
 
         HttpResponse<String> response;
+        int deadLockCount = 0;
         do {
             response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
@@ -113,7 +114,7 @@ public class RestAPI {
                 }
 
             }
-        } while (response.statusCode() != 200);
+        } while (response.statusCode() != 200 && (deadLockCount++ < 3));
         return response;
     }
 
