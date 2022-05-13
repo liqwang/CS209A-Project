@@ -5,7 +5,7 @@ import edu.sustech.search.engine.github.API.RestAPI;
 import edu.sustech.search.engine.github.API.search.requests.CodeSearchRequest;
 import edu.sustech.search.engine.github.API.search.requests.RepoSearchRequest;
 import edu.sustech.search.engine.github.analyzer.Analyzer;
-import edu.sustech.search.engine.github.analyzer.models.Dependency;
+import edu.sustech.search.engine.github.models.Dependency;
 import edu.sustech.search.engine.github.models.Entry;
 import edu.sustech.search.engine.github.models.code.CodeItem;
 import edu.sustech.search.engine.github.models.code.CodeResult;
@@ -15,7 +15,6 @@ import edu.sustech.search.engine.github.models.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 
 import java.io.FileWriter;
 import java.io.IOException;

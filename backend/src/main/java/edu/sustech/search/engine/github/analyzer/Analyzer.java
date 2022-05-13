@@ -1,7 +1,6 @@
 package edu.sustech.search.engine.github.analyzer;
 
-import edu.sustech.search.engine.github.analyzer.models.Dependency;
-import edu.sustech.search.engine.github.models.user.User;
+import edu.sustech.search.engine.github.models.Dependency;
 
 import java.util.ArrayList;
 import java.util.List;

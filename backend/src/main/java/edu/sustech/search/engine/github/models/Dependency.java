@@ -1,4 +1,4 @@
-package edu.sustech.search.engine.github.analyzer.models;
+package edu.sustech.search.engine.github.models;
 
 public record Dependency(String groupId, String artifactId, String version) {
 
