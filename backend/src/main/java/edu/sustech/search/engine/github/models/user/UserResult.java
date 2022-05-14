@@ -173,18 +173,6 @@ public class UserResult implements AppendableResult,
 
     @Override
     public Iterator<User> iterator() {
-        return new Iterator<User>() {
-            int cursor = 0;
-
-            @Override
-            public boolean hasNext() {
-                return cursor <= users.size() - 1;
-            }
-
-            @Override
-            public User next() {
-                return cursor < users.size() ? users.get(cursor++) : null;
-            }
-        };
+        return users.iterator();
     }
 }

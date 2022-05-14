@@ -1,4 +1,4 @@
-package edu.sustech.search.engine.github.models.code;
+package edu.sustech.search.engine.github.models;
 
 import java.net.URI;
 import java.util.LinkedHashMap;

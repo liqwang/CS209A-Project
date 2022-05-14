@@ -171,18 +171,6 @@ public class TopicResult implements AppendableResult,
 
     @Override
     public Iterator<Topic> iterator() {
-        return new Iterator<Topic>() {
-            int cursor = 0;
-
-            @Override
-            public boolean hasNext() {
-                return cursor <= topics.size() - 1;
-            }
-
-            @Override
-            public Topic next() {
-                return cursor < topics.size() ? topics.get(cursor++) : null;
-            }
-        };
+        return topics.iterator();
     }
 }

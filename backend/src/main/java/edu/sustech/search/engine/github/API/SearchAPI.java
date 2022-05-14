@@ -1,6 +1,10 @@
 package edu.sustech.search.engine.github.API;
 
 import edu.sustech.search.engine.github.API.search.requests.*;
+import edu.sustech.search.engine.github.models.commit.CommitResult;
+import edu.sustech.search.engine.github.models.issue.IssueResult;
+import edu.sustech.search.engine.github.models.label.Label;
+import edu.sustech.search.engine.github.models.label.LabelResult;
 import edu.sustech.search.engine.github.models.repository.RepositoryResult;
 import edu.sustech.search.engine.github.models.topic.TopicResult;
 import edu.sustech.search.engine.github.models.user.UserResult;
@@ -21,6 +25,9 @@ public class SearchAPI extends RestAPI {
 
     private static final int DEFAULT_INTERVAL = 15000; //Unit: ms
 
+    private static String acceptSchema = "application/vnd.github.v3.text-match+json";
+    private boolean isProvidingTextMatchEnabled = false;
+
     private final edu.sustech.search.engine.github.API.RateAPI rateAPI;
 
     SearchAPI(String OAuthToken) {
@@ -32,6 +39,95 @@ public class SearchAPI extends RestAPI {
 
     SearchAPI() {
         this(null);
+    }
+
+    /**
+     * Search Issues and Pull-requests.
+     * This method is a type-restricted implementation of the method <code>searchType</code>.
+     * For detailed documentation, see <code>searchType</code>
+     *
+     * @param request1
+     * @param count
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public IssueResult searchIPR(IPRSearchRequest request1, int count) throws IOException, InterruptedException {
+        return searchIPR(request1, count, DEFAULT_INTERVAL);
+    }
+
+    /**
+     * Search Issues and Pull-requests.
+     * This method is a type-restricted implementation of the method <code>searchType</code>.
+     * For detailed documentation, see <code>searchType</code>
+     *
+     * @param request1
+     * @param count
+     * @param timeIntervalMillis
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public IssueResult searchIPR(IPRSearchRequest request1, int count, long timeIntervalMillis) throws IOException, InterruptedException {
+        return searchType(request1, IssueResult.class, count, timeIntervalMillis);
+    }
+
+    /**
+     * This method is a type-restricted implementation of the method <code>searchType</code>.
+     * For detailed documentation, see <code>searchType</code>
+     *
+     * @param request1
+     * @param count
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public CommitResult searchCommit(CommitSearchRequest request1, int count) throws IOException, InterruptedException {
+        return searchCommit(request1, count, DEFAULT_INTERVAL);
+    }
+
+    /**
+     * This method is a type-restricted implementation of the method <code>searchType</code>.
+     * For detailed documentation, see <code>searchType</code>
+     *
+     * @param request1
+     * @param count
+     * @param timeIntervalMillis
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public CommitResult searchCommit(CommitSearchRequest request1, int count, long timeIntervalMillis) throws IOException, InterruptedException {
+        return searchType(request1, CommitResult.class, count, timeIntervalMillis);
+    }
+
+    /**
+     * This method is a type-restricted implementation of the method <code>searchType</code>.
+     * For detailed documentation, see <code>searchType</code>
+     *
+     * @param request1
+     * @param count
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public LabelResult searchLabel(LabelSearchRequest request1, int count) throws IOException, InterruptedException {
+        return searchLabel(request1, count, DEFAULT_INTERVAL);
+    }
+
+    /**
+     * This method is a type-restricted implementation of the method <code>searchType</code>.
+     * For detailed documentation, see <code>searchType</code>
+     *
+     * @param request1
+     * @param count
+     * @param timeIntervalMillis
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public LabelResult searchLabel(LabelSearchRequest request1, int count, long timeIntervalMillis) throws IOException, InterruptedException {
+        return searchType(request1, LabelResult.class, count, timeIntervalMillis);
     }
 
     /**
@@ -257,7 +353,19 @@ public class SearchAPI extends RestAPI {
     }
 
     public HttpResponse<String> search(SearchRequest request) throws IOException, InterruptedException {
-        return getHttpResponse(URI.create("https://api.github.com/search/" + request.getRequestString()));
+        if (isProvidingTextMatchEnabled) {
+            return getHttpResponse(URI.create("https://api.github.com/search/" + request.getRequestString()), acceptSchema);
+        } else {
+            return getHttpResponse(URI.create("https://api.github.com/search/" + request.getRequestString()));
+        }
+    }
+
+    /**
+     * If set to <code>true</code>, the search result will provide text-match metadata.
+     * @param enabled Whether the search result shall enable text-match providing.
+     */
+    public void setProvidingTextMatch(boolean enabled) {
+        isProvidingTextMatchEnabled = enabled;
     }
 
 

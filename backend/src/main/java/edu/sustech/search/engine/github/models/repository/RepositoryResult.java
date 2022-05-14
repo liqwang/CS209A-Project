@@ -173,18 +173,6 @@ public class RepositoryResult implements AppendableResult,
 
     @Override
     public Iterator<Repository> iterator() {
-        return new Iterator<>() {
-            int cursor = 0;
-
-            @Override
-            public boolean hasNext() {
-                return cursor <= repositories.size() - 1;
-            }
-
-            @Override
-            public Repository next() {
-                return cursor < repositories.size() ? repositories.get(cursor++) : null;
-            }
-        };
+        return repositories.iterator();
     }
 }

@@ -9,8 +9,8 @@ import java.util.Map;
 import javax.annotation.processing.Generated;
 
 import com.fasterxml.jackson.annotation.*;
+import edu.sustech.search.engine.github.models.Owner;
 import edu.sustech.search.engine.github.models.TextMatch;
-
 
 /**
  * User Search Result Item
@@ -57,7 +57,7 @@ import edu.sustech.search.engine.github.models.TextMatch;
     "suspended_at"
 })
 @Generated("jsonschema2pojo")
-public class User {
+public class User extends Owner {
 
     /**
      * 

@@ -104,19 +104,7 @@ public class IssueResult implements AppendableResult, Iterable<Issue> {
 
     @Override
     public Iterator<Issue> iterator() {
-        return new Iterator<>() {
-            int cursor = 0;
-
-            @Override
-            public boolean hasNext() {
-                return cursor <= issues.size() - 1;
-            }
-
-            @Override
-            public Issue next() {
-                return cursor < issues.size() ? issues.get(cursor++) : null;
-            }
-        };
+        return issues.iterator();
     }
 
     @JsonAnyGetter

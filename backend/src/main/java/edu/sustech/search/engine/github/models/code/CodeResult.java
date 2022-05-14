@@ -172,17 +172,6 @@ public class CodeResult implements AppendableResult,
 
     @Override
     public Iterator<CodeItem> iterator() {
-        return new Iterator<CodeItem>() {
-            int cursor = 0;
-
-            @Override
-            public boolean hasNext() {
-                return cursor <= codeItems.size() - 1;
-            }
-
-            @Override
-            public CodeItem next() {
-                return cursor < codeItems.size() ? codeItems.get(cursor++) : null;            }
-        };
+        return codeItems.iterator();
     }
 }

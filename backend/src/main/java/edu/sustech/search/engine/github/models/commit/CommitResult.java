@@ -1,51 +1,55 @@
 
-package edu.sustech.search.engine.github.models.label;
+package edu.sustech.search.engine.github.models.commit;
 
-import com.fasterxml.jackson.annotation.*;
+import java.util.*;
+import javax.annotation.processing.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import edu.sustech.search.engine.github.models.AppendableResult;
 import edu.sustech.search.engine.github.models.issue.Issue;
 import edu.sustech.search.engine.github.models.issue.IssueResult;
 
-import javax.annotation.processing.Generated;
-import java.util.*;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "total_count",
-    "incomplete_results",
-    "items"
+        "total_count",
+        "incomplete_results",
+        "items"
 })
 @Generated("jsonschema2pojo")
-public class LabelResult implements AppendableResult, Iterable<Label> {
+public class CommitResult implements AppendableResult, Iterable<CommitItem> {
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("total_count")
     private Integer totalCount;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("incomplete_results")
     private Boolean incompleteResults;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("items")
-    private List<Label> labels = new ArrayList<Label>();
+    private List<CommitItem> commitItems = new ArrayList<CommitItem>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("total_count")
     public Integer getTotalCount() {
@@ -53,9 +57,9 @@ public class LabelResult implements AppendableResult, Iterable<Label> {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("total_count")
     public void setTotalCount(Integer totalCount) {
@@ -63,9 +67,9 @@ public class LabelResult implements AppendableResult, Iterable<Label> {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("incomplete_results")
     public Boolean getIncompleteResults() {
@@ -73,9 +77,9 @@ public class LabelResult implements AppendableResult, Iterable<Label> {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("incomplete_results")
     public void setIncompleteResults(Boolean incompleteResults) {
@@ -83,23 +87,23 @@ public class LabelResult implements AppendableResult, Iterable<Label> {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("items")
-    public List<Label> getItems() {
-        return labels;
+    public List<CommitItem> getItems() {
+        return commitItems;
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("items")
-    public void setItems(List<Label> labels) {
-        this.labels = labels;
+    public void setItems(List<CommitItem> commitItems) {
+        this.commitItems = commitItems;
     }
 
     @JsonAnyGetter
@@ -115,7 +119,7 @@ public class LabelResult implements AppendableResult, Iterable<Label> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(LabelResult.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(CommitResult.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("totalCount");
         sb.append('=');
         sb.append(((this.totalCount == null)?"<null>":this.totalCount));
@@ -126,7 +130,7 @@ public class LabelResult implements AppendableResult, Iterable<Label> {
         sb.append(',');
         sb.append("items");
         sb.append('=');
-        sb.append(((this.labels == null)?"<null>":this.labels));
+        sb.append(((this.commitItems == null)?"<null>":this.commitItems));
         sb.append(',');
         sb.append("additionalProperties");
         sb.append('=');
@@ -146,7 +150,7 @@ public class LabelResult implements AppendableResult, Iterable<Label> {
         result = ((result* 31)+((this.incompleteResults == null)? 0 :this.incompleteResults.hashCode()));
         result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.totalCount == null)? 0 :this.totalCount.hashCode()));
-        result = ((result* 31)+((this.labels == null)? 0 :this.labels.hashCode()));
+        result = ((result* 31)+((this.commitItems == null)? 0 :this.commitItems.hashCode()));
         return result;
     }
 
@@ -155,11 +159,11 @@ public class LabelResult implements AppendableResult, Iterable<Label> {
         if (other == this) {
             return true;
         }
-        if ((other instanceof LabelResult) == false) {
+        if ((other instanceof CommitResult) == false) {
             return false;
         }
-        LabelResult rhs = ((LabelResult) other);
-        return (((((this.incompleteResults == rhs.incompleteResults)||((this.incompleteResults!= null)&&this.incompleteResults.equals(rhs.incompleteResults)))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.totalCount == rhs.totalCount)||((this.totalCount!= null)&&this.totalCount.equals(rhs.totalCount))))&&((this.labels == rhs.labels)||((this.labels != null)&&this.labels.equals(rhs.labels))));
+        CommitResult rhs = ((CommitResult) other);
+        return (((((this.incompleteResults == rhs.incompleteResults)||((this.incompleteResults!= null)&&this.incompleteResults.equals(rhs.incompleteResults)))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.totalCount == rhs.totalCount)||((this.totalCount!= null)&&this.totalCount.equals(rhs.totalCount))))&&((this.commitItems == rhs.commitItems)||((this.commitItems != null)&&this.commitItems.equals(rhs.commitItems))));
     }
 
     @Override
@@ -170,22 +174,21 @@ public class LabelResult implements AppendableResult, Iterable<Label> {
             return cnt;
         }
 
-        if (result1 instanceof LabelResult other) {
-            for (Label l : other.getItems()) {
-                labels.add(l);
+        if (result1 instanceof CommitResult other) {
+            for (CommitItem i : other.getItems()) {
+                commitItems.add(i);
             }
             cnt = other.getItems().size();
         }
-        return cnt;
-    }
+        return cnt;    }
 
     @Override
     public int getItemCount() {
-        return labels.size();
+        return commitItems.size();
     }
 
     @Override
-    public Iterator<Label> iterator() {
-        return labels.iterator();
+    public Iterator<CommitItem> iterator() {
+        return commitItems.iterator();
     }
 }

@@ -10,11 +10,6 @@ import java.util.Iterator;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "total_count",
-        "incomplete_results",
-        "items"
-})
 public class PullRequestResult implements AppendableResult, Iterable<PullRequest> {
     @Override
     public int appendItems(AppendableResult other) {
