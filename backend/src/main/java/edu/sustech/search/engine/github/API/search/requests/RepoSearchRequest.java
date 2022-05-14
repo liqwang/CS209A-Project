@@ -179,7 +179,8 @@ public class RepoSearchRequest extends SearchRequest {
          * @return This builder.
          */
         public RequestBuilder addDateOption(DateOption option, String date, String modifier) {
-            qualifierDateOption.append(option.toString().toLowerCase()).append("created:").append(modifier == null ? "" : modifier).append(date).append(" ");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            qualifierDateOption.append(option.toString().toLowerCase()).append(":").append(modifier == null ? "" : modifier).append(date).append(" ");
             return this;
         }
 
@@ -216,7 +217,7 @@ public class RepoSearchRequest extends SearchRequest {
          * @return This builder.
          */
         public RequestBuilder addTopicCount(int count, String modifier) {
-            qualifierSize.append("topics:").append(modifier == null ? "" : modifier).append(count).append(" ");
+            qualifierTopicCount.append("topics:").append(modifier == null ? "" : modifier).append(count).append(" ");
             return this;
         }
 

@@ -2,8 +2,7 @@ package edu.sustech.search.engine.github.API;
 
 import edu.sustech.search.engine.github.API.search.requests.*;
 import edu.sustech.search.engine.github.models.commit.CommitResult;
-import edu.sustech.search.engine.github.models.issue.IssueResult;
-import edu.sustech.search.engine.github.models.label.Label;
+import edu.sustech.search.engine.github.models.issue.IPRResult;
 import edu.sustech.search.engine.github.models.label.LabelResult;
 import edu.sustech.search.engine.github.models.repository.RepositoryResult;
 import edu.sustech.search.engine.github.models.topic.TopicResult;
@@ -52,7 +51,7 @@ public class SearchAPI extends RestAPI {
      * @throws IOException
      * @throws InterruptedException
      */
-    public IssueResult searchIPR(IPRSearchRequest request1, int count) throws IOException, InterruptedException {
+    public IPRResult searchIPR(IPRSearchRequest request1, int count) throws IOException, InterruptedException {
         return searchIPR(request1, count, DEFAULT_INTERVAL);
     }
 
@@ -68,8 +67,8 @@ public class SearchAPI extends RestAPI {
      * @throws IOException
      * @throws InterruptedException
      */
-    public IssueResult searchIPR(IPRSearchRequest request1, int count, long timeIntervalMillis) throws IOException, InterruptedException {
-        return searchType(request1, IssueResult.class, count, timeIntervalMillis);
+    public IPRResult searchIPR(IPRSearchRequest request1, int count, long timeIntervalMillis) throws IOException, InterruptedException {
+        return searchType(request1, IPRResult.class, count, timeIntervalMillis);
     }
 
     /**

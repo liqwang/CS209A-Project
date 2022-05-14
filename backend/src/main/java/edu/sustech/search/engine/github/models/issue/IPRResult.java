@@ -12,7 +12,7 @@ import java.util.*;
         "incomplete_results",
         "items"
 })
-public class IssueResult implements AppendableResult, Iterable<Issue> {
+public class IPRResult implements AppendableResult, Iterable<Issue> {
     /**
      * (Required)
      */
@@ -88,7 +88,7 @@ public class IssueResult implements AppendableResult, Iterable<Issue> {
             return cnt;
         }
 
-        if (result1 instanceof IssueResult other) {
+        if (result1 instanceof IPRResult other) {
             for (Issue i : other.getItems()) {
                 issues.add(i);
             }

@@ -11,27 +11,19 @@ import java.time.format.DateTimeFormatter;
 public class IPRSearchRequest extends SearchRequest {
 
     public enum Restriction {
-        Name, Description, Readme
+        Title, Body, Comments
+    }
+
+    public enum Type {
+        PullRequest, Issue
     }
 
     public enum SearchBy {
-        Topic
-    }
-
-    public enum RepoOption {
-        Stars, Forks
+        Interactions, Reactions, Comments
     }
 
     public enum DateOption {
-        Created, Pushed
-    }
-
-    public enum Path {
-        Root
-    }
-
-    public enum ForkOption {
-        True, Only, False
+        Created, Updated, Closed, Merged
     }
 
     public enum Visibility {
@@ -46,8 +38,16 @@ public class IPRSearchRequest extends SearchRequest {
         Ascending, Descending
     }
 
-    public enum Issue {
-        GoodFirstIssues, HelpWantedIssues
+    public enum Ignored {
+        Label, Milestone, Assignee, Project
+    }
+
+    public enum Status {
+        Pending, Success, Failure
+    }
+
+    public enum ReviewType {
+        None, Required, Approved, ChangesRequested
     }
 
 
@@ -58,28 +58,32 @@ public class IPRSearchRequest extends SearchRequest {
     public static class RequestBuilder extends SearchRequest.RequestBuilder {
         private final StringBuilder queryBasicBuilder = new StringBuilder();
         private final StringBuilder queryRestriction = new StringBuilder();
+        private final StringBuilder queryTypeBuilder = new StringBuilder();
         private final StringBuilder queryByBuilder = new StringBuilder();
+        private final StringBuilder queryStatusBuilder = new StringBuilder();
 
         //I thought they can be simplified using the same builder.
+        private final StringBuilder qualifierReviewType = new StringBuilder();
         private final StringBuilder qualifierOwner = new StringBuilder();
         private final StringBuilder qualifierLang = new StringBuilder();
-        private final StringBuilder qualifierSize = new StringBuilder();
-        private final StringBuilder qualifierRepoOption = new StringBuilder();
         private final StringBuilder qualifierDateOption = new StringBuilder();
-        private final StringBuilder qualifierFollowerCount = new StringBuilder();
-        private final StringBuilder qualifierTopicCount = new StringBuilder();
-        private final StringBuilder qualifierLicense = new StringBuilder();
         private final StringBuilder qualifierVisibility = new StringBuilder();
-        private final StringBuilder qualifierMirror = new StringBuilder();
-        private final StringBuilder qualifierArchived = new StringBuilder();
-        private final StringBuilder qualifierIssueOption = new StringBuilder();
-        private final StringBuilder qualifierSponsor = new StringBuilder();
+        private final StringBuilder qualifierIgnored = new StringBuilder();
 
-        private ForkOption forkOption = ForkOption.False;
+        private Boolean isOpened;
+        private Boolean isDraft;
+        private Boolean isPRMerged;
+        private Boolean isRepoArchived;
+        private Boolean isConversationLocked;
+
         private Sort sort = Sort.BestMatch;
         private Order order = Order.Descending;
 
 
+        /**
+         * @param keyword <code>SHA</code> is allowed to search specific I/PR
+         * @return This builder
+         */
         public RequestBuilder addSearchKeyword(String keyword) {
             queryBasicBuilder.append(wrapIfRequired(keyword)).append(" ");
             return this;
@@ -89,8 +93,8 @@ public class IPRSearchRequest extends SearchRequest {
          * This will restrict your search to the restriction site applied.
          * <code>Path</code> means keyword contained in the full path.
          *
-         * @param restrictions restrictions
-         * @return this builder
+         * @param restrictions Restrictions
+         * @return This builder
          */
         public RequestBuilder addSearchRestriction(Restriction... restrictions) {
             if (restrictions.length != 0 && queryRestriction.length() != 0) {
@@ -101,11 +105,38 @@ public class IPRSearchRequest extends SearchRequest {
                     queryRestriction.append(',');
                 }
                 switch (r) {
-                    case Name -> queryRestriction.append("name");
-                    case Description -> queryRestriction.append("description");
-                    case Readme -> queryRestriction.append("readme");
+                    case Body -> queryRestriction.append("body");
+                    case Comments -> queryRestriction.append("comments");
+                    case Title -> queryRestriction.append("title");
                 }
             }
+            return this;
+        }
+
+        /**
+         * @param type Search type. If set to <code>null</code>, the type restriction will be cleared.
+         * @return This builder
+         */
+        public RequestBuilder setSearchType(Type type) {
+            queryTypeBuilder.delete(0, queryTypeBuilder.length());
+            if (type != null) {
+                queryTypeBuilder.append("type:").append(type == Type.PullRequest ? "pr" : "issue");
+            }
+            return this;
+        }
+
+        public RequestBuilder addReviewOption(ReviewType reviewType) {
+            qualifierReviewType.append("review:");
+            if (reviewType == ReviewType.ChangesRequested) {
+                qualifierReviewType.append("changes_requested");
+            } else {
+                qualifierReviewType.append(reviewType.toString().toLowerCase());
+            }
+            return this;
+        }
+
+        public RequestBuilder addStatus(Status status) {
+            queryStatusBuilder.append("status:").append(status.toString().toLowerCase()).append(" ");
             return this;
         }
 
@@ -133,44 +164,15 @@ public class IPRSearchRequest extends SearchRequest {
         }
 
         /**
-         * @param size     File size in Kilobyte
-         * @param modifier can be one of <code>>,>=,<=,<</code>, or null
-         * @return This builder.
-         */
-        public RequestBuilder addSizeOption(String size, String modifier) {
-            qualifierSize.append("size:").append(modifier == null ? "" : modifier).append(size).append(" ");
-            return this;
-        }
-
-        /**
          * If no restriction is applied before, or you have used basic search before, this operation may override keywords before.
          *
-         * @param field
-         * @param keywords
+         * @param field    field
+         * @param number   number
+         * @param modifier can be one of <code>>,>=,<=,<,null</code>
          * @return
          */
-        public RequestBuilder addSearchField(SearchBy field, String... keywords) {
-            for (String s : keywords) {
-                switch (field) {
-                    case Topic -> queryByBuilder.append("topic:");
-                }
-                queryByBuilder.append(wrapIfRequired(s)).append(" ");
-            }
-            return this;
-        }
-
-        /**
-         * @param option   option, can be one of <code>forks, stars</code>
-         * @param amount   amount
-         * @param modifier can be one of <code>>,>=,<=,<</code>. If not specified, no modifier will be used.
-         * @return
-         */
-        public RequestBuilder addRepoOption(RepoOption option, String amount, String modifier) {
-            switch (option) {
-                case Stars -> qualifierRepoOption.append("stars:");
-                case Forks -> qualifierRepoOption.append("forks:");
-            }
-            qualifierRepoOption.append(modifier == null ? "" : modifier).append(amount).append(" ");
+        public RequestBuilder addSearchField(SearchBy field, int number, String modifier) {
+            queryByBuilder.append(field.toString().toLowerCase()).append(":").append(modifier == null ? "" : modifier).append(number).append(" ");
             return this;
         }
 
@@ -182,7 +184,7 @@ public class IPRSearchRequest extends SearchRequest {
          * @return This builder.
          */
         public RequestBuilder addDateOption(DateOption option, String date, String modifier) {
-            qualifierDateOption.append(option.toString().toLowerCase()).append("created:").append(modifier == null ? "" : modifier).append(date).append(" ");
+            qualifierDateOption.append(option.toString().toLowerCase()).append(":").append(modifier == null ? "" : modifier).append(date).append(" ");
             return this;
         }
 
@@ -198,73 +200,59 @@ public class IPRSearchRequest extends SearchRequest {
             return this;
         }
 
-        public RequestBuilder addFollowerCount(long count) {
-            qualifierFollowerCount.append("followers:").append(count).append(" ");
-            return this;
-        }
-
-        public RequestBuilder addFollowerCount(long count, String modifier) {
-            qualifierFollowerCount.append("followers:").append(modifier).append(count).append(" ");
-            return this;
-        }
-
-        public RequestBuilder setForkOption(ForkOption option) {
-            this.forkOption = option;
-            return this;
-        }
-
-        /**
-         * @param count    File count in Kilobyte
-         * @param modifier can be one of <code>>,>=,<=,<</code>, or null
-         * @return This builder.
-         */
-        public RequestBuilder addTopicCount(int count, String modifier) {
-            qualifierSize.append("topics:").append(modifier == null ? "" : modifier).append(count).append(" ");
-            return this;
-        }
-
-        public RequestBuilder addLicenseOption(String licenseName) {
-            qualifierLicense.append("license:").append(wrapIfRequired(licenseName)).append(" ");
-            return this;
-        }
-
         public RequestBuilder setRepoVisibility(Visibility visibility) {
             qualifierVisibility.delete(0, qualifierVisibility.length());
             qualifierVisibility.append("is:").append(visibility.toString().toLowerCase());
             return this;
         }
 
-        public RequestBuilder setIsRepoMirror(boolean isRepoMirror) {
-            qualifierMirror.delete(0, qualifierMirror.length());
-            qualifierMirror.append("mirror:").append(isRepoMirror ? "true" : "false");
-            return this;
-        }
-
-        public RequestBuilder setIsRepoArchived(boolean isRepoArchived) {
-            qualifierArchived.delete(0, qualifierArchived.length());
-            qualifierArchived.append("archived:").append(isRepoArchived ? "true" : "false");
+        /**
+         * @param isOpened If set to <code>null</code>, no restriction will be applied.
+         * @return This builder.
+         */
+        public RequestBuilder setState(Boolean isOpened) {
+            this.isOpened = isOpened;
             return this;
         }
 
         /**
-         * @param issue    option
-         * @param count    Date
-         * @param modifier can be one of <code>>,>=,<=,<,null</code>
+         * @param isDraft If set to <code>null</code>, no restriction will be applied.
          * @return This builder.
          */
-        public RequestBuilder addIssueOption(Issue issue, int count, String modifier) {
-            qualifierIssueOption.append(issue == Issue.GoodFirstIssues ? "good-first-issues" : "help-wanted-issues")
-                    .append(":").append(modifier == null ? "" : modifier).append(count).append(" ");
+        public RequestBuilder setDraft(Boolean isDraft) {
+            this.isDraft = isDraft;
             return this;
         }
 
-        public RequestBuilder setSponsorable() {
-            qualifierSponsor.append("is:sponsorable").append(" ");
+        /**
+         * @param isPRMerged If set to <code>null</code>, no restriction will be applied.
+         * @return This builder.
+         */
+        public RequestBuilder setIsPRMerged(Boolean isPRMerged) {
+            this.isPRMerged = isPRMerged;
             return this;
         }
 
-        public RequestBuilder setHasFundingFile() {
-            qualifierSponsor.append("has:funding-file").append(" ");
+        /**
+         * @param isRepoArchived If set to <code>null</code>, no restriction will be applied.
+         * @return This builder.
+         */
+        public RequestBuilder setIsRepoArchived(Boolean isRepoArchived) {
+            this.isRepoArchived = isRepoArchived;
+            return this;
+        }
+
+        public RequestBuilder addIgnored(Ignored ignoredObject) {
+            qualifierIgnored.append("no:" + ignoredObject.toString().toLowerCase());
+            return this;
+        }
+
+        /**
+         * @param isLocked If set to <code>null</code>, no restriction will be applied.
+         * @return This builder.
+         */
+        public RequestBuilder setIsConversationLocked(Boolean isLocked) {
+            this.isConversationLocked = isLocked;
             return this;
         }
 
@@ -284,20 +272,19 @@ public class IPRSearchRequest extends SearchRequest {
             queryBuilder.append(queryBasicBuilder).append(" ")
                     .append(queryRestriction).append(" ")
                     .append(queryByBuilder).append(" ")
+                    .append(queryTypeBuilder).append(" ")
+                    .append(queryStatusBuilder).append(" ")
+                    .append(qualifierReviewType).append(" ")
                     .append(qualifierOwner).append(" ")
                     .append(qualifierLang).append(" ")
-                    .append(qualifierSize).append(" ")
-                    .append(qualifierRepoOption).append(" ")
                     .append(qualifierDateOption).append(" ")
-                    .append(qualifierFollowerCount).append(" ")
-                    .append(qualifierTopicCount).append(" ")
-                    .append(qualifierLicense).append(" ")
-                    .append(forkOption == ForkOption.False ? "" : "fork:" + forkOption.toString()).append(" ")
                     .append(qualifierVisibility).append(" ")
-                    .append(qualifierMirror).append(" ")
-                    .append(qualifierArchived).append(" ")
-                    .append(qualifierIssueOption).append(" ")
-                    .append(qualifierSponsor);
+                    .append(qualifierIgnored).append(" ")
+                    .append(isOpened == null ? "" : ("state:" + (isOpened ? "open" : "closed"))).append(" ")
+                    .append(isDraft == null ? "" : ("draft:" + (isDraft ? "true" : "false"))).append(" ")
+                    .append(isPRMerged == null ? "" : ("is:" + (isPRMerged ? "merged" : "unmerged"))).append(" ")
+                    .append(isRepoArchived == null ? "" : ("archived:" + (isRepoArchived ? "true" : "false"))).append(" ")
+                    .append(isConversationLocked == null ? "" : ("is:" + (isConversationLocked ? "locked" : "unlocked")));
 
             IPRSearchRequest req = new IPRSearchRequest();
             StringBuilder reqBuilder = req.getRequestBuilder();

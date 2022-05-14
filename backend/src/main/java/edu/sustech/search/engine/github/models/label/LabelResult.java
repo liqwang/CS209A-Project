@@ -3,8 +3,6 @@ package edu.sustech.search.engine.github.models.label;
 
 import com.fasterxml.jackson.annotation.*;
 import edu.sustech.search.engine.github.models.AppendableResult;
-import edu.sustech.search.engine.github.models.issue.Issue;
-import edu.sustech.search.engine.github.models.issue.IssueResult;
 
 import javax.annotation.processing.Generated;
 import java.util.*;
