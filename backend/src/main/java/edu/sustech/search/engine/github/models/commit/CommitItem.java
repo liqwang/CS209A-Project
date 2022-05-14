@@ -15,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import edu.sustech.search.engine.github.models.Parent;
+import edu.sustech.search.engine.github.models.TextMatch;
+import edu.sustech.search.engine.github.models.repository.Repository;
 
 
 /**

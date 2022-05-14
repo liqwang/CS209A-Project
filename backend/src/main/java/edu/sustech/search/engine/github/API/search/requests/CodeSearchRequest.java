@@ -40,7 +40,7 @@ public class CodeSearchRequest extends SearchRequest {
         return new RequestBuilder();
     }
 
-    public static class RequestBuilder {
+    public static class RequestBuilder extends SearchRequest.RequestBuilder {
         private final StringBuilder queryBasicBuilder = new StringBuilder();
         private final StringBuilder queryRestriction = new StringBuilder();
         private final StringBuilder queryByBuilder = new StringBuilder();

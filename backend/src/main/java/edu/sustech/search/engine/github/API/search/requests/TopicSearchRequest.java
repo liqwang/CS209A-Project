@@ -18,7 +18,7 @@ public class TopicSearchRequest extends SearchRequest {
         return new RequestBuilder();
     }
 
-    public static class RequestBuilder {
+    public static class RequestBuilder extends SearchRequest.RequestBuilder {
         private final StringBuilder queryBasicBuilder = new StringBuilder();
 
         private final StringBuilder qualifierCurated = new StringBuilder();

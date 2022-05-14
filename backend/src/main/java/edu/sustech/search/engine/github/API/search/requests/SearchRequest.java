@@ -12,6 +12,17 @@ public class SearchRequest {
         per_page = 100;
     }
 
+    /**
+     * Use raw query to construct
+     *
+     * @param query Query string without <code>per_page</code> and <code>page</code>
+     */
+    @Deprecated
+    SearchRequest(String query) {
+        this();
+        requestBuilder.append(query);
+    }
+
     public SearchRequest(SearchRequest other) {
         requestBuilder = new StringBuilder(other.requestBuilder.toString());
         page = other.page;
@@ -50,6 +61,7 @@ public class SearchRequest {
 
     /**
      * The default value is <code>100</code>
+     *
      * @return results per page
      */
     public int getResultPerPage() {
@@ -83,6 +95,23 @@ public class SearchRequest {
     @Override
     public String toString() {
         return "[" + this.getClass().getSimpleName() + "]:" + requestBuilder.toString().replace(' ', '+');
+    }
+
+    public static RequestBuilder newBuilder() {
+        return new RequestBuilder();
+    }
+
+    public static class RequestBuilder {
+        private String query;
+
+        public RequestBuilder setQuery(String query) {
+            this.query = query;
+            return this;
+        }
+
+        public SearchRequest build() {
+            return new SearchRequest(query);
+        }
     }
 
 
