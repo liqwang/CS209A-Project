@@ -31,7 +31,7 @@ public class IPRSearchRequest extends SearchRequest {
     }
 
     public enum Sort {
-        BestMatch, Stars, Forks, HelpWantedIssues, Updated
+        BestMatch, Comments, Reactions, ReactionsPlusOne, ReactionsMinusOne, ReactionsSmile, ReactionsThinkingFace, ReactionsHeart, ReactionsTada, Interactions, Created, Updated
     }
 
     public enum Order {
@@ -81,7 +81,7 @@ public class IPRSearchRequest extends SearchRequest {
 
 
         /**
-         * @param keyword <code>SHA</code> is allowed to search specific I/PR
+         * @param keyword Keyword, or <code>SHA</code> which is allowed to search specific I/PR
          * @return This builder
          */
         public RequestBuilder addSearchKeyword(String keyword) {
@@ -295,10 +295,13 @@ public class IPRSearchRequest extends SearchRequest {
             if (sort != Sort.BestMatch) {
                 reqBuilder.append("&sort=");
                 switch (sort) {
-                    case Stars -> reqBuilder.append("stars");
-                    case Forks -> reqBuilder.append("forks");
-                    case HelpWantedIssues -> reqBuilder.append("help-wanted-issues");
-                    case Updated -> reqBuilder.append("updated");
+                    case ReactionsPlusOne -> reqBuilder.append("reactions-+1");
+                    case ReactionsMinusOne -> reqBuilder.append("reactions--1");
+                    case ReactionsHeart -> reqBuilder.append("reactions-heart");
+                    case ReactionsSmile -> reqBuilder.append("reactions-smile");
+                    case ReactionsTada -> reqBuilder.append("reactions-tada");
+                    case ReactionsThinkingFace -> reqBuilder.append("reactions-thinking-face");
+                    default -> reqBuilder.append(sort.toString().toLowerCase());
                 }
             }
             reqBuilder.append(order == Order.Ascending ? "&order=asc" : "");

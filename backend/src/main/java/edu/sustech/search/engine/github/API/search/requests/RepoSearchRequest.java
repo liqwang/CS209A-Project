@@ -97,11 +97,7 @@ public class RepoSearchRequest extends SearchRequest {
                 if (queryRestriction.length() > ("in:".length())) {
                     queryRestriction.append(',');
                 }
-                switch (r) {
-                    case Name -> queryRestriction.append("name");
-                    case Description -> queryRestriction.append("description");
-                    case Readme -> queryRestriction.append("readme");
-                }
+                queryRestriction.append(r.toString().toLowerCase());
             }
             return this;
         }
@@ -148,10 +144,7 @@ public class RepoSearchRequest extends SearchRequest {
          */
         public RequestBuilder addSearchField(SearchBy field, String... keywords) {
             for (String s : keywords) {
-                switch (field) {
-                    case Topic -> queryByBuilder.append("topic:");
-                }
-                queryByBuilder.append(wrapIfRequired(s)).append(" ");
+                queryByBuilder.append(field.toString().toLowerCase()).append(":").append(wrapIfRequired(s)).append(" ");
             }
             return this;
         }
@@ -163,11 +156,7 @@ public class RepoSearchRequest extends SearchRequest {
          * @return
          */
         public RequestBuilder addRepoOption(RepoOption option, String amount, String modifier) {
-            switch (option) {
-                case Stars -> qualifierRepoOption.append("stars:");
-                case Forks -> qualifierRepoOption.append("forks:");
-            }
-            qualifierRepoOption.append(modifier == null ? "" : modifier).append(amount).append(" ");
+            qualifierRepoOption.append(option).append(":").append(modifier == null ? "" : modifier).append(amount).append(" ");
             return this;
         }
 
