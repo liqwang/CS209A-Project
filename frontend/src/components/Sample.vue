@@ -1,7 +1,10 @@
 <template>
   <el-card>
-    <p>{{ message }}</p>
-    <button type="button" v-on:click="testResult">Click Nothing.</button>
+    <p>Data status:
+      <span>{{ message }}</span>
+    </p>
+    <p>Please refresh if you need to reset the dataObject</p>
+    <button type="button" v-on:click="testResult">Click to update chart data from localhost:8443.</button>
     <button type="button" v-on:click="logData">Log the data.</button>
     <apexchart width="500" type="bar" :options="dataObject.options" :series="dataObject.series"></apexchart>
   </el-card>
@@ -12,6 +15,7 @@ export default {
   name: 'Sample',
   data() {
     return {
+      message: 'Not initialized. Raw data used.',
       dataObject: {
         options: {
           chart: {
@@ -42,16 +46,17 @@ export default {
     ,
     testResult() {
       let component = this
-      this.message = 'sd'
+      this.message = 'Await synchronization'
       this.$axios
         .post('/sample')
         .then(response => {
-          component.message = 'what the hell'
+          component.message = 'Response received.'
           console.log(response.data)
           if (response.status === 200) {
             // // this.$router.replace({path: '/helloworld'})
             // component.message = '??'
             component.dataObject = response.data
+            component.message = 'Data updated from localhost:8443'
           }
           console.log(response.data.code)
         })
