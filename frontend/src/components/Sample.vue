@@ -61,7 +61,7 @@ export default {
           console.log(response.data.code)
         })
         .catch(failResponse => {
-          component.message = 'sorry!'
+          component.message = 'Failed to get the response. Check whether the backend server has been initialized.'
         })
     }
   }
