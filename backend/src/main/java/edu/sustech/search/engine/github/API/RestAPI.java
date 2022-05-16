@@ -2,6 +2,7 @@ package edu.sustech.search.engine.github.API;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -23,19 +24,7 @@ public class RestAPI {
     private static final ObjectMapper staticObjectMapper = new ObjectMapper();
 
     static {
-        staticObjectMapper.addHandler(new DeserializationProblemHandler() {
-            @Override
-            public Object handleWeirdStringValue(DeserializationContext ctxt, Class<?> targetType, String valueToConvert, String failureMsg) throws IOException {
-                logger.error("Incompatible result: On context:" + ctxt + ", valueToConvert=" + valueToConvert);
-                return null;
-            }
-
-            @Override
-            public Object handleWeirdNumberValue(DeserializationContext ctxt, Class<?> targetType, Number valueToConvert, String failureMsg) throws IOException {
-                logger.error("Incompatible result: On context:" + ctxt + ", valueToConvert=" + valueToConvert);
-                return null;
-            }
-        });
+        staticObjectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     }
 
     /**
@@ -50,19 +39,7 @@ public class RestAPI {
     public RestAPI(String OAuthToken) {
         this.token = OAuthToken;
         objectMapper = new ObjectMapper();
-        objectMapper.addHandler(new DeserializationProblemHandler() {
-            @Override
-            public Object handleWeirdStringValue(DeserializationContext ctxt, Class<?> targetType, String valueToConvert, String failureMsg) throws IOException {
-                logger.error("Incompatible result: On context:" + ctxt + ", valueToConvert=" + valueToConvert);
-                return null;
-            }
-
-            @Override
-            public Object handleWeirdNumberValue(DeserializationContext ctxt, Class<?> targetType, Number valueToConvert, String failureMsg) throws IOException {
-                logger.error("Incompatible result: On context:" + ctxt + ", valueToConvert=" + valueToConvert);
-                return null;
-            }
-        });
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     }
 
     public RestAPI() {
