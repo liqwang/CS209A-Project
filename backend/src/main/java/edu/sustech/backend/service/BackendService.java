@@ -51,6 +51,7 @@ public class BackendService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         if (data != null) {
             HashMap<String, Integer> dependencyMap = new HashMap<>();
 
@@ -104,6 +105,7 @@ public class BackendService {
 
         for (CodeItem item : result1) {
             Repository r = item.getRepository();
+
             List<Dependency> ls = null;
             try {
                 ls = Analyzer.parseDependency(gitHubAPI.fileAPI.getFileRaw(item.getRawFileURI()));

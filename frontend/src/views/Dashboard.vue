@@ -625,17 +625,16 @@ export default {
   inject: ['axios']
   ,
   methods: {
+    //Get the response from backend
     updateTopUsedDependency() {
       let component = this
-      this.axios
+      this.axios //Automatically
           .get('/top_used_dependencies')
           .then(successResponse => {
             console.log(successResponse.data)
             if (successResponse.status === 200) {
               //Modify data there
-              // console.log(component.topUsedDependencyData.series[0].data.push(successResponse.data))
               component.topUsedDependencyData.series[0].data = successResponse.data
-              // component.topUsedDependencyData.series[0].push(successResponse.data)
               console.log(component.topUsedDependencyData)
             }
           })
@@ -645,8 +644,8 @@ export default {
           })
     }
   },
-  // mounted: function () {
-  //   this.updateTopUsedDependency()
-  // },
+  mounted: function () {
+    this.updateTopUsedDependency()
+  },
 };
 </script>
