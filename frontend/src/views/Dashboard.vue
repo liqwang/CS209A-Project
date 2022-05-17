@@ -185,6 +185,7 @@
       <!-- end card -->
     </div>
     <!-- end wrapper card -->
+
     <div class="mt-2 lg:flex block lg:gap-2">
       <div
           class="bg-white dark:bg-gray-800 p-5 w-full rounded-md box-border shadow"
@@ -215,15 +216,13 @@
         <apexchart
             width="100%"
             height="380"
-            type="area"
+            type="bar"
             :options="optionsArea"
-            :series="seriesArea"
+            :series="topUsedDependencyData.series"
             :sparkline="{
             enabled: true,
           }"
         ></apexchart>
-        <br/>
-        <hr/>
         <div class="wrapper-button mt-3">
           <select
               name=""
@@ -232,9 +231,17 @@
           >
             <option value="">Last 7 years</option>
           </select>
+          <button
+              class="uppercase float-right -mt-7 border-b border-green-600 text-green-600"
+              v-on:click="updateTopUsedDependency"
+          >
+            Refresh
+          </button>
         </div>
       </div>
     </div>
+
+
     <div class="mt-2 lg:flex block lg:gap-2">
       <div
           class="mt-2 bg-white dark:bg-gray-800 p-5 w-full rounded-md box-border shadow"
@@ -433,21 +440,33 @@ export default {
       // for more guide apexchart.js
       // https://apexcharts.com/docs/chart-types/line-chart/
 
+      topUsedDependencyData: {
+        series: [{
+          data: [{
+            x: 'category A',
+            y: 10
+          }, {
+            x: 'category B',
+            y: 18
+          }, {
+            x: 'category C',
+            y: 13
+          }]
+        }]
+      },
       // chart data area
       optionsArea: {
-        xaxis: {
-          categories: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
-        },
         fontFamily: "Segoe UI, sans-serif",
         stroke: {
           curve: "straight",
         },
-
+        plotOptions: {
+          bar: {
+            horizontal: true
+          }
+        },
         markers: {
           size: 0,
-        },
-        yaxis: {
-          show: false,
         },
         fill: {
           type: "gradient",
@@ -603,7 +622,31 @@ export default {
   components: {
     Icon,
   },
-  mounted() {
+  inject: ['axios']
+  ,
+  methods: {
+    updateTopUsedDependency() {
+      let component = this
+      this.axios
+          .get('/top_used_dependencies')
+          .then(successResponse => {
+            console.log(successResponse.data)
+            if (successResponse.status === 200) {
+              //Modify data there
+              // console.log(component.topUsedDependencyData.series[0].data.push(successResponse.data))
+              component.topUsedDependencyData.series[0].data = successResponse.data
+              // component.topUsedDependencyData.series[0].push(successResponse.data)
+              console.log(component.topUsedDependencyData)
+            }
+          })
+          .catch(failResponse => {
+            console.log('Error on retrieving data.')
+            console.log(failResponse);
+          })
+    }
   },
+  // mounted: function () {
+  //   this.updateTopUsedDependency()
+  // },
 };
 </script>

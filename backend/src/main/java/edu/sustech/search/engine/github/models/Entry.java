@@ -1,8 +1,20 @@
 package edu.sustech.search.engine.github.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Entry<U, T> {
+    @JsonProperty("key")
     private U key;
+
+    @JsonProperty("value")
     private T value;
+
+    /**
+     * This will only be called by JsonParsers/JsonWriters
+     */
+    @Deprecated
+    public Entry(){
+    }
 
     public Entry(U key, T value){
         this.key = key;

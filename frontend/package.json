@@ -19,6 +19,7 @@
   "dependencies": {
     "apexcharts": "^3.34.0",
     "autoprefixer": "^10",
+    "axios": "^0.27.2",
     "chart.js": "^3.7.1",
     "core-js": "^3.8.3",
     "flowbite": "^1.4.1",
@@ -30,6 +31,7 @@
     "v-tables-3": "^0.4.7",
     "vue": "^3.2.13",
     "vue-chartjs": "^4.0.2",
+    "vue-cli": "^2.9.6",
     "vue-perfect-scrollbar": "^0.2.1",
     "vue-router": "^4.0.3",
     "vue3-apexcharts": "^1.4.1",

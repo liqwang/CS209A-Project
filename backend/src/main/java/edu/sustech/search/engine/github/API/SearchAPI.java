@@ -305,7 +305,6 @@ public class SearchAPI extends RestAPI {
                     cnt += incr;
                 } else {
                     printRateLimit(response);
-                    Thread.sleep(500);
                 }
             }
 

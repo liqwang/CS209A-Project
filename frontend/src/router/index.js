@@ -11,6 +11,8 @@ import Vbutton from "../views/components/button.vue";
 import Vcard from "../views/components/card.vue";
 var appname = " - CS209A Project Test Page";
 
+
+
 const routes = [
   // Routes
   {
@@ -62,7 +64,15 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-
+  proxyTable: {
+    '/api': {
+      target: 'http://localhost:8443',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api': ''
+      }
+    }
+  },
   linkExactActiveClass: "exact-active",
 });
 

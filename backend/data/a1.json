@@ -1,0 +1,31 @@
+[ {
+  "x" : "cxf-rt-frontend-jaxws",
+  "y" : 2
+}, {
+  "x" : "cxf-rt-databinding-jaxb",
+  "y" : 2
+}, {
+  "x" : "cxf-rt-transports-http",
+  "y" : 2
+}, {
+  "x" : "org.springframework.beans",
+  "y" : 1
+}, {
+  "x" : "cxf-tools-wsdlto-databinding-jaxb",
+  "y" : 1
+}, {
+  "x" : "initiator",
+  "y" : 1
+}, {
+  "x" : "org.springframework.test",
+  "y" : 1
+}, {
+  "x" : "binding",
+  "y" : 1
+}, {
+  "x" : "org-freemarker",
+  "y" : 1
+}, {
+  "x" : "com-google-protobuf",
+  "y" : 1
+} ]
