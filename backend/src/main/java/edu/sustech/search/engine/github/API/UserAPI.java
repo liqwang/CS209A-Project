@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import edu.sustech.search.engine.github.models.Entry;
 import edu.sustech.search.engine.github.models.repository.Repository;
 import edu.sustech.search.engine.github.models.user.User;
+import edu.sustech.search.engine.github.transformer.Transformer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,11 +33,11 @@ public class UserAPI extends RestAPI {
     }
 
     public List<Entry<Repository, Date>> getStarredRepo(String username) throws IOException, InterruptedException {
-        return getStarredRepo(URI.create("https://api.github.com/users/" + username + "/starred"));
+        return getStarredRepo(URI.create(Transformer.preTransformURI("https://api.github.com/users/" + username + "/starred")));
     }
 
     public List<Entry<Repository, Date>> getStarredRepo(User user) throws IOException, InterruptedException {
-        return getStarredRepo(URI.create(user.getStarredUrl()));
+        return getStarredRepo(URI.create(Transformer.preTransformURI(user.getStarredUrl())));
     }
 
     public List<Entry<Repository, Date>> getStarredRepo(URI uri) throws IOException, InterruptedException {
@@ -81,7 +82,7 @@ public class UserAPI extends RestAPI {
 
 
     public HttpResponse<String> sendUserRequest(String username) throws IOException, InterruptedException {
-        return sendUserRequestDirect(URI.create("https://api.github.com/users/" + username));
+        return sendUserRequestDirect(URI.create(Transformer.preTransformURI("https://api.github.com/users/" + username)));
     }
 
     public HttpResponse<String> sendUserRequestDirect(URI uri) throws IOException, InterruptedException {

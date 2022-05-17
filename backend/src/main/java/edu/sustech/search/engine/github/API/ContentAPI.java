@@ -3,6 +3,7 @@ package edu.sustech.search.engine.github.API;
 import edu.sustech.search.engine.github.models.content.ContentDirectory;
 import edu.sustech.search.engine.github.models.content.ContentFile;
 import edu.sustech.search.engine.github.models.repository.Repository;
+import edu.sustech.search.engine.github.transformer.Transformer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +34,7 @@ public class ContentAPI extends edu.sustech.search.engine.github.API.RestAPI {
     }
 
     public String getContentRaw(Repository repo, String path) throws IOException, InterruptedException {
-        return getContentRaw(URI.create("https://api.github.com/repos/" + unwrapSlashes(repo.getFullName()) + "/contents" + (path.charAt(0) != '/' ? '/' + path : path)));
+        return getContentRaw(URI.create(Transformer.preTransformURI("https://api.github.com/repos/" + unwrapSlashes(repo.getFullName()) + "/contents" + (path.charAt(0) != '/' ? '/' + path : path))));
 
     }
 

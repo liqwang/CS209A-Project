@@ -9,6 +9,7 @@ import edu.sustech.search.engine.github.models.topic.TopicResult;
 import edu.sustech.search.engine.github.models.user.UserResult;
 import edu.sustech.search.engine.github.models.AppendableResult;
 import edu.sustech.search.engine.github.models.code.CodeResult;
+import edu.sustech.search.engine.github.transformer.Transformer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -352,9 +353,9 @@ public class SearchAPI extends RestAPI {
 
     public HttpResponse<String> search(SearchRequest request) throws IOException, InterruptedException {
         if (isProvidingTextMatchEnabled) {
-            return getHttpResponse(URI.create("https://api.github.com/search/" + request.getRequestString()), acceptSchema);
+            return getHttpResponse(URI.create(Transformer.preTransformURI("https://api.github.com/search/" + request.getRequestString())), acceptSchema);
         } else {
-            return getHttpResponse(URI.create("https://api.github.com/search/" + request.getRequestString()));
+            return getHttpResponse(URI.create(Transformer.preTransformURI("https://api.github.com/search/" + request.getRequestString())));
         }
     }
 

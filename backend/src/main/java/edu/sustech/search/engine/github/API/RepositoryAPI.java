@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import edu.sustech.search.engine.github.models.Entry;
 import edu.sustech.search.engine.github.models.repository.Repository;
 import edu.sustech.search.engine.github.models.user.User;
+import edu.sustech.search.engine.github.transformer.Transformer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,7 +50,7 @@ public class RepositoryAPI extends RestAPI {
     }
 
     public List<Entry<User, Date>> getStarGazers(String repoFullName) throws IOException, InterruptedException {
-        return getStarGazers("https://api.github.com/repos/" + repoFullName + "/stargazers");
+        return getStarGazers(URI.create(Transformer.preTransformURI("https://api.github.com/repos/" + repoFullName + "/stargazers")));
     }
 
     public List<Entry<User, Date>> getStarGazers(Repository r) throws IOException, InterruptedException {
@@ -101,7 +102,7 @@ public class RepositoryAPI extends RestAPI {
     }
 
     public HttpResponse<String> getRepositoryInfo(String repoFullName) throws IOException, InterruptedException {
-        return getRepositoryInfoDirect(URI.create("https://api.github.com/repos/" + repoFullName));
+        return getRepositoryInfoDirect(URI.create(Transformer.preTransformURI("https://api.github.com/repos/" + repoFullName)));
     }
 
     public HttpResponse<String> getRepositoryInfoDirect(URI uri) throws IOException, InterruptedException {
