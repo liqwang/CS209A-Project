@@ -232,11 +232,6 @@
           >
             <option value="">Last 7 years</option>
           </select>
-          <button
-              class="uppercase float-right -mt-7 border-b border-red-600 text-red-600"
-          >
-            Sales Report
-          </button>
         </div>
       </div>
     </div>
@@ -276,11 +271,6 @@
             >
               <option value="">Last 7 days</option>
             </select>
-            <button
-                class="uppercase float-right -mt-7 border-b border-red-600 text-red-600"
-            >
-              Product Report
-            </button>
           </div>
         </div>
       </div>
@@ -317,11 +307,6 @@
             >
               <option value="">Last 7 days</option>
             </select>
-            <button
-                class="uppercase float-right -mt-7 border-b border-red-600 text-red-600"
-            >
-              Vistor Report
-            </button>
           </div>
         </div>
       </div>
@@ -353,11 +338,6 @@
               <option value="">Last 7 years</option>
             </select>
 
-            <button
-                class="uppercase float-right -mt-7 border-b border-red-600 text-red-600"
-            >
-              User Report
-            </button>
           </div>
         </div>
       </div>
