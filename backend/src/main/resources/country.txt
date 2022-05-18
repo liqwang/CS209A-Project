@@ -1,0 +1,474 @@
+China
+PKU
+THU
+Heilongjiang
+Harbin
+Jilin
+Changchun
+Liaoning
+Shenyang
+Inner Mongolia
+Hohhot
+Tianjin
+Xinjiang
+Urumqi
+Hebei
+Shijiazhuang
+Ningxia
+Yinchuan
+Shanxi
+Taiyuan
+Shaanxi
+Xi'an
+Shanghai
+Beijing
+Shandong
+Jinan
+Qingdao
+Henan
+Zhengzhou
+Gansu
+Lanzhou
+Qinghai
+Xining
+Tibet
+Lhasa
+Sichuan
+Chengdu
+Chongqing
+Anhui
+Hefei
+Jiangsu
+Nanjing
+Suzhou
+Wuxi
+Nantong
+Hubei
+Wuhan
+Zhejiang
+Hangzhou
+Ningbo
+Jiangxi
+Nanchang
+Hunan
+Changsha
+Fujian
+Fuzhou
+Xiamen
+Guizhou
+Guiyang
+Yunnan
+Kunming
+Guangxi
+Nanning
+Guangdong
+Guangzhou
+Shenzhen
+Huizhou
+Hainan
+Haikou
+Hong Kong
+Hongkong
+Macao
+Taiwan
+Taipei
+Taipeh
+
+United States
+Stanford
+MIT
+CMU
+UCB
+UCI
+UCSB
+San Francisco
+Los Angeles
+Chicago
+Houston
+Philadelphia
+Detroit
+Boston
+Pittsburgh
+Atlanta
+Dallas
+San Diego
+Jacksonville
+Miami
+Seattle
+Phoenix
+San Antonio
+Las Vegas
+Memphis
+Cleveland
+Alabama
+Alaska
+Arizona
+Arkansas
+California
+Colorado
+Connecticut
+Delaware
+Florida
+Georgia
+Hawaii
+Idaho
+Illinois
+Indiana
+Iowa
+Kansas
+Kentucky
+Louisiana
+Maine
+Maryland
+Massachusetts
+Michigan
+Minnesota
+Mississippi
+Missouri
+Montana
+Nebraska
+Nevada
+New Hampshire
+New Jersey
+New Mexico
+New York
+North Carolina
+North Dakota
+Ohio
+Oklahoma
+Oregon
+Pennsylvania
+Rhode Island
+South Carolina
+South Dakota
+Tennessee
+Texas
+Utah
+Vermont
+Virginia
+Washington
+West Virginia
+Wisconsin
+Wyoming
+
+Japan
+Tokyo
+Kyoto
+Osaka
+Nagoya
+Yokohama
+Okinawa
+Kobe
+Sapporo
+Fukuoka
+
+Singapore
+
+Philippines
+Manila
+
+South Korea
+Seoul
+
+Australia
+New South Wales
+Sydney
+Victoria
+Melbourne
+Queensland
+Brisbane
+
+Russia
+Stalingrad
+Moscow
+Vladivostok
+St. Petersburg
+
+Mongolia
+
+North Korea
+
+India
+Mumbai
+New Delhi
+Calcutta
+Bangalore
+
+Myanmar
+Naypyitaw
+Nay Pyi Taw
+Nay pyi taw
+
+Thailand
+Bangkok
+
+Indonesia
+
+New Zealand
+Wellington
+
+Canada
+Ottawa
+Toronto
+Vancouver
+Hamilton
+Montreal
+Windsor
+British Columbia
+Victoria
+Alberta
+Edmonton
+Calgary
+Saskatchewan
+Regina
+Saskatoon
+Manitoba
+Brandon City
+Ontario
+
+Mexico
+Ekatipe
+Puebla
+Guadalajara
+Ciudad Juarez
+Tijuana
+Culiacan
+
+Argentina
+Buenos Aires
+Rosario
+Ushuaia
+
+Brazil
+Brasilia
+Sao Paulo
+Rio de Janeiro
+Salvador
+
+Peru
+Lima
+
+Saudi
+KAUST
+Saudi Jeddah
+
+United Arab Emirates
+Dubai
+
+Kazakhstan
+
+Iran
+Tehran
+
+Turkey
+Istanbul
+Ankara
+
+South Africa
+Johannesburg
+Durban
+Cape Town
+
+Ukraine
+Kyiv
+Kharkiv
+Lviv
+Vinnitsa
+Warren
+
+Finland
+Helsinki
+Espoo
+Tampere
+Turku
+
+Sweden
+Stockholm
+Gothenburg
+Malmo
+Uppsala
+
+Norway
+Oslo
+Akershus
+East Fall
+Hedmark
+
+Poland
+Warsaw
+Gdansk
+
+Egypt
+Cairo
+Alexander
+Ismailia
+
+United Kingdom
+UK
+U.K
+U.K.
+Britain
+England
+Scotland
+Wales
+Northern Ireland
+London
+Edinburgh
+Cardiff
+Belfast
+Birmingham
+Oxford
+Cambridge
+
+Ireland
+Dublin
+
+Portugal
+Lisbon
+
+Spain
+Madrid
+Barcelona
+Granada
+Seville
+Valencia
+San Sebastian
+Cordoba
+Toledo
+Santiago de Compostela
+
+Italy
+Rome
+Milan
+Naples
+Turin
+Palermo
+Genoa
+Bologna
+Firenze
+Venice
+Bari
+Catania
+
+France
+Paris
+Marseille
+Lyon
+Toulouse
+Nice
+Nantes
+Strasbourg
+Montpellier
+Cannes
+Orléans
+Orleans
+
+Germany
+Berlin
+Hamburg
+Munich
+Cologne
+Frankfurt
+Koln
+
+Belgium
+Brussel
+Bruxelle
+
+Netherlands
+Amsterdam
+Hague
+Rotterdam
+
+Czech
+Prague
+Brno
+Ostrava
+Plzeň
+Liberec
+Olomouc
+České Budějovice
+Hradec Králové
+Ústí nad Labem
+
+Switzerland
+Zurich
+Geneva
+Basel
+Bern
+Lausanne
+St Gallen
+
+Austria
+Vienna
+Graz
+Linz
+Innsbruck
+Klagenfurt
+Villach
+
+Slovakia
+Bratislava
+Kosice
+Presov
+Nitra
+
+Hungary
+Debrecen
+Pecs
+Miskolc
+
+Belarus
+Minsk
+
+Lithuania
+Vilnius
+
+Latvia
+Riga
+
+Estonia
+Tallinn
+
+Romania
+Bucharest
+Brasov
+Timisoara
+
+Bulgaria
+Sofia
+
+Serbia
+Belgrade
+
+Greece
+Athen
+Thessaloniki
+Patra
+Heraklion
+Lárisa
+Larisa
+
+Chile
+Santiago
+
+Paraguay
+Asuncion
+
+Uruguay
+Montevideo
+
+Bolivia
+La Paz
+
+Venezuela
+Caracas
+
+Malaysia
+Kuala Lumpur
+
+Vietnam
+Hanoi
+
+Bangladesh
+Dhaka
