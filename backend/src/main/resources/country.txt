@@ -75,6 +75,7 @@ Taipei
 Taipeh
 
 United States
+USA
 Stanford
 MIT
 CMU
@@ -150,6 +151,7 @@ Washington
 West Virginia
 Wisconsin
 Wyoming
+Austin
 
 Japan
 Tokyo
@@ -167,7 +169,7 @@ Singapore
 Philippines
 Manila
 
-South Korea
+Korea
 Seoul
 
 Australia
@@ -185,10 +187,10 @@ Vladivostok
 St. Petersburg
 
 Mongolia
-
-North Korea
+Ulaanbaatar
 
 India
+Nagpur
 Mumbai
 New Delhi
 Calcutta
@@ -202,12 +204,14 @@ Nay pyi taw
 Thailand
 Bangkok
 
+
 Indonesia
 
 New Zealand
 Wellington
 
 Canada
+Waterloo
 Ottawa
 Toronto
 Vancouver
@@ -246,7 +250,9 @@ Rio de Janeiro
 Salvador
 
 Peru
+Perú
 Lima
+Ica
 
 Saudi
 KAUST
@@ -364,14 +370,23 @@ Orléans
 Orleans
 
 Germany
+Dortmund
+Braunschweig
 Berlin
 Hamburg
 Munich
 Cologne
 Frankfurt
 Koln
+Aachen
+Weinheim
+
+Croatia
+Zagreb
 
 Belgium
+Liège
+Liege
 Brussel
 Bruxelle
 
@@ -396,7 +411,6 @@ Zurich
 Geneva
 Basel
 Bern
-Lausanne
 St Gallen
 
 Austria
