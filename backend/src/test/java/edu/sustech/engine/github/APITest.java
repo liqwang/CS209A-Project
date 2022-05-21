@@ -3,6 +3,7 @@ package edu.sustech.engine.github;
 import edu.sustech.search.engine.github.API.GitHubAPI;
 import edu.sustech.search.engine.github.API.RestAPI;
 import edu.sustech.search.engine.github.API.search.requests.CodeSearchRequest;
+import edu.sustech.search.engine.github.API.search.requests.CommitSearchRequest;
 import edu.sustech.search.engine.github.API.search.requests.RepoSearchRequest;
 import edu.sustech.search.engine.github.analyzer.Analyzer;
 import edu.sustech.search.engine.github.models.Dependency;
@@ -26,6 +27,14 @@ import java.util.List;
 
 class APITest {
     private static final Logger logger = LogManager.getLogger(APITest.class);
+
+    @Test
+    void testCommitSearchRequest(){
+        CommitSearchRequest req = CommitSearchRequest.newBuilder()
+                .addSearchKeyword("log4j")
+                .build();
+        System.out.println(req);
+    }
 
     @Test
     void testMethod() throws IOException, InterruptedException {

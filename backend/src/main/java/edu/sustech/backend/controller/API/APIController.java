@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import edu.sustech.backend.entities.DependencyData;
-import edu.sustech.backend.entities.DependencyResult;
 import edu.sustech.backend.service.BackendService;
 import edu.sustech.search.engine.github.models.Dependency;
 import edu.sustech.search.engine.github.models.Entry;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
@@ -38,49 +38,52 @@ public class APIController {
     public UpdateStatus status = UpdateStatus.NOT_INITIATED;
 
     @CrossOrigin
-    @RequestMapping("top_used_dependencies")
+    @RequestMapping("data/top_used_dependencies")
     public ResponseEntity<String> getTopUsedDependencies() {
         String s = BackendService.getTopUsedDependencies();
-        try {
-            PrintWriter pw = new PrintWriter("backend/data/a1.json");
-            pw.write(s);
-            pw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        new Thread(()->{
+            try {
+                PrintWriter pw = new PrintWriter("backend/data/top_used_dependencies_result.json");
+                pw.write(s);
+                pw.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }).start();
         return ResponseEntity.ok(s);
     }
 
     @CrossOrigin
-    @RequestMapping("update_all")
+    @RequestMapping("local/update_all")
     public ResponseEntity<String> update() throws IOException, InterruptedException {
-        new Thread(() -> {
             if (status != UpdateStatus.NOT_INITIATED) {
                 status = UpdateStatus.PROGRESS;
-                try {
-                    updateData();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+                updateData();
+            }else{
+                return ResponseEntity.badRequest().body("Failed. The update is initiated: " + status);
             }
-        }).start();
         return ResponseEntity.ok("OK. Update status: " + status);
     }
 
     @CrossOrigin
-    @RequestMapping("update_status")
+    @RequestMapping("local/update_status")
     public ResponseEntity<String> getStatus() {
-        return ResponseEntity.ok("OK. Update status: " + status.toString());
+        return ResponseEntity.ok("OK. Update status: " + status);
     }
 
+    @Async
     public void updateData() throws IOException, InterruptedException {
         BackendService.updateLocalData();
         status = UpdateStatus.SUCCESS;
     }
 
 
+    /**
+     * Used for verifying the response received by Axios
+     * @return Response Body in <code>String</code>
+     */
     @CrossOrigin
-    @RequestMapping("sample")
+    @RequestMapping("data/sample")
     @ResponseBody
     public String getSampleResponse() throws JsonProcessingException {
         ObjectMapper mpr = new ObjectMapper();

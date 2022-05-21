@@ -18,7 +18,7 @@ class BackendApplicationTests {
     @Test
     void dataTestQ1() {
         try {
-            BackendService.updateLocalQ1();
+            BackendService.updateLocalDependencyData();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             fail();
