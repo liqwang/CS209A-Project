@@ -3,7 +3,7 @@ package edu.sustech.backend.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.sustech.backend.entities.DependencyData;
+import edu.sustech.backend.dto.DependencyData;
 import edu.sustech.backend.service.models.BarChartItem;
 import edu.sustech.search.engine.github.API.GitHubAPI;
 import edu.sustech.search.engine.github.API.search.requests.CodeSearchRequest;
@@ -19,6 +19,7 @@ import edu.sustech.search.engine.github.models.repository.Repository;
 import edu.sustech.search.engine.github.models.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,23 +27,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-
+@Service
 public class BackendService {
     private static final int LOCAL_MAJOR_UPDATE_INTERVAL_MILLIS = 15000;
     private static final int LOCAL_ITEM_UPDATE_INTERVAL_MILLIS = 1000;
-    private static final int LOCAL_MINOR_UPDATE_ITERVAL_MILLIS = 400;
 
-    private static final Logger logger = LogManager.getLogger(BackendService.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
-    private static String key;
-
-    static {
-        gitHubAPI.searchAPI.setSuppressRateError(true);
-    }
+    private final Logger logger = LogManager.getLogger(BackendService.class);
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
+    {gitHubAPI.searchAPI.setSuppressRateError(true);}
 
 
-    public static void updateLocalData() throws IOException, InterruptedException {
+    public void updateLocalData() throws IOException, InterruptedException {
         logger.info("Updating local data.");
 
         //Update Dependency Analysis Result
@@ -54,16 +50,16 @@ public class BackendService {
     }
 
 
-    private static List<Issue> log4jIssues = null;
+    private List<Issue> log4jIssues;
 
     //todo: add a method to acquire the data for charts.
 
-    public static IPRResult readLocalLog4jIPRData() throws IOException {
+    public IPRResult readLocalLog4jIPRData() throws IOException {
         logger.info("Reading local log4j issues and pull requests data");
-        return objectMapper.readValue(new File("backend/data/Log4jIssueAnalysis/Entries/log4jiprdata.json"), IPRResult.class);
+        return objectMapper.readValue(new File("data/Log4jIssueAnalysis/Entries/log4jiprdata.json"), IPRResult.class);
     }
 
-    public static void updateLocalLog4jIPRData() throws IOException, InterruptedException {
+    public void updateLocalLog4jIPRData() throws IOException, InterruptedException {
         logger.info("Updating local log4j issues and pull requests data");
 
         IPRSearchRequest req = IPRSearchRequest.newBuilder()
@@ -77,7 +73,7 @@ public class BackendService {
             }
         }
 
-        PrintWriter pw = new PrintWriter("backend/data/Log4jIssueAnalysis/Entries/log4jiprdata.json");
+        PrintWriter pw = new PrintWriter("data/Log4jIssueAnalysis/Entries/log4jiprdata.json");
         pw.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(log4jIssues));
         pw.close();
         logger.info("Updated local log4j issues and pull requests data");
@@ -86,13 +82,13 @@ public class BackendService {
     /**
      * For storing the dependency data acquired.
      */
-    private static DependencyData dependencyData = null;
+    private static DependencyData dependencyData;
 
-    public static DependencyData getDependencyData() {
+    public DependencyData getDependencyData() {
         return dependencyData;
     }
 
-    public static String getDependencyUsageWithLocation() {
+    public String getDependencyUsageWithLocation() {
         /**
          * String for artifactId
          * List of String for locations
@@ -100,7 +96,7 @@ public class BackendService {
         HashMap<String, List<String>> locationMap = new HashMap<>();
         if (dependencyData == null) {
             try {
-                dependencyData = BackendService.readLocalDependencyData();
+                dependencyData = readLocalDependencyData();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -116,11 +112,11 @@ public class BackendService {
         return "Internal parsing failure.";
     }
 
-    public static String getTopUsedDependencies() {
+    public String getTopUsedDependencies() {
 
         if (dependencyData == null) {
             try {
-                dependencyData = BackendService.readLocalDependencyData();
+                dependencyData = readLocalDependencyData();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -132,17 +128,13 @@ public class BackendService {
             dependencyData.getData().stream().forEach(e -> {
                 List<Dependency> list = e.getValue().getValue();
                 for (Dependency d : list) {
-                    key = d.artifactId();
-                    Integer cnt = dependencyMap.get(key);
+                    Integer cnt = dependencyMap.get(d.artifactId());
                     if (cnt == null) {
-                        dependencyMap.put(key, 1);
+                        dependencyMap.put(d.artifactId(), 1);
                     } else {
-                        dependencyMap.put(key, ++cnt);
+                        dependencyMap.put(d.artifactId(), ++cnt);
                     }
                 }
-            });
-            dependencyMap.entrySet().forEach(e->{
-                System.out.println(e.getKey());
             });
 
             List<BarChartItem<String, Integer>> result = new ArrayList<>();
@@ -150,7 +142,9 @@ public class BackendService {
             dependencyMap.entrySet().stream()
                     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                     .limit(10)
-                    .forEach(e -> result.add(new BarChartItem<>(e.getKey(), e.getValue())));
+                    .forEach(e -> {
+                        result.add(new BarChartItem<>(e.getKey(), e.getValue()));
+                    });
             try {
                 return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result);
             } catch (JsonProcessingException e) {
@@ -162,11 +156,11 @@ public class BackendService {
 
     //todo: give ranking options for top used dependencies
 
-    public static String getAvailableGroupSelections() {
+    public String getAvailableGroupSelections() {
         HashSet<String> groupList = new HashSet<>();
         if (dependencyData == null) {
             try {
-                dependencyData = BackendService.readLocalDependencyData();
+                dependencyData = readLocalDependencyData();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -190,11 +184,11 @@ public class BackendService {
 
     //todo: finish this
 
-    public static String getAvailableDependencySelections() {
+    public String getAvailableDependencySelections() {
         HashSet<String> dependencyList = new HashSet<>();
         if (dependencyData == null) {
             try {
-                dependencyData = BackendService.readLocalDependencyData();
+                dependencyData = readLocalDependencyData();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -216,10 +210,10 @@ public class BackendService {
         return "Internal parsing failure";
     }
 
-    public static DependencyData readLocalDependencyData() throws IOException {
+    public DependencyData readLocalDependencyData() throws IOException {
         logger.info("Reading local dependency data");
         DependencyData data = new DependencyData();
-        File dir = new File("backend/data/DependencyAnalysis/Entries");
+        File dir = new File("data/DependencyAnalysis/Entries");
         File[] files = dir.listFiles();
         if (files != null) {
             for (File f : files) {
@@ -241,11 +235,11 @@ public class BackendService {
         return data;
     }
 
-    public static void updateLocalDependencyData() throws IOException, InterruptedException {
+    public void updateLocalDependencyData() throws IOException, InterruptedException {
         updateLocalDependencyData(1000);
     }
 
-    public static void updateLocalDependencyData(int count) throws IOException, InterruptedException {
+    public void updateLocalDependencyData(int count) throws IOException, InterruptedException {
         logger.info("Updating local dependency data");
 
         CodeSearchRequest req1 = CodeSearchRequest.newBuilder()
@@ -257,9 +251,9 @@ public class BackendService {
 
         DependencyData data = new DependencyData();
 
-        File file = new File("backend/data/DependencyAnalysis/Entries/");
-        if (!file.exists()) {
-            if (!file.mkdirs()) {
+        File file = new File("data/DependencyAnalysis/Entries/");
+        if(!file.exists()){
+            if(!file.mkdirs()){
                 throw new IOException("Failed to create Entries directory");
             }
         }
@@ -277,26 +271,18 @@ public class BackendService {
                 Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
             }
 
-            List<User> userList = null;
+            List<User> usr = null;
             try {
-                userList = gitHubAPI.repositoryAPI.getContributors(r);
+                usr = gitHubAPI.repositoryAPI.getContributors(r);
             } catch (Exception e) {
                 logger.error("Error encountered during parsing, ", e);
             } finally {
                 Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
             }
-            if (userList != null) {
-                for (int i = 0; i < userList.size(); i++) {
-                    User user0 = userList.get(i);
-                    User rep = gitHubAPI.userAPI.getUser(user0.getUrl());
-                    user0.setLocation(rep.getLocation());
-                    Thread.sleep(LOCAL_MINOR_UPDATE_ITERVAL_MILLIS);
-                }
-            }
-            Entry<Repository, Entry<List<User>, List<Dependency>>> entry = new Entry<>(r, new Entry<>(userList, ls));
+            Entry<Repository, Entry<List<User>, List<Dependency>>> entry = new Entry<>(r, new Entry<>(usr, ls));
             data.getData().add(entry);
 
-            PrintWriter pw = new PrintWriter("backend/data/DependencyAnalysis/Entries/DependencyDataEntry_" + (cnt++) + ".json");
+            PrintWriter pw = new PrintWriter("data/DependencyAnalysis/Entries/DependencyDataEntry_" + (cnt++) + ".json");
             pw.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(entry));
             pw.close();
         }
@@ -308,9 +294,9 @@ public class BackendService {
     }
 
 
-    public static void testWrite() throws FileNotFoundException {
+    public void testWrite() throws FileNotFoundException {
         logger.info("The current backend file location is " + new File("").getAbsolutePath());
-        PrintWriter pw = new PrintWriter("backend/data/test.json");
+        PrintWriter pw = new PrintWriter("data/test.json");
         pw.write("Test write ok.");
         pw.close();
         logger.info("Test write ok.");

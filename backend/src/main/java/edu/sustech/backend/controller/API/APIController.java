@@ -4,18 +4,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import edu.sustech.backend.entities.DependencyData;
 import edu.sustech.backend.service.BackendService;
-import edu.sustech.search.engine.github.models.Dependency;
-import edu.sustech.search.engine.github.models.Entry;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.Date;
 
 @RestController
 @RequestMapping("api")
@@ -35,33 +34,27 @@ public class APIController {
         }
     }
 
+    @Autowired
+    private BackendService backendService;
+
     public UpdateStatus status = UpdateStatus.NOT_INITIATED;
 
     @CrossOrigin
     @RequestMapping("data/top-used-dependencies")
-    public ResponseEntity<String> getTopUsedDependencies() {
-        String s = BackendService.getTopUsedDependencies();
-        new Thread(()->{
-            try {
-                PrintWriter pw = new PrintWriter("backend/data/top_used_dependencies_result.json");
-                pw.write(s);
-                pw.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }).start();
+    public ResponseEntity<String> getTopUsedDependencies(
+        @RequestParam(value="group",required=false) String group,
+        @RequestParam(value="date",required = false) Date date){
+        String s = backendService.getTopUsedDependencies();
         return ResponseEntity.ok(s);
     }
 
     @CrossOrigin
     @RequestMapping("local/update_all")
     public ResponseEntity<String> update() throws IOException, InterruptedException {
-            if (status != UpdateStatus.NOT_INITIATED) {
-                status = UpdateStatus.PROGRESS;
-                updateData();
-            }else{
-                return ResponseEntity.badRequest().body("Failed. The update is initiated: " + status);
-            }
+        if (status != UpdateStatus.NOT_INITIATED) {
+            status = UpdateStatus.PROGRESS;
+            updateData();
+        }else{return ResponseEntity.badRequest().body("Failed. The update is initiated: " + status);}
         return ResponseEntity.ok("OK. Update status: " + status);
     }
 
@@ -73,7 +66,7 @@ public class APIController {
 
     @Async
     public void updateData() throws IOException, InterruptedException {
-        BackendService.updateLocalData();
+        backendService.updateLocalData();
         status = UpdateStatus.SUCCESS;
     }
 
