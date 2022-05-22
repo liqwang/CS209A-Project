@@ -59,9 +59,9 @@ public class APIController {
     }
 
     @CrossOrigin
-    @RequestMapping("local/update_all")
+    @RequestMapping("local/update-all")
     public ResponseEntity<String> update() throws IOException, InterruptedException {
-        if (status != UpdateStatus.NOT_INITIATED) {
+        if (status == UpdateStatus.NOT_INITIATED) {
             status = UpdateStatus.PROGRESS;
             updateData();
         }else{return ResponseEntity.badRequest().body("Failed. The update is initiated: " + status);}
@@ -69,7 +69,7 @@ public class APIController {
     }
 
     @CrossOrigin
-    @RequestMapping("local/update_status")
+    @RequestMapping("local/update-status")
     public ResponseEntity<String> getStatus() {
         return ResponseEntity.ok("OK. Update status: " + status);
     }
