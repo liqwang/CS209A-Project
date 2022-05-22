@@ -138,6 +138,70 @@ File tree
     └───dao
 ```
 
+### Controller
+
+#### getTopUsedDependencies
+
+```java
+@RequestMapping("data/top-used-dependencies")
+public ResponseEntity<String> getTopUsedDependencies(
+    @RequestParam(value = "group", required = false) String group,
+    @RequestParam(value = "date", required = false) Date date,
+    @RequestParam(value = "count", required = false, defaultValue = "10") Integer count) {
+    return ResponseEntity.ok(backendService.getTopUsedDependencies(group, date, count));
+}
+```
+
+This method returns the top used dependencies using specific param: **group、date、count**
+
+The frontend can also set no search param to get the general result
+
+
+
+#### getTopUsedVersions
+
+```java
+@RequestMapping("data/top-used-version")
+public ResponseEntity<String> getTopUsedVersions(
+    @RequestParam("group") String group,
+    @RequestParam("arifact") String artifact,
+    @RequestParam(value = "year", required = false) Integer year) {
+    return ResponseEntity.ok(backendService.getTopUsedVersions(group, artifact, year));
+}
+```
+
+This method returns the top used versions of specific **group**'s **artifact** in a specific **year(not neccessary)** to frontend
+
+
+
+#### getGroups
+
+```java
+@RequestMapping("groups")
+public String getGroups(){
+    return backendService.getAvailableGroupSelections();
+}
+```
+
+This method returns the group list that the user can select
+
+
+
+#### update
+
+```java
+@RequestMapping("local/update-all")
+public ResponseEntity<String> update() throws IOException, InterruptedException {
+    if (status == UpdateStatus.NOT_INITIATED) {
+        status = UpdateStatus.PROGRESS;
+        updateData();
+    } else {return ResponseEntity.badRequest().body("Failed. The update is initiated: " + status);}
+    return ResponseEntity.ok("OK. Update status: " + status);
+}
+```
+
+This method updates all the data for frontend by invoking the github search engine
+
 
 
 ### Github search engine
@@ -152,9 +216,55 @@ We use two methods for data persistence
 
 #### Database
 
-We use cloud **Mysql** database and **Mybatis** ORM framework
+We use cloud **MySQL** database and **Mybatis** ORM framework
 
 .<img src="README.pictures/image-20220522220830677.png" alt="image-20220522220830677" style="zoom:80%;" />
+
+Here is an dto example
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Repository
+public class Version {
+	Integer id;
+	String version;
+	Integer count;
+	Integer artifactId;
+}
+```
+
+Here is an dao example, we use **Mybatis**
+
+```java
+public interface VersionDao {
+	int insert(@Param("version") String version,@Param("artifactId") Integer artifactId);
+
+	Version get(@Param("version") String version,@Param("artifactId") Integer artifactId);
+
+	//count++
+	void increment(@Param("id") Integer id,@Param("newCount") Integer newCount);
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.sustech.backend.dao.VersionDao">
+    <insert id="insert">
+        insert into version(version, count, artifact_id) values (#{version},1,#{artifactId})
+    </insert>
+
+    <select id="get" resultType="Version">
+        select * from version where version=#{version} and artifact_id=#{artifactId}
+    </select>
+
+    <update id="increment">
+        update version set count=#{newCount} where id=#{id}
+    </update>
+</mapper>
+```
 
 
 
