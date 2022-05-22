@@ -31,6 +31,7 @@ import java.util.*;
 public class BackendService {
     private static final int LOCAL_MAJOR_UPDATE_INTERVAL_MILLIS = 15000;
     private static final int LOCAL_ITEM_UPDATE_INTERVAL_MILLIS = 1000;
+    private static final int LOCAL_MINOR_UPDATE_INTERVAL_MILLIS = 400;
 
     private final Logger logger = LogManager.getLogger(BackendService.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
