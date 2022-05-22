@@ -57,7 +57,7 @@ public class BackendService {
 
     public IPRResult readLocalLog4jIPRData() throws IOException {
         logger.info("Reading local log4j issues and pull requests data");
-        return objectMapper.readValue(new File("data/Log4jIssueAnalysis/Entries/log4jiprdata.json"), IPRResult.class);
+        return objectMapper.readValue(new File("backend/data/Log4jIssueAnalysis/Entries/log4jiprdata.json"), IPRResult.class);
     }
 
     public void updateLocalLog4jIPRData() throws IOException, InterruptedException {
@@ -74,7 +74,7 @@ public class BackendService {
             }
         }
 
-        PrintWriter pw = new PrintWriter("data/Log4jIssueAnalysis/Entries/log4jiprdata.json");
+        PrintWriter pw = new PrintWriter("backend/data/Log4jIssueAnalysis/Entries/log4jiprdata.json");
         pw.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(log4jIssues));
         pw.close();
         logger.info("Updated local log4j issues and pull requests data");
@@ -214,7 +214,7 @@ public class BackendService {
     public DependencyData readLocalDependencyData() throws IOException {
         logger.info("Reading local dependency data");
         DependencyData data = new DependencyData();
-        File dir = new File("data/DependencyAnalysis/Entries");
+        File dir = new File("backend/data/DependencyAnalysis/Entries");
         File[] files = dir.listFiles();
         if (files != null) {
             for (File f : files) {
@@ -252,7 +252,7 @@ public class BackendService {
 
         DependencyData data = new DependencyData();
 
-        File file = new File("data/DependencyAnalysis/Entries/");
+        File file = new File("backend/data/DependencyAnalysis/Entries/");
         if(!file.exists()){
             if(!file.mkdirs()){
                 throw new IOException("Failed to create Entries directory");
@@ -262,6 +262,7 @@ public class BackendService {
         int cnt = 0;
         for (CodeItem item : result1) {
             Repository r = item.getRepository();
+            r = gitHubAPI.repositoryAPI.getRepository(r.getUrl());
 
             List<Dependency> ls = null;
             try {
@@ -272,18 +273,26 @@ public class BackendService {
                 Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
             }
 
-            List<User> usr = null;
+            List<User> userList = null;
             try {
-                usr = gitHubAPI.repositoryAPI.getContributors(r);
+                userList = gitHubAPI.repositoryAPI.getContributors(r);
             } catch (Exception e) {
                 logger.error("Error encountered during parsing, ", e);
             } finally {
                 Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
             }
-            Entry<Repository, Entry<List<User>, List<Dependency>>> entry = new Entry<>(r, new Entry<>(usr, ls));
+            if (userList != null) {
+                for (int i = 0; i < userList.size(); i++) {
+                    User user0 = userList.get(i);
+                    User rep = gitHubAPI.userAPI.getUser(user0.getUrl());
+                    user0.setLocation(rep.getLocation());
+                    Thread.sleep(LOCAL_MINOR_UPDATE_INTERVAL_MILLIS);
+                }
+            }
+            Entry<Repository, Entry<List<User>, List<Dependency>>> entry = new Entry<>(r, new Entry<>(userList, ls));
             data.getData().add(entry);
 
-            PrintWriter pw = new PrintWriter("data/DependencyAnalysis/Entries/DependencyDataEntry_" + (cnt++) + ".json");
+            PrintWriter pw = new PrintWriter("backend/data/DependencyAnalysis/Entries/DependencyDataEntry_" + (cnt++) + ".json");
             pw.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(entry));
             pw.close();
         }
@@ -297,7 +306,7 @@ public class BackendService {
 
     public void testWrite() throws FileNotFoundException {
         logger.info("The current backend file location is " + new File("").getAbsolutePath());
-        PrintWriter pw = new PrintWriter("data/test.json");
+        PrintWriter pw = new PrintWriter("backend/data/test.json");
         pw.write("Test write ok.");
         pw.close();
         logger.info("Test write ok.");

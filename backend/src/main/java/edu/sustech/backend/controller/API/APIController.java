@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import edu.sustech.backend.dto.DependencyData;
 import edu.sustech.backend.service.BackendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,8 +43,8 @@ public class APIController {
     @CrossOrigin
     @RequestMapping("data/top-used-dependencies")
     public ResponseEntity<String> getTopUsedDependencies(
-        @RequestParam(value="group",required=false) String group,
-        @RequestParam(value="date",required = false) Date date){
+            @RequestParam(value = "group", required = false) String group,
+            @RequestParam(value = "date", required = false) Date date) {
         String s = backendService.getTopUsedDependencies();
         return ResponseEntity.ok(s);
     }
@@ -54,7 +55,9 @@ public class APIController {
         if (status != UpdateStatus.NOT_INITIATED) {
             status = UpdateStatus.PROGRESS;
             updateData();
-        }else{return ResponseEntity.badRequest().body("Failed. The update is initiated: " + status);}
+        } else {
+            return ResponseEntity.badRequest().body("Failed. The update is initiated: " + status);
+        }
         return ResponseEntity.ok("OK. Update status: " + status);
     }
 
@@ -70,9 +73,22 @@ public class APIController {
         status = UpdateStatus.SUCCESS;
     }
 
+    @CrossOrigin
+    @RequestMapping("data/testlocal")
+    public ResponseEntity<String> testBackendService() {
+        try {
+            backendService.testWrite();
+            return ResponseEntity.ok("OK.");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.internalServerError().body("IO failed.");
+    }
+
 
     /**
      * Used for verifying the response received by Axios
+     *
      * @return Response Body in <code>String</code>
      */
     @CrossOrigin

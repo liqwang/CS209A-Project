@@ -9,10 +9,12 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class LocalTest {
+    BackendService backendService = new BackendService();
+
     @Test
     void getLocalData(){
         try {
-            BackendService.updateLocalData();
+            backendService.updateLocalData();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             fail();
@@ -28,7 +30,7 @@ public class LocalTest {
     @Test
     void testUpdateLocalDependencyData(){
         try {
-            BackendService.updateLocalDependencyData(2);
+            backendService.updateLocalDependencyData(2);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             fail();
@@ -38,8 +40,8 @@ public class LocalTest {
     @Test
     void testReadLocalDependencyData(){
         try{
-            BackendService.readLocalDependencyData();
-            System.out.println(BackendService.getDependencyData().getData());
+            backendService.readLocalDependencyData();
+            System.out.println(backendService.getDependencyData().getData());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,7 +50,7 @@ public class LocalTest {
 
     @Test
     void testWrite() throws FileNotFoundException {
-        BackendService.testWrite();
+        backendService.testWrite();
     }
 
 }
