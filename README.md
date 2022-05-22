@@ -8,9 +8,20 @@
 
 
 
-We use **Vue** and **SpringBoot**, so the frontend and backend can split, and we use **Json** as data exchange format
+## Overview
+
+In this project, we make two main parts:
+
+- Hot dependencies in pom.xml
+- Tool used contribution in different countries
+
+The project's architecture is **Vue + SpringBoot**, so the frontend and backend can split, and we use **Json** as data exchange format
+
+
 
 ## Frontend
+
+File tree
 
 ```
 │   .browserslistrc
@@ -88,170 +99,44 @@ We use **Vue** and **SpringBoot**, so the frontend and backend can split, and we
 
 ## Backend
 
+File tree
+
 ```
 ├───java
 │   └───edu
 │       └───sustech
 │           ├───backend
-│           │   │   BackendApplication.java
-│           │   │
 │           │   ├───controller
-│           │   │   │   DataImportController.java
-│           │   │   │   TestController.java
-│           │   │   │
 │           │   │   └───API
-│           │   │           APIController.java
-│           │   │
 │           │   ├───dao
-│           │   │       ArtifactDao.java
-│           │   │       GroupDao.java
-│           │   │       VersionDao.java
-│           │   │
 │           │   ├───dto
-│           │   │       Artifact.java
-│           │   │       Group.java
-│           │   │       Version.java
-│           │   │
 │           │   ├───entities
-│           │   │       DependencyData.java
-│           │   │
 │           │   └───service
-│           │       │   BackendService.java
-│           │       │
 │           │       └───models
-│           │               BarChartItem.java
-│           │
 │           └───search
 │               └───engine
 │                   └───github
 │                       ├───analyzer
-│                       │       Analyzer.java
-│                       │
 │                       ├───API
-│                       │   │   ContentAPI.java
-│                       │   │   FileAPI.java
-│                       │   │   GitHubAPI.java
-│                       │   │   RepositoryAPI.java
-│                       │   │   RequestRateExceededException.java
-│                       │   │   RestAPI.java
-│                       │   │   SearchAPI.java
-│                       │   │   UserAPI.java
-│                       │   │
 │                       │   ├───rate
-│                       │   │       ActionsRunnerRegistration.java
-│                       │   │       CodeScanningUpload.java
-│                       │   │       Core.java
-│                       │   │       Graphql.java
-│                       │   │       IntegrationManifest.java
-│                       │   │       Rate.java
-│                       │   │       RateLimitResult.java
-│                       │   │       Resources.java
-│                       │   │       Scim.java
-│                       │   │       Search.java
-│                       │   │       SourceImport.java
-│                       │   │
 │                       │   └───search
-│                       │       │   ETag.java
-│                       │       │   InvalidResultException.java
-│                       │       │
 │                       │       └───requests
-│                       │               CodeSearchRequest.java
-│                       │               CommitSearchRequest.java
-│                       │               IPRSearchRequest.java
-│                       │               LabelSearchRequest.java
-│                       │               RepoSearchRequest.java
-│                       │               SearchRequest.java
-│                       │               TopicSearchRequest.java
-│                       │               UserSearchRequest.java
-│                       │
 │                       ├───models
-│                       │   │   Alias.java
-│                       │   │   APIErrorMessage.java
-│                       │   │   AppendableResult.java
-│                       │   │   Author.java
-│                       │   │   AuthorAssociation.java
-│                       │   │   CodeOfConduct.java
-│                       │   │   Dependency.java
-│                       │   │   Entry.java
-│                       │   │   License.java
-│                       │   │   Match.java
-│                       │   │   Milestone.java
-│                       │   │   OAuthToken.java
-│                       │   │   Owner.java
-│                       │   │   Parent.java
-│                       │   │   Permissions.java
-│                       │   │   Reactions.java
-│                       │   │   Related.java
-│                       │   │   State.java
-│                       │   │   TextMatch.java
-│                       │   │
 │                       │   ├───code
-│                       │   │       CodeItem.java
-│                       │   │       CodeResult.java
-│                       │   │
 │                       │   ├───commit
-│                       │   │       Commit.java
-│                       │   │       CommitItem.java
-│                       │   │       CommitResult.java
-│                       │   │       Tree.java
-│                       │   │       Verification.java
-│                       │   │
 │                       │   ├───content
-│                       │   │       ContentDirectory.java
-│                       │   │       ContentFile.java
-│                       │   │       Links.java
-│                       │   │       RawContent.java
-│                       │   │       SymlinkContent.java
-│                       │   │
 │                       │   ├───githubapp
-│                       │   │       GitHubApp.java
-│                       │   │       Permissions.java
-│                       │   │
 │                       │   ├───issue
-│                       │   │       IPRResult.java
-│                       │   │       Issue.java
-│                       │   │
 │                       │   ├───label
-│                       │   │       Label.java
-│                       │   │       LabelResult.java
-│                       │   │
 │                       │   ├───pullrequests
-│                       │   │       PullRequest.java
-│                       │   │       PullRequestResult.java
-│                       │   │
 │                       │   ├───repository
-│                       │   │       Repository.java
-│                       │   │       RepositoryResult.java
-│                       │   │
 │                       │   ├───topic
-│                       │   │       Topic.java
-│                       │   │       TopicRelation.java
-│                       │   │       TopicResult.java
-│                       │   │
 │                       │   └───user
-│                       │           User.java
-│                       │           UserResult.java
-│                       │
 │                       ├───parser
-│                       │       JsonSchemaParser.java
-│                       │
 │                       └───transformer
-│                               Transformer.java
-│
 └───resources
-    │   application.yml
-    │   country.txt
-    │   Dockerfile
-    │   log4j.properties
-    │   log4j2.xml
-    │
     └───dao
-            ArtifactDao.xml
-            GroupDao.xml
-            VersionDao.xml
 ```
-
-
 
 
 
@@ -269,9 +154,21 @@ We use two methods for data persistence
 
 We use cloud **Mysql** database and **Mybatis** ORM framework
 
+.<img src="README.pictures/image-20220522220830677.png" alt="image-20220522220830677" style="zoom:80%;" />
+
+
+
+
+
  #### File
 
 Besides the database, we also use files, which stores the json data
+
+
+
+## Insights
+
+
 
 
 

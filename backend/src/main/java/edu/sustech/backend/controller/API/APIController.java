@@ -8,12 +8,9 @@ import edu.sustech.backend.service.BackendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
 
 @RestController
@@ -56,6 +53,12 @@ public class APIController {
             @RequestParam(value = "date",required = false) Date date){
         String s = backendService.getTopUsedVersions(group, artifact, date);
         return ResponseEntity.ok(s);
+    }
+
+    @CrossOrigin
+    @RequestMapping("groups")
+    public String getGroups(){
+        return backendService.getAvailableGroupSelections();
     }
 
     @CrossOrigin
