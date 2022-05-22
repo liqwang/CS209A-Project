@@ -35,6 +35,7 @@ public class BackendService {
     private static final Logger logger = LogManager.getLogger(BackendService.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
+    private static String key;
 
     static {
         gitHubAPI.searchAPI.setSuppressRateError(true);
@@ -53,13 +54,13 @@ public class BackendService {
     }
 
 
-    private static List<Issue> log4jIssues;
+    private static List<Issue> log4jIssues = null;
 
     //todo: add a method to acquire the data for charts.
 
     public static IPRResult readLocalLog4jIPRData() throws IOException {
         logger.info("Reading local log4j issues and pull requests data");
-        return objectMapper.readValue(new File("data/Log4jIssueAnalysis/Entries/log4jiprdata.json"), IPRResult.class);
+        return objectMapper.readValue(new File("backend/data/Log4jIssueAnalysis/Entries/log4jiprdata.json"), IPRResult.class);
     }
 
     public static void updateLocalLog4jIPRData() throws IOException, InterruptedException {
@@ -76,7 +77,7 @@ public class BackendService {
             }
         }
 
-        PrintWriter pw = new PrintWriter("data/Log4jIssueAnalysis/Entries/log4jiprdata.json");
+        PrintWriter pw = new PrintWriter("backend/data/Log4jIssueAnalysis/Entries/log4jiprdata.json");
         pw.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(log4jIssues));
         pw.close();
         logger.info("Updated local log4j issues and pull requests data");
@@ -85,7 +86,7 @@ public class BackendService {
     /**
      * For storing the dependency data acquired.
      */
-    private static DependencyData dependencyData;
+    private static DependencyData dependencyData = null;
 
     public static DependencyData getDependencyData() {
         return dependencyData;
@@ -131,13 +132,17 @@ public class BackendService {
             dependencyData.getData().stream().forEach(e -> {
                 List<Dependency> list = e.getValue().getValue();
                 for (Dependency d : list) {
-                    Integer cnt = dependencyMap.get(d.artifactId());
+                    key = d.artifactId();
+                    Integer cnt = dependencyMap.get(key);
                     if (cnt == null) {
-                        dependencyMap.put(d.artifactId(), 1);
+                        dependencyMap.put(key, 1);
                     } else {
-                        dependencyMap.put(d.artifactId(), ++cnt);
+                        dependencyMap.put(key, ++cnt);
                     }
                 }
+            });
+            dependencyMap.entrySet().forEach(e->{
+                System.out.println(e.getKey());
             });
 
             List<BarChartItem<String, Integer>> result = new ArrayList<>();
@@ -145,9 +150,7 @@ public class BackendService {
             dependencyMap.entrySet().stream()
                     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                     .limit(10)
-                    .forEach(e -> {
-                        result.add(new BarChartItem<>(e.getKey(), e.getValue()));
-                    });
+                    .forEach(e -> result.add(new BarChartItem<>(e.getKey(), e.getValue())));
             try {
                 return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result);
             } catch (JsonProcessingException e) {
@@ -216,7 +219,7 @@ public class BackendService {
     public static DependencyData readLocalDependencyData() throws IOException {
         logger.info("Reading local dependency data");
         DependencyData data = new DependencyData();
-        File dir = new File("data/DependencyAnalysis/Entries");
+        File dir = new File("backend/data/DependencyAnalysis/Entries");
         File[] files = dir.listFiles();
         if (files != null) {
             for (File f : files) {
@@ -254,7 +257,7 @@ public class BackendService {
 
         DependencyData data = new DependencyData();
 
-        File file = new File("data/DependencyAnalysis/Entries/");
+        File file = new File("backend/data/DependencyAnalysis/Entries/");
         if (!file.exists()) {
             if (!file.mkdirs()) {
                 throw new IOException("Failed to create Entries directory");
@@ -293,7 +296,7 @@ public class BackendService {
             Entry<Repository, Entry<List<User>, List<Dependency>>> entry = new Entry<>(r, new Entry<>(userList, ls));
             data.getData().add(entry);
 
-            PrintWriter pw = new PrintWriter("data/DependencyAnalysis/Entries/DependencyDataEntry_" + (cnt++) + ".json");
+            PrintWriter pw = new PrintWriter("backend/data/DependencyAnalysis/Entries/DependencyDataEntry_" + (cnt++) + ".json");
             pw.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(entry));
             pw.close();
         }
@@ -307,7 +310,7 @@ public class BackendService {
 
     public static void testWrite() throws FileNotFoundException {
         logger.info("The current backend file location is " + new File("").getAbsolutePath());
-        PrintWriter pw = new PrintWriter("data/test.json");
+        PrintWriter pw = new PrintWriter("backend/data/test.json");
         pw.write("Test write ok.");
         pw.close();
         logger.info("Test write ok.");

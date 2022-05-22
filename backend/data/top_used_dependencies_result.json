@@ -1,1 +1,31 @@
-[ ]
+[ {
+  "x" : "mssql-jdbc",
+  "y" : 1
+}, {
+  "x" : "logback-more-appenders",
+  "y" : 1
+}, {
+  "x" : "logback-classic",
+  "y" : 1
+}, {
+  "x" : "spring-boot-starter-test",
+  "y" : 1
+}, {
+  "x" : "resteasy-jackson2-provider",
+  "y" : 1
+}, {
+  "x" : "spring-kafka",
+  "y" : 1
+}, {
+  "x" : "fluent-logger",
+  "y" : 1
+}, {
+  "x" : "h2",
+  "y" : 1
+}, {
+  "x" : "keycloak-core",
+  "y" : 1
+}, {
+  "x" : "keycloak-admin-client",
+  "y" : 1
+} ]
