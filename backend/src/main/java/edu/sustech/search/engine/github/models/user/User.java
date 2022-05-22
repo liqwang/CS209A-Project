@@ -16,7 +16,7 @@ import edu.sustech.search.engine.github.models.TextMatch;
  * User Search Result Item
  * <p>
  * User Search Result Item
- * 
+ *
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -54,134 +54,135 @@ import edu.sustech.search.engine.github.models.TextMatch;
     "text_matches",
     "blog",
     "company",
-    "suspended_at"
+    "suspended_at",
+    "contributions"
 })
 @Generated("jsonschema2pojo")
 public class User extends Owner {
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("login")
     private String login;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("id")
     private Integer id;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("node_id")
     private String nodeId;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("avatar_url")
     private URI avatarUrl;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("gravatar_id")
     private String gravatarId;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("url")
     private URI url;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("html_url")
     private URI htmlUrl;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("followers_url")
     private URI followersUrl;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("subscriptions_url")
     private URI subscriptionsUrl;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("organizations_url")
     private URI organizationsUrl;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("repos_url")
     private URI reposUrl;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("received_events_url")
     private URI receivedEventsUrl;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("type")
     private String type;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("score")
     private Double score;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("following_url")
     private String followingUrl;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("gists_url")
     private String gistsUrl;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("starred_url")
     private String starredUrl;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("events_url")
     private String eventsUrl;
@@ -206,9 +207,9 @@ public class User extends Owner {
     @JsonProperty("location")
     private String location;
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("site_admin")
     private Boolean siteAdmin;
@@ -217,8 +218,8 @@ public class User extends Owner {
     /**
      * Search Result Text Matches
      * <p>
-     * 
-     * 
+     *
+     *
      */
     @JsonProperty("text_matches")
     private List<TextMatch> textMatches = new ArrayList<TextMatch>();
@@ -228,13 +229,15 @@ public class User extends Owner {
     private String company;
     @JsonProperty("suspended_at")
     private Date suspendedAt;
+    @JsonProperty("contributions")
+    private Integer contributions;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("login")
     public String getLogin() {
@@ -242,9 +245,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("login")
     public void setLogin(String login) {
@@ -252,9 +255,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("id")
     public Integer getId() {
@@ -262,9 +265,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("id")
     public void setId(Integer id) {
@@ -272,9 +275,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("node_id")
     public String getNodeId() {
@@ -282,9 +285,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("node_id")
     public void setNodeId(String nodeId) {
@@ -292,9 +295,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("avatar_url")
     public URI getAvatarUrl() {
@@ -302,9 +305,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("avatar_url")
     public void setAvatarUrl(URI avatarUrl) {
@@ -312,9 +315,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("gravatar_id")
     public String getGravatarId() {
@@ -322,9 +325,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("gravatar_id")
     public void setGravatarId(String gravatarId) {
@@ -332,9 +335,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("url")
     public URI getUrl() {
@@ -342,9 +345,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("url")
     public void setUrl(URI url) {
@@ -352,9 +355,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("html_url")
     public URI getHtmlUrl() {
@@ -362,9 +365,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("html_url")
     public void setHtmlUrl(URI htmlUrl) {
@@ -372,9 +375,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("followers_url")
     public URI getFollowersUrl() {
@@ -382,9 +385,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("followers_url")
     public void setFollowersUrl(URI followersUrl) {
@@ -392,9 +395,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("subscriptions_url")
     public URI getSubscriptionsUrl() {
@@ -402,9 +405,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("subscriptions_url")
     public void setSubscriptionsUrl(URI subscriptionsUrl) {
@@ -412,9 +415,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("organizations_url")
     public URI getOrganizationsUrl() {
@@ -422,9 +425,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("organizations_url")
     public void setOrganizationsUrl(URI organizationsUrl) {
@@ -432,9 +435,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("repos_url")
     public URI getReposUrl() {
@@ -442,9 +445,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("repos_url")
     public void setReposUrl(URI reposUrl) {
@@ -452,9 +455,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("received_events_url")
     public URI getReceivedEventsUrl() {
@@ -462,9 +465,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("received_events_url")
     public void setReceivedEventsUrl(URI receivedEventsUrl) {
@@ -472,9 +475,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("type")
     public String getType() {
@@ -482,9 +485,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("type")
     public void setType(String type) {
@@ -492,9 +495,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("score")
     public Double getScore() {
@@ -502,9 +505,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("score")
     public void setScore(Double score) {
@@ -512,9 +515,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("following_url")
     public String getFollowingUrl() {
@@ -522,9 +525,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("following_url")
     public void setFollowingUrl(String followingUrl) {
@@ -532,9 +535,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("gists_url")
     public String getGistsUrl() {
@@ -542,9 +545,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("gists_url")
     public void setGistsUrl(String gistsUrl) {
@@ -552,9 +555,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("starred_url")
     public String getStarredUrl() {
@@ -562,9 +565,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("starred_url")
     public void setStarredUrl(String starredUrl) {
@@ -572,9 +575,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("events_url")
     public String getEventsUrl() {
@@ -582,9 +585,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("events_url")
     public void setEventsUrl(String eventsUrl) {
@@ -692,9 +695,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("site_admin")
     public Boolean getSiteAdmin() {
@@ -702,9 +705,9 @@ public class User extends Owner {
     }
 
     /**
-     * 
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("site_admin")
     public void setSiteAdmin(Boolean siteAdmin) {
@@ -724,8 +727,8 @@ public class User extends Owner {
     /**
      * Search Result Text Matches
      * <p>
-     * 
-     * 
+     *
+     *
      */
     @JsonProperty("text_matches")
     public List<TextMatch> getTextMatches() {
@@ -735,8 +738,8 @@ public class User extends Owner {
     /**
      * Search Result Text Matches
      * <p>
-     * 
-     * 
+     *
+     *
      */
     @JsonProperty("text_matches")
     public void setTextMatches(List<TextMatch> textMatches) {
@@ -771,6 +774,16 @@ public class User extends Owner {
     @JsonProperty("suspended_at")
     public void setSuspendedAt(Date suspendedAt) {
         this.suspendedAt = suspendedAt;
+    }
+
+    @JsonProperty("contributions")
+    public void setContributions(Integer contributions){
+        this.contributions = contributions;
+    }
+
+    @JsonProperty("contributions")
+    public Integer getContributions(){
+        return contributions;
     }
 
     @JsonAnyGetter

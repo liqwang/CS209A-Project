@@ -1,5 +1,6 @@
 package edu.sustech.search.engine.github.API;
 
+import edu.sustech.search.engine.github.API.rate.RateLimitResult;
 import edu.sustech.search.engine.github.API.search.requests.*;
 import edu.sustech.search.engine.github.models.commit.CommitResult;
 import edu.sustech.search.engine.github.models.issue.IPRResult;
@@ -16,8 +17,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpResponse;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SearchAPI extends RestAPI {
 
@@ -28,12 +27,8 @@ public class SearchAPI extends RestAPI {
     private static String acceptSchema = "application/vnd.github.v3.text-match+json";
     private boolean isProvidingTextMatchEnabled = false;
 
-    private final edu.sustech.search.engine.github.API.RateAPI rateAPI;
-
     SearchAPI(String OAuthToken) {
         super(OAuthToken);
-        rateAPI = new RateAPI(OAuthToken);
-
         logger.info("Initialized " + (OAuthToken != null ? OAuthToken.substring(0, 8) : "<null>") + "...(hidden)");
     }
 
@@ -271,6 +266,7 @@ public class SearchAPI extends RestAPI {
         return searchLoopFetching(request1, null, p, count, timeIntervalMillis);
     }
 
+
     public AppendableResult searchLoopFetching(SearchRequest request1, AppendableResult origin, AppendableResultParser p, int count, long timeIntervalMillis) throws InterruptedException, IOException {
 
         SearchRequest request = new SearchRequest(request1);
@@ -278,41 +274,48 @@ public class SearchAPI extends RestAPI {
         request.setResultPerPage(count);
 
         int cnt = 0;
-        int endPage = Integer.MAX_VALUE;
+        int endPageCount = Integer.MAX_VALUE;
         HttpResponse<String> response;
         AppendableResult result = origin;
 
         logger.warn("Suppressing responses from REST API");
-        setSuppressError(true);
+        setSuppressResponseError(true);
 
-        for (int loopCnt = 1; cnt < count && request.getResultPage() <= endPage; loopCnt++) {
+        for (int loopCnt = 1; cnt < count && request.getResultPage() <= endPageCount; loopCnt++) {
             logger.info("Looping: " + loopCnt);
             response = search(request);
 
-            if (endPage == Integer.MAX_VALUE) {
-                endPage = parseEndPageCount(response);
+            if (endPageCount == Integer.MAX_VALUE) {
+                endPageCount = parseEndPageCount(response);
             }
 
             AppendableResult result1 = p.parse(response.body());
 
-            if (result == null && result1.getItemCount() != 0) {
-                result = result1;
-                cnt = result.getItemCount();
-                request.incrResultPage(1);
-            } else if (result != null) {
+            if (result == null) {
+                if (result1 != null && result1.getItemCount() != 0) {
+                    result = result1;
+                    cnt = result.getItemCount();
+                    request.incrResultPage(1);
+                }
+            } else {
                 int incr = result.appendItems(result1);
                 if (incr != 0) {
                     request.incrResultPage(1);
                     cnt += incr;
                 } else {
-                    printRateLimit(response);
+                    if (!suppressRateError) {
+                        printRateLimit(response);
+                        RateLimitResult res = getRateLimit();
+                        logger.error("The search rate limit has been captured and will be shown on the next error:");
+                        logger.error(res.getResources().getSearch());
+                    }
                 }
             }
 
             logger.info("Result fetched: " + cnt);
 
-            if (cnt < count && request.getResultPage() <= endPage) {
-                logger.info("Waiting on time interval (millis) to fetch the next result: " + timeIntervalMillis);
+            if (cnt < count && request.getResultPage() <= endPageCount) {
+                logger.debug("Waiting on time interval (millis) to fetch the next result: " + timeIntervalMillis);
                 Thread.sleep(timeIntervalMillis);
             }
         }
@@ -320,7 +323,7 @@ public class SearchAPI extends RestAPI {
         request.setResultPage(1);
 
         logger.warn("Recovering responses from REST API");
-        setSuppressError(false);
+        setSuppressResponseError(false);
 
         logger.info("Results have been gathered on request [" + request.getRequestStringRaw() + "]");
 
@@ -361,6 +364,7 @@ public class SearchAPI extends RestAPI {
 
     /**
      * If set to <code>true</code>, the search result will provide text-match metadata.
+     *
      * @param enabled Whether the search result shall enable text-match providing.
      */
     public void setProvidingTextMatch(boolean enabled) {
@@ -370,33 +374,5 @@ public class SearchAPI extends RestAPI {
 
     public static SearchAPI registerAPI(String OAuthToken) {
         return new SearchAPI(OAuthToken);
-    }
-
-    public static int parseEndPageCount(HttpResponse<String> response) {
-        int result = Integer.MAX_VALUE;
-        if (response.headers().firstValue("Link").isPresent()) {
-            try {
-                String s1 = response.headers().firstValue("Link").get();
-                Pattern p1 = Pattern.compile("&page=(\\d+)");
-
-                logger.debug("The given header to read is: " + s1);
-                logger.debug("The given index of the rel=\"last\" is: " + s1.indexOf("rel=\"last\""));
-
-                Matcher matcher1 = p1.matcher(s1.substring((
-                        Math.max(s1.indexOf("rel=\"last\"") - 30, 0) //practice value 30
-                )));
-                if (matcher1.find()) {
-                    String result1 = matcher1.toMatchResult().group(1);
-                    logger.debug("Matcher result: " + result1);
-                    result = Integer.parseInt(result1);
-                }
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            }
-        }
-        if (result != Integer.MAX_VALUE) {
-            logger.info("New end page number found: " + result);
-        }
-        return result;
     }
 }

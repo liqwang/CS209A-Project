@@ -1,5 +1,6 @@
 package edu.sustech.search.engine.github.API;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
@@ -39,14 +40,19 @@ public class RepositoryAPI extends RestAPI {
 
     public List<User> getContributors(URI uri) throws IOException, InterruptedException {
         logger.info("Get contributors list from " + uri);
-        try {
-            return objectMapper.readValue(getHttpResponseRaw(uri), new TypeReference<>() {
-            });
-        } catch (MismatchedInputException e) { //Sometimes you get no input
-            logger.error(e);
-            logger.error("May caused by API issue. Try again.");
-            return new ArrayList<>();
+
+        List<User> result = new ArrayList<>();
+        List<String> responses = getHttpResponseRawLoopFetching(uri, 5);
+        for (String s : responses) {
+            try {
+                List<User> result1 = objectMapper.readValue(s, new TypeReference<>() {
+                });
+                result.addAll(result1);
+            } catch (MismatchedInputException e) { //Sometimes you get no input
+                logger.error(e);
+            }
         }
+        return result;
     }
 
     public List<Entry<User, Date>> getStarGazers(String repoFullName) throws IOException, InterruptedException {
@@ -62,26 +68,32 @@ public class RepositoryAPI extends RestAPI {
         logger.info("Get stargazers list from " + uri);
 
         String acceptSchema = "application/vnd.github.v3.star+json";
-        String result0 = getHttpResponseRaw(uri, acceptSchema);
-        JsonNode rootNode = objectMapper.readTree(result0);
+        List<String> resultResponses = getHttpResponseRawLoopFetching(uri, acceptSchema, 5);
 
         List<Entry<User, Date>> result = new ArrayList<>();
 
-        String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        if (rootNode.isArray()) {
-            logger.debug("Target type is array.");
-            for (final JsonNode arrNode : rootNode) {
-                logger.debug("Processing node:" + arrNode);
-                Date creationDate = null;
-                try {
-                    creationDate = simpleDateFormat.parse(
-                            arrNode.get("starred_at").textValue());
-                } catch (ParseException e) {
-                    logger.error(e);
+        for (String result0 : resultResponses) {
+            JsonNode rootNode = objectMapper.readTree(result0);
+            String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+            if (rootNode.isArray()) {
+                logger.debug("Target type is array.");
+                for (final JsonNode arrNode : rootNode) {
+                    logger.debug("Processing node:" + arrNode);
+                    Date creationDate = null;
+                    try {
+                        creationDate = simpleDateFormat.parse(
+                                arrNode.get("starred_at").textValue());
+                    } catch (ParseException e) {
+                        logger.error(e);
+                    }
+                    User user = null;
+                    convert(arrNode.get("user").toString(), User.class);
+                    if(user!=null) {
+                        result.add(new Entry<>(user, creationDate));
+                    }
                 }
-                User user = convert(arrNode.get("user").toString(), User.class);
-                result.add(new Entry<>(user, creationDate));
             }
         }
         return result;

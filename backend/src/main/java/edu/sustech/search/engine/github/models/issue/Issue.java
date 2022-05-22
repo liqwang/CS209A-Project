@@ -118,11 +118,11 @@ public class Issue {
         this.id = id;
     }
 
-    public Integer getNodeId() {
+    public String getNodeId() {
         return nodeId;
     }
 
-    public void setNodeId(Integer nodeId) {
+    public void setNodeId(String nodeId) {
         this.nodeId = nodeId;
     }
 
@@ -380,7 +380,7 @@ public class Issue {
      * (Required)
      */
     @JsonProperty("node_id")
-    private Integer nodeId;
+    private String nodeId;
 
     /**
      * (Required)

@@ -1,6 +1,7 @@
 package edu.sustech.backend.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.sustech.backend.entities.DependencyData;
 import edu.sustech.backend.service.models.BarChartItem;
@@ -13,7 +14,9 @@ import edu.sustech.search.engine.github.models.Entry;
 import edu.sustech.search.engine.github.models.code.CodeItem;
 import edu.sustech.search.engine.github.models.code.CodeResult;
 import edu.sustech.search.engine.github.models.issue.IPRResult;
+import edu.sustech.search.engine.github.models.issue.Issue;
 import edu.sustech.search.engine.github.models.repository.Repository;
+import edu.sustech.search.engine.github.models.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,11 +28,16 @@ import java.util.*;
 
 
 public class BackendService {
-    private static final int LOCAL_UPDATE_INTERVAL_MILLIS = 60000;
+    private static final int LOCAL_MAJOR_UPDATE_INTERVAL_MILLIS = 15000;
+    private static final int LOCAL_ITEM_UPDATE_INTERVAL_MILLIS = 1000;
 
     private static final Logger logger = LogManager.getLogger(BackendService.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
+
+    static {
+        gitHubAPI.searchAPI.setSuppressRateError(true);
+    }
 
 
     public static void updateLocalData() throws IOException, InterruptedException {
@@ -43,23 +51,84 @@ public class BackendService {
         updateLocalLog4jIPRData();
     }
 
-    private static DependencyData data;
+
+    private static List<Issue> log4jIssues;
+
+    //todo: add a method to acquire the data for charts.
+
+    public static IPRResult readLocalLog4jIPRData() throws IOException {
+        logger.info("Reading local log4j issues and pull requests data");
+        return objectMapper.readValue(new File("data/Log4jIssueAnalysis/Entries/log4jiprdata.json"), IPRResult.class);
+    }
+
+    public static void updateLocalLog4jIPRData() throws IOException, InterruptedException {
+        logger.info("Updating local log4j issues and pull requests data");
+
+        IPRSearchRequest req = IPRSearchRequest.newBuilder()
+                .addSearchKeyword("log4j")
+                .build();
+
+        IPRResult result = gitHubAPI.searchAPI.searchIPR(req, 3000, LOCAL_MAJOR_UPDATE_INTERVAL_MILLIS);
+        if (result != null) {
+            for (Issue i : result) {
+                log4jIssues.add(i);
+            }
+        }
+
+        PrintWriter pw = new PrintWriter("data/Log4jIssueAnalysis/Entries/log4jiprdata.json");
+        pw.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(log4jIssues));
+        pw.close();
+        logger.info("Updated local log4j issues and pull requests data");
+    }
+
+    /**
+     * For storing the dependency data acquired.
+     */
+    private static DependencyData dependencyData;
+
+    public static DependencyData getDependencyData() {
+        return dependencyData;
+    }
+
+    public static String getDependencyUsageWithLocation() {
+        /**
+         * String for artifactId
+         * List of String for locations
+         */
+        HashMap<String, List<String>> locationMap = new HashMap<>();
+        if (dependencyData == null) {
+            try {
+                dependencyData = BackendService.readLocalDependencyData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (dependencyData != null) {
+
+            try {
+                return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(locationMap);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        return "Internal parsing failure.";
+    }
 
     public static String getTopUsedDependencies() {
 
-        if (data == null) {
+        if (dependencyData == null) {
             try {
-                data = BackendService.readLocalDependencyData();
+                dependencyData = BackendService.readLocalDependencyData();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        if (data != null) {
+        if (dependencyData != null) {
             HashMap<String, Integer> dependencyMap = new HashMap<>();
 
-            data.getData().stream().forEach(e -> {
-                List<Dependency> list = e.getValue();
+            dependencyData.getData().stream().forEach(e -> {
+                List<Dependency> list = e.getValue().getValue();
                 for (Dependency d : list) {
                     Integer cnt = dependencyMap.get(d.artifactId());
                     if (cnt == null) {
@@ -89,18 +158,18 @@ public class BackendService {
 
     //todo: give ranking options for top used dependencies
 
-    public static String getAvailableGroupSelections(){
+    public static String getAvailableGroupSelections() {
         HashSet<String> groupList = new HashSet<>();
-        if (data == null) {
+        if (dependencyData == null) {
             try {
-                data = BackendService.readLocalDependencyData();
+                dependencyData = BackendService.readLocalDependencyData();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        if (data != null) {
-            data.getData().stream().forEach(e -> {
-                List<Dependency> list = e.getValue();
+        if (dependencyData != null) {
+            dependencyData.getData().stream().forEach(e -> {
+                List<Dependency> list = e.getValue().getValue();
                 for (Dependency d : list) {
                     groupList.add(d.groupId());
                 }
@@ -116,18 +185,19 @@ public class BackendService {
     }
 
     //todo: finish this
+
     public static String getAvailableDependencySelections() {
         HashSet<String> dependencyList = new HashSet<>();
-        if (data == null) {
+        if (dependencyData == null) {
             try {
-                data = BackendService.readLocalDependencyData();
+                dependencyData = BackendService.readLocalDependencyData();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        if (data != null) {
-            data.getData().stream().forEach(e -> {
-                List<Dependency> list = e.getValue();
+        if (dependencyData != null) {
+            dependencyData.getData().stream().forEach(e -> {
+                List<Dependency> list = e.getValue().getValue();
                 for (Dependency d : list) {
                     dependencyList.add(d.artifactId());
                 }
@@ -142,33 +212,36 @@ public class BackendService {
         return "Internal parsing failure";
     }
 
-    public static IPRResult readLocalLog4jIPRData() throws IOException {
-        logger.info("Reading local log4j issues and pull requests data");
-
-        return objectMapper.readValue(new File("backend/data/log4jiprdata.json"), IPRResult.class);
-    }
-
-    public static void updateLocalLog4jIPRData() throws IOException, InterruptedException {
-        logger.info("Updating local log4j issues and pull requests data");
-
-        IPRSearchRequest req = IPRSearchRequest.newBuilder()
-                .addSearchKeyword("log4j")
-                .build();
-
-        IPRResult result1 = gitHubAPI.searchAPI.searchIPR(req, 3000, LOCAL_UPDATE_INTERVAL_MILLIS);
-
-        PrintWriter pw = new PrintWriter("backend/data/log4jiprdata.json");
-        pw.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result1));
-        pw.close();
-        logger.info("Updated local log4j issues and pull requests data");
-    }
-
     public static DependencyData readLocalDependencyData() throws IOException {
         logger.info("Reading local dependency data");
-        return objectMapper.readValue(new File("backend/data/dependency_data.json"), DependencyData.class);
+        DependencyData data = new DependencyData();
+        File dir = new File("data/DependencyAnalysis/Entries");
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                String fileName = f.getName();
+                if (fileName.contains("DependencyDataEntry")) {
+                    Entry<Repository, Entry<List<User>, List<Dependency>>> entry = null;
+                    try {
+                        entry = objectMapper.readValue(f, new TypeReference<>() {
+                        });
+                    } catch (JsonProcessingException e) {
+                        logger.error(e);
+                    }
+                    if (entry != null) {
+                        data.getData().add(entry);
+                    }
+                }
+            }
+        }
+        return data;
     }
 
     public static void updateLocalDependencyData() throws IOException, InterruptedException {
+        updateLocalDependencyData(1000);
+    }
+
+    public static void updateLocalDependencyData(int count) throws IOException, InterruptedException {
         logger.info("Updating local dependency data");
 
         CodeSearchRequest req1 = CodeSearchRequest.newBuilder()
@@ -176,41 +249,58 @@ public class BackendService {
                 .addLanguageOption("Maven POM")
                 .build();
 
-        CodeResult result1 = gitHubAPI.searchAPI.searchCode(req1, 1000, LOCAL_UPDATE_INTERVAL_MILLIS);
+        CodeResult result1 = gitHubAPI.searchAPI.searchCode(req1, count, LOCAL_MAJOR_UPDATE_INTERVAL_MILLIS);
 
         DependencyData data = new DependencyData();
 
+        File file = new File("data/DependencyAnalysis/Entries/");
+        if(!file.exists()){
+            if(!file.mkdirs()){
+                throw new IOException("Failed to create Entries directory");
+            }
+        }
+
+        int cnt = 0;
         for (CodeItem item : result1) {
             Repository r = item.getRepository();
 
             List<Dependency> ls = null;
             try {
                 ls = Analyzer.parseDependency(gitHubAPI.fileAPI.getFileRaw(item.getRawFileURI()));
-                Thread.sleep(600);
             } catch (Exception e) {
                 logger.error("Error encountered during parsing, ", e);
+            } finally {
+                Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
             }
-            data.getData().add(new Entry<>(r, ls));
+
+            List<User> usr = null;
+            try {
+                usr = gitHubAPI.repositoryAPI.getContributors(r);
+            } catch (Exception e) {
+                logger.error("Error encountered during parsing, ", e);
+            } finally {
+                Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
+            }
+            Entry<Repository, Entry<List<User>, List<Dependency>>> entry = new Entry<>(r, new Entry<>(usr, ls));
+            data.getData().add(entry);
+
+            PrintWriter pw = new PrintWriter("data/DependencyAnalysis/Entries/DependencyDataEntry_" + (cnt++) + ".json");
+            pw.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(entry));
+            pw.close();
         }
 
-        BackendService.data = data;
+        BackendService.dependencyData = data;
 
-        PrintWriter pw = new PrintWriter("backend/data/dependency_data.json");
-        pw.write(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(data));
-        pw.close();
+
         logger.info("Updated local dependency data");
     }
 
 
-    public static void testWrite() {
-        try {
-            PrintWriter pw = new PrintWriter("backend/data/test.json");
-            pw.write("Test write ok.");
-            pw.close();
-            logger.info("Test write ok.");
-        } catch (FileNotFoundException e) {
-            logger.error("Test write failed.");
-            logger.error(e);
-        }
+    public static void testWrite() throws FileNotFoundException {
+        logger.info("The current backend file location is " + new File("").getAbsolutePath());
+        PrintWriter pw = new PrintWriter("data/test.json");
+        pw.write("Test write ok.");
+        pw.close();
+        logger.info("Test write ok.");
     }
 }
