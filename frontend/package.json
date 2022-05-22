@@ -32,8 +32,10 @@
     "vue": "^3.2.13",
     "vue-chartjs": "^4.0.2",
     "vue-cli": "^2.9.6",
+    "vue-geo-heat-maps": "^0.2.13",
     "vue-perfect-scrollbar": "^0.2.1",
     "vue-router": "^4.0.3",
+    "vue-world-map": "^0.1.1",
     "vue3-apexcharts": "^1.4.1",
     "vue3-perfect-scrollbar": "^1.6.0",
     "yarn": "^1.22.18"

@@ -35,6 +35,31 @@
       </h1>
     </div>
     <!-- grid wrapper card -->
+
+    <div class="mt-5 w-full">
+      <h1 class="text-2xl text-gray-900 dark:text-gray-200 font-medium">
+        Heat Map
+      </h1>
+    </div>
+
+    <div>
+      <Map :country-data="{
+        US: 100,
+        CA: 120,
+        UK: 400,
+      }"/>
+    </div>
+
+    <div class="mt-5 w-full">
+      <h1 class="text-2xl text-gray-900 dark:text-gray-200 font-medium">
+        Heat Map Test 2
+      </h1>
+    </div>
+
+    <div class="chartdiv">
+
+    </div>
+
     <div
         class="wrapper-card grid lg:grid-cols-4 grid-cols-1 md:grid-cols-2 gap-2 mt-5"
     >
@@ -432,6 +457,14 @@
 <script>
 // @ is an alias to /src
 import {Icon} from "@iconify/vue";
+import Map from 'vue-world-map';
+import * as am5 from "@amcharts/amcharts5";
+import * as am5map from "@amcharts/amcharts5/map";
+
+var root = am5.Root.new("chartdiv");
+var chart = root.container.children.push(
+    am5map.MapChart.new(root, {})
+);
 
 export default {
   name: "Dashboard",
@@ -621,6 +654,7 @@ export default {
   },
   components: {
     Icon,
+    Map
   },
   inject: ['axios']
   ,
