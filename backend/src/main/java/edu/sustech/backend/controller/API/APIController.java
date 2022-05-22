@@ -54,8 +54,8 @@ public class APIController {
             @RequestParam("group") String group,
             @RequestParam("arifact") String artifact,
             @RequestParam(value = "date",required = false) Date date){
-        backendService.getTopUsedVersions(group,artifact,date);
-
+        String s = backendService.getTopUsedVersions(group, artifact, date);
+        return ResponseEntity.ok(s);
     }
 
     @CrossOrigin
@@ -79,7 +79,6 @@ public class APIController {
         backendService.updateLocalData();
         status = UpdateStatus.SUCCESS;
     }
-
 
     /**
      * Used for verifying the response received by Axios

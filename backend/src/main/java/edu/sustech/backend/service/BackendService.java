@@ -158,10 +158,9 @@ public class BackendService {
                     Repository repo = e.getKey();
                     if(date!=null && !repo.getCreatedAt().equals(date)){return;}
                     List<Dependency> list = e.getValue().getValue();
-                    if(group!=null)
-                        list.removeIf(d->!d.groupId().equals(group));
+                    list.removeIf(d->!d.groupId().equals(group)||!d.artifactId().equals(artifact));
                     for (Dependency d : list)
-                        put(d.artifactId(),getOrDefault(d.artifactId(),0)+1);
+                        put(d.version(),getOrDefault(d.version(),0)+1);
                 });
             }};
 
@@ -303,10 +302,9 @@ public class BackendService {
                 Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
             }
             if (userList != null) {
-                for (int i = 0; i < userList.size(); i++) {
-                    User user0 = userList.get(i);
-                    User rep = gitHubAPI.userAPI.getUser(user0.getUrl());
-                    user0.setLocation(rep.getLocation());
+                for (User user : userList) {
+                    User rep = gitHubAPI.userAPI.getUser(user.getUrl());
+                    user.setLocation(rep.getLocation());
                     Thread.sleep(LOCAL_MINOR_UPDATE_INTERVAL_MILLIS);
                 }
             }
