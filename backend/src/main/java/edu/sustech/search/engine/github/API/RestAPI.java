@@ -197,7 +197,6 @@ public class RestAPI {
         int deadLockCount = 0;
         do {
             response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
             if (response.statusCode() != 200) {
 
 

@@ -40,17 +40,17 @@ public class APIController {
     @RequestMapping("data/top-used-dependencies")
     public ResponseEntity<String> getTopUsedDependencies(
             @RequestParam(value = "group", required = false) String group,
-            @RequestParam(value = "date", required = false) Date date,
+            @RequestParam(value = "year", required = false) Integer year,
             @RequestParam(value = "count", required = false, defaultValue = "10") Integer count) {
-        String s = backendService.getTopUsedDependencies(group, date, count);
+        String s = backendService.getTopUsedDependencies(group, year, count);
         return ResponseEntity.ok(s);
     }
 
     @CrossOrigin
     @RequestMapping("data/top-used-version")
     public ResponseEntity<String> getTopUsedVersion(
-            @RequestParam("group") String group,
-            @RequestParam("arifact") String artifact,
+            @RequestParam(value = "group", required = false) String group,
+            @RequestParam(value = "artifact",required = false) String artifact,
             @RequestParam(value = "year", required = false) Integer year) {
         String s = backendService.getTopUsedVersions(group, artifact, year);
         return ResponseEntity.ok(s);

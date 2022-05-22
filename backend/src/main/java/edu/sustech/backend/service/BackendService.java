@@ -119,7 +119,7 @@ public class BackendService {
         return "Internal parsing failure.";
     }
 
-    public String getTopUsedDependencies(@Nullable String group, @Nullable Date date, int dataCount) {
+    public String getTopUsedDependencies(@Nullable String group, @Nullable Integer year, int dataCount) {
         if (dependencyData == null) {
             try {
                 dependencyData = readLocalDependencyData();
@@ -131,7 +131,7 @@ public class BackendService {
             HashMap<String, Integer> dependencyMap = new HashMap<>() {{
                 dependencyData.getData().forEach(e -> {
                     Repository repo = e.getKey();
-                    if (date != null && !repo.getCreatedAt().equals(date)) {
+                    if (year != null && !(repo.getCreatedAt().toInstant().atZone(ZoneId.systemDefault()).getYear() == year)) {
                         return;
                     }
                     List<Dependency> list = e.getValue().getValue();
@@ -166,6 +166,8 @@ public class BackendService {
                 e.printStackTrace();
             }
         }
+        System.out.println(group);
+        System.out.println(artifact);
         if (dependencyData != null) {
             HashMap<String, Integer> versionMap = new HashMap<>() {{
                 dependencyData.getData().forEach(e -> {
@@ -174,7 +176,12 @@ public class BackendService {
                         return;
                     }
                     List<Dependency> list = e.getValue().getValue();
-                    list.removeIf(d -> !d.groupId().equals(group) || !d.artifactId().equals(artifact));
+                    if (group != null) {
+                        list.removeIf(d -> !d.groupId().equals(group));
+                    }
+                    if (artifact != null) {
+                        list.removeIf(d -> !d.artifactId().equals(artifact));
+                    }
                     for (Dependency d : list)
                         put(d.version(), getOrDefault(d.version(), 0) + 1);
                 });
@@ -182,6 +189,7 @@ public class BackendService {
 
             List<BarChartItem<String, Integer>> result = new ArrayList<>();
 
+            versionMap.put("<null>", versionMap.remove(null));
             versionMap.entrySet().stream()
                     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                     .limit(10)

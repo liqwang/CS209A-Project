@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard p-4">
+  <div class="Online_Test p-4">
     <nav class="flex" aria-label="Breadcrumb">
       <ol class="inline-flex items-center space-x-1 md:space-x-3">
         <li class="inline-flex items-center">
@@ -17,7 +17,7 @@
                   d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
               ></path>
             </svg>
-            Dashboard
+            Online_Test
           </a>
         </li>
       </ol>
@@ -25,7 +25,7 @@
     <!-- end nav -->
     <div class="mt-5 w-full">
       <h1 class="text-2xl text-gray-900 dark:text-gray-200 font-medium">
-        CS209A Data Visualization Project Dashboard
+        CS209A Data Visualization Project Online_Test
       </h1>
     </div>
 
@@ -35,33 +35,6 @@
       </h1>
     </div>
     <!-- grid wrapper card -->
-
-    <div class="mt-5 w-full">
-      <h1 class="text-2xl text-gray-900 dark:text-gray-200 font-medium">
-        Heat Map
-      </h1>
-    </div>
-
-    <div>
-      <Map :country-data="{
-        US: 100,
-        CA: 120,
-        UK: 400,
-      }"/>
-    </div>
-    <div>
-      <button>Update</button>
-    </div>
-    <div class="mt-5 w-full">
-      <h1 class="text-2xl text-gray-900 dark:text-gray-200 font-medium">
-        Heat Map Test 2
-      </h1>
-    </div>
-
-    <div class="chartdiv">
-
-    </div>
-
     <div
         class="wrapper-card grid lg:grid-cols-4 grid-cols-1 md:grid-cols-2 gap-2 mt-5"
     >
@@ -251,47 +224,19 @@
           }"
         ></apexchart>
         <div class="wrapper-button mt-3">
-          <div>
-            <span>Year</span>
-            <select
-                id="YearOption"
-                class="dark:bg-gray-800 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-300 border max-w-lg px-4 py-3 block rounded-md text-gray-500 dark:text-gray-400"
-                v-on:change="handle">
-              <option value="0" disabled selected>Choose your year</option>
-              <option value=2022>2022</option>
-              <option value=2021>2021</option>
-              <option value=2020>2020</option>
-              <option value=2019>2019</option>
-              <option value=2018>2018</option>
-              <option value=2017>2017</option>
-              <option value=2016>2016</option>
-              <option value=2015>2015</option>
-              <option value=2014>2014</option>
-            </select>
-          </div>
-
+          <select
+              name=""
+              id=""
+              class="dark:bg-gray-800 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-300 border max-w-lg px-4 py-3 block rounded-md text-gray-500 dark:text-gray-400"
+          >
+            <option value="">Last 7 years</option>
+          </select>
           <button
-              class="float-middle -mt-7 border-b border-blue-300 text-blue-500"
-              v-on:click="updateTopUsedDependency"
+              class="uppercase float-right -mt-7 border-b border-green-600 text-green-600"
+              v-on:click="updateLocalData"
           >
             Refresh
           </button>
-          <br>
-          <div>
-            <button
-                class="float-middle -mt-7 border-b border-green-600 text-green-600"
-                v-on:click="updateTopUsedVersion"
-            >
-              TopUsed
-            </button>
-            <br>
-            <button
-                class="float-center -mt-7 border-b border-red-600 text-red-600"
-                v-on:click="updateArtifactByGroupId"
-            >
-              updateArtifactByGroupId
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -472,6 +417,7 @@
             id=""
             class="dark:bg-gray-800 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-300 border max-w-lg px-4 py-3 block rounded-md text-gray-500 dark:text-gray-400"
         >
+          <option value="">Last 7 hours</option>
         </select>
         <button
             class="uppercase float-right -mt-7 border-b border-gray-700 text-gray-600"
@@ -484,17 +430,13 @@
 </template>
 
 <script>
-
 // @ is an alias to /src
 import {Icon} from "@iconify/vue";
-import Map from 'vue-world-map';
-import Button from "@/views/components/button";
 
 export default {
-  name: "Dashboard",
+  name: "Online_Test",
   data() {
     return {
-      Year: 2022,
       // for more guide apexchart.js
       // https://apexcharts.com/docs/chart-types/line-chart/
 
@@ -678,42 +620,16 @@ export default {
     // end chart data line
   },
   components: {
-    Button,
     Icon,
-    Map
   },
   inject: ['axios']
   ,
   methods: {
-    handle() {
-      const e = document.getElementById("YearOption");
-      const year = e.options[e.selectedIndex].value;
-      let component = this
-      this.axios //Automatically
-          .get("/data/top-used-dependencies?", {params: {"group": null, "artifact": null, "year": year}})
-          .then(successResponse => {
-            // console.log(successResponse.data)
-            if (successResponse.status === 200) {
-              //Modify data there
-              console.log("Success")
-              console.log(successResponse.data)
-              console.log("End success response")
-              component.topUsedDependencyData.series[0].data = successResponse.data
-              console.log(component.topUsedDependencyData)
-
-            }
-          })
-          .catch(failResponse => {
-            console.log(0)
-            console.log('Error on retrieving data.')
-            console.log(failResponse);
-          })
-    },
     //Get the response from backend
-    updateTopUsedDependency() {
+    updateLocalData() {
       let component = this
       this.axios //Automatically
-          .get('/data/top-used-dependencies')
+          .get('/update_all')
           .then(successResponse => {
             console.log(successResponse.data)
             if (successResponse.status === 200) {
@@ -726,26 +642,6 @@ export default {
             console.log('Error on retrieving data.')
             console.log(failResponse);
           })
-    },
-    updateTopUsedVersion() {
-      let component = this
-      this.axios //Automatically
-          .get('/data/top-used-version')
-          .then(successResponse => {
-            console.log(successResponse.data)
-            if (successResponse.status === 200) {
-              //Modify data there
-              component.topUsedDependencyData.series[0].data = successResponse.data
-              console.log(component.topUsedDependencyData)
-            }
-          })
-          .catch(failResponse => {
-            console.log('Error on retrieving data.')
-            console.log(failResponse);
-          })
-    },
-    updateArtifactByGroupId() {
-
     }
   },
   mounted: function () {

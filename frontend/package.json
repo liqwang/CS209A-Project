@@ -17,11 +17,13 @@
   "author": "Mohammad Sahrullah",
   "license": "MIT",
   "dependencies": {
+    "@amcharts/amcharts5": "^5.2.5",
     "apexcharts": "^3.34.0",
     "autoprefixer": "^10",
     "axios": "^0.27.2",
     "chart.js": "^3.7.1",
     "core-js": "^3.8.3",
+    "echarts": "^5.3.2",
     "flowbite": "^1.4.1",
     "lodash": "^4.17.21",
     "perfect-scrollbar": "^1.5.5",

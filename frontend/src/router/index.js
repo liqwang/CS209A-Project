@@ -9,6 +9,7 @@ import Vbadges from "../views/components/badges.vue";
 import Vbreadcumb from "../views/components/breadcumbs.vue";
 import Vbutton from "../views/components/button.vue";
 import Vcard from "../views/components/card.vue";
+import Online_Test from "@/views/components/Online_Test";
 var appname = " - CS209A Project Test Page";
 
 
@@ -59,6 +60,12 @@ const routes = [
     component: Vcard,
     meta: { title: "Card" + appname },
   },
+  {
+    path: "/component/Online_Test",
+    name: "Online_Test",
+    component: Online_Test,
+    meta: { title: "Online_Test" + appname },
+  }
 ];
 
 const router = createRouter({
