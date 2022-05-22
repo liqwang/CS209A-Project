@@ -1,4 +1,4 @@
-package edu.sustech.backend.entities;
+package edu.sustech.backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.sustech.search.engine.github.models.Dependency;
