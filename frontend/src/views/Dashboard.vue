@@ -458,13 +458,6 @@
 // @ is an alias to /src
 import {Icon} from "@iconify/vue";
 import Map from 'vue-world-map';
-import * as am5 from "@amcharts/amcharts5";
-import * as am5map from "@amcharts/amcharts5/map";
-
-var root = am5.Root.new("chartdiv");
-var chart = root.container.children.push(
-    am5map.MapChart.new(root, {})
-);
 
 export default {
   name: "Dashboard",
