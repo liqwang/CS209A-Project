@@ -187,15 +187,18 @@ Melbourne
 Queensland
 Brisbane
 
+RU
 Russia
 Stalingrad
 Moscow
 Vladivostok
 St. Petersburg
 
+MN
 Mongolia
 Ulaanbaatar
 
+IN
 India
 Nagpur
 Mumbai
@@ -203,20 +206,24 @@ New Delhi
 Calcutta
 Bangalore
 
+MM
 Myanmar
 Naypyitaw
 Nay Pyi Taw
 Nay pyi taw
 
+TH
 Thailand
 Bangkok
 
-
+ID
 Indonesia
 
+NZ
 New Zealand
 Wellington
 
+CA
 Canada
 Waterloo
 Ottawa
@@ -237,6 +244,7 @@ Manitoba
 Brandon City
 Ontario
 
+MX
 Mexico
 Ekatipe
 Puebla
@@ -245,43 +253,53 @@ Ciudad Juarez
 Tijuana
 Culiacan
 
+AR
 Argentina
 Buenos Aires
 Rosario
 Ushuaia
 
+BR
 Brazil
 Brasilia
 Sao Paulo
 Rio de Janeiro
 Salvador
 
+PE
 Peru
 Perú
 Lima
 Ica
 
+SA
 Saudi
 KAUST
 Saudi Jeddah
 
+AE
 United Arab Emirates
 Dubai
 
+KZ
 Kazakhstan
 
+IR
 Iran
 Tehran
 
+TR
 Turkey
 Istanbul
 Ankara
 
+ZA
 South Africa
 Johannesburg
 Durban
 Cape Town
 
+UA
 Ukraine
 Kyiv
 Kharkiv
@@ -289,33 +307,39 @@ Lviv
 Vinnitsa
 Warren
 
+FI
 Finland
 Helsinki
 Espoo
 Tampere
 Turku
 
+SE
 Sweden
 Stockholm
 Gothenburg
 Malmo
 Uppsala
 
+NO
 Norway
 Oslo
 Akershus
 East Fall
 Hedmark
 
+PL
 Poland
 Warsaw
 Gdansk
 
+EG
 Egypt
 Cairo
 Alexander
 Ismailia
 
+GB
 United Kingdom
 UK
 U.K
@@ -333,12 +357,15 @@ Birmingham
 Oxford
 Cambridge
 
+IE
 Ireland
 Dublin
 
+PT
 Portugal
 Lisbon
 
+ES
 Spain
 Madrid
 Barcelona
@@ -350,6 +377,7 @@ Cordoba
 Toledo
 Santiago de Compostela
 
+IT
 Italy
 Rome
 Milan
@@ -363,6 +391,7 @@ Venice
 Bari
 Catania
 
+FR
 France
 Paris
 Marseille
@@ -376,6 +405,7 @@ Cannes
 Orléans
 Orleans
 
+DE
 Germany
 Dortmund
 Braunschweig
@@ -388,20 +418,24 @@ Koln
 Aachen
 Weinheim
 
+HR
 Croatia
 Zagreb
 
+BE
 Belgium
 Liège
 Liege
 Brussel
 Bruxelle
 
+NL
 Netherlands
 Amsterdam
 Hague
 Rotterdam
 
+CZ
 Czech
 Prague
 Brno
@@ -413,6 +447,7 @@ Olomouc
 Hradec Králové
 Ústí nad Labem
 
+CH
 Switzerland
 Zurich
 Geneva
@@ -420,6 +455,7 @@ Basel
 Bern
 St Gallen
 
+AT
 Austria
 Vienna
 Graz
@@ -428,40 +464,50 @@ Innsbruck
 Klagenfurt
 Villach
 
+SK
 Slovakia
 Bratislava
 Kosice
 Presov
 Nitra
 
+HU
 Hungary
 Debrecen
 Pecs
 Miskolc
 
+BY
 Belarus
 Minsk
 
+LT
 Lithuania
 Vilnius
 
+LV
 Latvia
 Riga
 
+EE
 Estonia
 Tallinn
 
+RO
 Romania
 Bucharest
 Brasov
 Timisoara
 
+BG
 Bulgaria
 Sofia
 
+RS
 Serbia
 Belgrade
 
+GR
 Greece
 Athen
 Thessaloniki
@@ -470,26 +516,34 @@ Heraklion
 Lárisa
 Larisa
 
+CL
 Chile
 Santiago
 
+PY
 Paraguay
 Asuncion
 
+UY
 Uruguay
 Montevideo
 
+BO
 Bolivia
 La Paz
 
+VE
 Venezuela
 Caracas
 
+MY
 Malaysia
 Kuala Lumpur
 
-Vietnam
+VN
+Viet Nam
 Hanoi
 
+BD
 Bangladesh
 Dhaka
