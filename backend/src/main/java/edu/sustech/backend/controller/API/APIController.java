@@ -38,7 +38,7 @@ public class APIController {
     public UpdateStatus status = UpdateStatus.NOT_INITIATED;
 
     @CrossOrigin
-    @RequestMapping("data/top_used_dependencies")
+    @RequestMapping("data/top-used-dependencies")
     public ResponseEntity<String> getTopUsedDependencies() {
         String s = BackendService.getTopUsedDependencies();
         new Thread(()->{

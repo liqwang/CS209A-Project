@@ -30,6 +30,7 @@ import java.util.*;
 public class BackendService {
     private static final int LOCAL_MAJOR_UPDATE_INTERVAL_MILLIS = 15000;
     private static final int LOCAL_ITEM_UPDATE_INTERVAL_MILLIS = 1000;
+    private static final int LOCAL_MINOR_UPDATE_ITERVAL_MILLIS = 400;
 
     private static final Logger logger = LogManager.getLogger(BackendService.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -254,8 +255,8 @@ public class BackendService {
         DependencyData data = new DependencyData();
 
         File file = new File("data/DependencyAnalysis/Entries/");
-        if(!file.exists()){
-            if(!file.mkdirs()){
+        if (!file.exists()) {
+            if (!file.mkdirs()) {
                 throw new IOException("Failed to create Entries directory");
             }
         }
@@ -273,15 +274,23 @@ public class BackendService {
                 Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
             }
 
-            List<User> usr = null;
+            List<User> userList = null;
             try {
-                usr = gitHubAPI.repositoryAPI.getContributors(r);
+                userList = gitHubAPI.repositoryAPI.getContributors(r);
             } catch (Exception e) {
                 logger.error("Error encountered during parsing, ", e);
             } finally {
                 Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
             }
-            Entry<Repository, Entry<List<User>, List<Dependency>>> entry = new Entry<>(r, new Entry<>(usr, ls));
+            if (userList != null) {
+                for (int i = 0; i < userList.size(); i++) {
+                    User user0 = userList.get(i);
+                    User rep = gitHubAPI.userAPI.getUser(user0.getUrl());
+                    user0.setLocation(rep.getLocation());
+                    Thread.sleep(LOCAL_MINOR_UPDATE_ITERVAL_MILLIS);
+                }
+            }
+            Entry<Repository, Entry<List<User>, List<Dependency>>> entry = new Entry<>(r, new Entry<>(userList, ls));
             data.getData().add(entry);
 
             PrintWriter pw = new PrintWriter("data/DependencyAnalysis/Entries/DependencyDataEntry_" + (cnt++) + ".json");

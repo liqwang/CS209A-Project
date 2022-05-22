@@ -629,7 +629,7 @@ export default {
     updateTopUsedDependency() {
       let component = this
       this.axios //Automatically
-          .get('/top_used_dependencies')
+          .get('/data/top-used-dependencies')
           .then(successResponse => {
             console.log(successResponse.data)
             if (successResponse.status === 200) {
