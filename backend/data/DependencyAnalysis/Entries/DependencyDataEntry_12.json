@@ -1,0 +1,202 @@
+{
+  "key" : {
+    "id" : 46294850,
+    "node_id" : "MDEwOlJlcG9zaXRvcnk0NjI5NDg1MA==",
+    "name" : "xcncip2toolkit",
+    "full_name" : "timmcgeary/xcncip2toolkit",
+    "owner" : {
+      "login" : "timmcgeary",
+      "id" : 13484694,
+      "node_id" : "MDQ6VXNlcjEzNDg0Njk0",
+      "avatar_url" : "https://avatars.githubusercontent.com/u/13484694?v=4",
+      "gravatar_id" : "",
+      "url" : "https://api.github.com/users/timmcgeary",
+      "html_url" : "https://github.com/timmcgeary",
+      "followers_url" : "https://api.github.com/users/timmcgeary/followers",
+      "following_url" : "https://api.github.com/users/timmcgeary/following{/other_user}",
+      "gists_url" : "https://api.github.com/users/timmcgeary/gists{/gist_id}",
+      "starred_url" : "https://api.github.com/users/timmcgeary/starred{/owner}{/repo}",
+      "subscriptions_url" : "https://api.github.com/users/timmcgeary/subscriptions",
+      "organizations_url" : "https://api.github.com/users/timmcgeary/orgs",
+      "repos_url" : "https://api.github.com/users/timmcgeary/repos",
+      "events_url" : "https://api.github.com/users/timmcgeary/events{/privacy}",
+      "received_events_url" : "https://api.github.com/users/timmcgeary/received_events",
+      "type" : "User",
+      "site_admin" : false
+    },
+    "private" : false,
+    "html_url" : "https://github.com/timmcgeary/xcncip2toolkit",
+    "description" : "Automatically exported from code.google.com/p/xcncip2toolkit",
+    "fork" : false,
+    "url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit",
+    "created_at" : 1447699711000,
+    "updated_at" : 1447699775000,
+    "pushed_at" : 1447699874000,
+    "size" : 3667,
+    "stargazers_count" : 0,
+    "watchers_count" : 0,
+    "language" : "Java",
+    "forks_count" : 0,
+    "open_issues_count" : 0,
+    "default_branch" : "master",
+    "forks_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/forks",
+    "keys_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/keys{/key_id}",
+    "collaborators_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/collaborators{/collaborator}",
+    "teams_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/teams",
+    "hooks_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/hooks",
+    "issue_events_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/issues/events{/number}",
+    "events_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/events",
+    "assignees_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/assignees{/user}",
+    "branches_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/branches{/branch}",
+    "tags_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/tags",
+    "blobs_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/git/blobs{/sha}",
+    "git_tags_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/git/tags{/sha}",
+    "git_refs_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/git/refs{/sha}",
+    "trees_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/git/trees{/sha}",
+    "statuses_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/statuses/{sha}",
+    "languages_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/languages",
+    "stargazers_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/stargazers",
+    "contributors_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/contributors",
+    "subscribers_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/subscribers",
+    "subscription_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/subscription",
+    "commits_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/commits{/sha}",
+    "git_commits_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/git/commits{/sha}",
+    "comments_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/comments{/number}",
+    "issue_comment_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/issues/comments{/number}",
+    "contents_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/contents/{+path}",
+    "compare_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/compare/{base}...{head}",
+    "merges_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/merges",
+    "archive_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/{archive_format}{/ref}",
+    "downloads_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/downloads",
+    "issues_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/issues{/number}",
+    "pulls_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/pulls{/number}",
+    "milestones_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/milestones{/number}",
+    "notifications_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/notifications{?since,all,participating}",
+    "labels_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/labels{/name}",
+    "releases_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/releases{/id}",
+    "deployments_url" : "https://api.github.com/repos/timmcgeary/xcncip2toolkit/deployments",
+    "git_url" : "git://github.com/timmcgeary/xcncip2toolkit.git",
+    "ssh_url" : "git@github.com:timmcgeary/xcncip2toolkit.git",
+    "clone_url" : "https://github.com/timmcgeary/xcncip2toolkit.git",
+    "svn_url" : "https://github.com/timmcgeary/xcncip2toolkit",
+    "forks" : 0,
+    "open_issues" : 0,
+    "watchers" : 0,
+    "topics" : [ ],
+    "has_issues" : true,
+    "has_projects" : true,
+    "has_pages" : false,
+    "has_wiki" : false,
+    "has_downloads" : false,
+    "archived" : false,
+    "disabled" : false,
+    "visibility" : "public",
+    "permissions" : {
+      "admin" : false,
+      "maintain" : false,
+      "push" : false,
+      "triage" : false,
+      "pull" : true
+    },
+    "text_matches" : [ ],
+    "temp_clone_token" : "",
+    "allow_forking" : true,
+    "is_template" : false,
+    "network_count" : 0,
+    "subscribers_count" : 0
+  },
+  "value" : {
+    "key" : [ {
+      "login" : "xrosecky",
+      "id" : 157993,
+      "node_id" : "MDQ6VXNlcjE1Nzk5Mw==",
+      "avatar_url" : "https://avatars.githubusercontent.com/u/157993?v=4",
+      "gravatar_id" : "",
+      "url" : "https://api.github.com/users/xrosecky",
+      "html_url" : "https://github.com/xrosecky",
+      "followers_url" : "https://api.github.com/users/xrosecky/followers",
+      "subscriptions_url" : "https://api.github.com/users/xrosecky/subscriptions",
+      "organizations_url" : "https://api.github.com/users/xrosecky/orgs",
+      "repos_url" : "https://api.github.com/users/xrosecky/repos",
+      "received_events_url" : "https://api.github.com/users/xrosecky/received_events",
+      "type" : "User",
+      "following_url" : "https://api.github.com/users/xrosecky/following{/other_user}",
+      "gists_url" : "https://api.github.com/users/xrosecky/gists{/gist_id}",
+      "starred_url" : "https://api.github.com/users/xrosecky/starred{/owner}{/repo}",
+      "events_url" : "https://api.github.com/users/xrosecky/events{/privacy}",
+      "site_admin" : false,
+      "text_matches" : [ ],
+      "contributions" : 11
+    }, {
+      "login" : "mertam",
+      "id" : 2668144,
+      "node_id" : "MDQ6VXNlcjI2NjgxNDQ=",
+      "avatar_url" : "https://avatars.githubusercontent.com/u/2668144?v=4",
+      "gravatar_id" : "",
+      "url" : "https://api.github.com/users/mertam",
+      "html_url" : "https://github.com/mertam",
+      "followers_url" : "https://api.github.com/users/mertam/followers",
+      "subscriptions_url" : "https://api.github.com/users/mertam/subscriptions",
+      "organizations_url" : "https://api.github.com/users/mertam/orgs",
+      "repos_url" : "https://api.github.com/users/mertam/repos",
+      "received_events_url" : "https://api.github.com/users/mertam/received_events",
+      "type" : "User",
+      "following_url" : "https://api.github.com/users/mertam/following{/other_user}",
+      "gists_url" : "https://api.github.com/users/mertam/gists{/gist_id}",
+      "starred_url" : "https://api.github.com/users/mertam/starred{/owner}{/repo}",
+      "events_url" : "https://api.github.com/users/mertam/events{/privacy}",
+      "site_admin" : false,
+      "text_matches" : [ ],
+      "contributions" : 5
+    } ],
+    "value" : [ {
+      "groupId" : "junit",
+      "artifactId" : "junit",
+      "version" : "4.4"
+    }, {
+      "groupId" : "${pom.groupId}",
+      "artifactId" : "binding",
+      "version" : "${pom.version}"
+    }, {
+      "groupId" : "${pom.groupId}",
+      "artifactId" : "common",
+      "version" : "${pom.version}"
+    }, {
+      "groupId" : "${pom.groupId}",
+      "artifactId" : "service",
+      "version" : "${pom.version}"
+    }, {
+      "groupId" : "${pom.groupId}",
+      "artifactId" : "responder",
+      "version" : "${pom.version}"
+    }, {
+      "groupId" : "${pom.groupId}",
+      "artifactId" : "initiator",
+      "version" : "${pom.version}"
+    }, {
+      "groupId" : "${pom.groupId}",
+      "artifactId" : "dummy-jar",
+      "version" : "${pom.version}"
+    }, {
+      "groupId" : "commons-logging",
+      "artifactId" : "commons-logging",
+      "version" : "1.1.1"
+    }, {
+      "groupId" : "org.springframework",
+      "artifactId" : "spring-beans",
+      "version" : "${springVersion}"
+    }, {
+      "groupId" : "org.springframework",
+      "artifactId" : "spring-context",
+      "version" : "${springVersion}"
+    }, {
+      "groupId" : "org.springframework",
+      "artifactId" : "spring-context-support",
+      "version" : "${springVersion}"
+    }, {
+      "groupId" : "log4j",
+      "artifactId" : "log4j",
+      "version" : "1.2.14"
+    } ]
+  }
+}

@@ -129,129 +129,165 @@
       "contributions" : 14
     } ],
     "value" : [ {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-tools-common",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-kie",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-ws-addr",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-drools",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-bindings-xml",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-jbpm",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-tools-wsdlto-core",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-sonatype-aether",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-databinding-aegis",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-ant",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-ws-mex",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-codehouse-plexus",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-ws-security",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-commons-compress",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-databinding-jaxb",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-commons-exec",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-management",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-lucene",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-bindings-soap",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-maven",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-ws-rm",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-mvel",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-tools-wsdlto-frontend-jaxws",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-commons-net",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-transports-jms",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-poi",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-frontend-jaxws",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "com-google-protobuf",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-tools-java2ws",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-sonatype-sisu",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-transports-local",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-jboss-solder",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-tools-wsdlto-databinding-jaxb",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-sonatype-plexus",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf.xjcplugins",
-      "artifactId" : "cxf-xjc-boolean",
-      "version" : "2.6.0.redhat-4"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-maven-wagon",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-frontend-simple",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-commons-httpclient",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf.services.sts",
-      "artifactId" : "cxf-services-sts-core",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "com-opensymphony-quartz",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-transports-http",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-junit",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-ws-policy",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-xmlbeans",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-bindings-coloc",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "aopalliance",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-bindings-object",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "com-thoughtworks-xstream",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-tools-validator",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "jakarta-regexp",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf.xjcplugins",
-      "artifactId" : "cxf-xjc-dv",
-      "version" : "2.6.0.redhat-4"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "jivesoftware",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf.xjcplugins",
-      "artifactId" : "cxf-xjc-ts",
-      "version" : "2.6.0.redhat-4"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org.antlr",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-core",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-eclipse-emf",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-frontend-jaxws",
-      "version" : "2.6.8"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-freemarker",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-databinding-jaxb",
-      "version" : "2.6.8"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-hamcrest",
+      "version" : "${project.version}"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-transports-http",
-      "version" : "2.6.8"
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-osgi",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "rome",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "xmlpull",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "xpp3",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-jsoup",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-tukaani",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-commons-math",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-commons-fileupload",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-commons-jxpath",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-commons-lang3",
+      "version" : "${project.version}"
     } ]
   }
 }

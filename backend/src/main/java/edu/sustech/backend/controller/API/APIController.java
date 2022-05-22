@@ -42,9 +42,10 @@ public class APIController {
     @CrossOrigin
     @RequestMapping("data/top-used-dependencies")
     public ResponseEntity<String> getTopUsedDependencies(
-            @RequestParam(value="group",required=false) String group,
-            @RequestParam(value="date",required=false) Date date){
-        String s = backendService.getTopUsedDependencies(group,date);
+            @RequestParam(value = "group", required = false) String group,
+            @RequestParam(value = "date", required = false) Date date,
+            @RequestParam(value = "count", required = false, defaultValue = "10") Integer count) {
+        String s = backendService.getTopUsedDependencies(group, date, count);
         return ResponseEntity.ok(s);
     }
 
@@ -53,8 +54,8 @@ public class APIController {
     public ResponseEntity<String> getTopUsedVersion(
             @RequestParam("group") String group,
             @RequestParam("arifact") String artifact,
-            @RequestParam(value = "date",required = false) Date date){
-        String s = backendService.getTopUsedVersions(group, artifact, date);
+            @RequestParam(value = "year", required = false) Integer year) {
+        String s = backendService.getTopUsedVersions(group, artifact, year);
         return ResponseEntity.ok(s);
     }
 
@@ -64,7 +65,9 @@ public class APIController {
         if (status == UpdateStatus.NOT_INITIATED) {
             status = UpdateStatus.PROGRESS;
             updateData();
-        }else{return ResponseEntity.badRequest().body("Failed. The update is initiated: " + status);}
+        } else {
+            return ResponseEntity.badRequest().body("Failed. The update is initiated: " + status);
+        }
         return ResponseEntity.ok("OK. Update status: " + status);
     }
 
@@ -80,8 +83,30 @@ public class APIController {
         status = UpdateStatus.SUCCESS;
     }
 
+    @CrossOrigin
+    @RequestMapping("data/test/dependencyUpdate")
+    public ResponseEntity<String> getDependencyUpdate(@RequestParam(value = "count", defaultValue = "10") Integer count) {
+        try {
+            backendService.updateLocalDependencyData(count);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok("OK. Updated test sample data.");
+    }
+
+    @RequestMapping("data/reloadLocalData")
+    public ResponseEntity<String> reloadLocalData() {
+        try {
+            backendService.readLocalData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok("OK. Reloaded data.");
+    }
+
     /**
      * Used for verifying the response received by Axios
+     *
      * @return Response Body in <code>String</code>
      */
     @CrossOrigin

@@ -28,7 +28,7 @@ public class FileAPI extends RestAPI {
     }
 
     public HttpResponse<String> getFileDirect(URI uri) throws IOException, InterruptedException {
-
+        logger.info("Getting raw file from " + uri.toString());
         return getHttpResponse(uri);
     }
 

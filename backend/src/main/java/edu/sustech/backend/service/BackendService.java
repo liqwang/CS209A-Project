@@ -20,12 +20,14 @@ import edu.sustech.search.engine.github.models.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.lang.Nullable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -37,7 +39,10 @@ public class BackendService {
     private final Logger logger = LogManager.getLogger(BackendService.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
-    {gitHubAPI.searchAPI.setSuppressRateError(true);}
+
+    {
+        gitHubAPI.searchAPI.setSuppressRateError(true);
+    }
 
     /**
      * For storing the dependency data acquired.
@@ -54,6 +59,12 @@ public class BackendService {
 //                .setSorted(RepoSearchRequest.Sort.Stars)
         updateLocalDependencyData();
         updateLocalLog4jIPRData();
+    }
+
+    @Async
+    public void readLocalData() throws IOException {
+        readLocalDependencyData();
+        readLocalLog4jIPRData();
     }
 
     public IPRResult readLocalLog4jIPRData() throws IOException {
@@ -108,7 +119,7 @@ public class BackendService {
         return "Internal parsing failure.";
     }
 
-    public String getTopUsedDependencies(@Nullable String group,@Nullable Date date) {
+    public String getTopUsedDependencies(@Nullable String group, @Nullable Date date, int dataCount) {
         if (dependencyData == null) {
             try {
                 dependencyData = readLocalDependencyData();
@@ -117,15 +128,18 @@ public class BackendService {
             }
         }
         if (dependencyData != null) {
-            HashMap<String, Integer> dependencyMap = new HashMap<>(){{
+            HashMap<String, Integer> dependencyMap = new HashMap<>() {{
                 dependencyData.getData().forEach(e -> {
                     Repository repo = e.getKey();
-                    if(date!=null && !repo.getCreatedAt().equals(date)){return;}
+                    if (date != null && !repo.getCreatedAt().equals(date)) {
+                        return;
+                    }
                     List<Dependency> list = e.getValue().getValue();
-                    if(group!=null)
-                        list.removeIf(d->!d.groupId().equals(group));
+                    if (group != null)
+                        list.removeIf(d -> !d.groupId().equals(group));
                     for (Dependency d : list)
-                        put(d.artifactId(),getOrDefault(d.artifactId(),0)+1);
+                        put(d.artifactId(), getOrDefault(d.artifactId(), 0) + 1);
+
                 });
             }};
 
@@ -133,7 +147,7 @@ public class BackendService {
 
             dependencyMap.entrySet().stream()
                     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .limit(10)
+                    .limit(dataCount)
                     .forEach(e -> result.add(new BarChartItem<>(e.getKey(), e.getValue())));
             try {
                 return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result);
@@ -144,7 +158,7 @@ public class BackendService {
         return "Internal parsing failure.";
     }
 
-    public String getTopUsedVersions(String group,String artifact,@Nullable Date date){
+    public String getTopUsedVersions(String group, String artifact, @Nullable Integer year) {
         if (dependencyData == null) {
             try {
                 dependencyData = readLocalDependencyData();
@@ -153,14 +167,16 @@ public class BackendService {
             }
         }
         if (dependencyData != null) {
-            HashMap<String, Integer> versionMap = new HashMap<>(){{
+            HashMap<String, Integer> versionMap = new HashMap<>() {{
                 dependencyData.getData().forEach(e -> {
                     Repository repo = e.getKey();
-                    if(date!=null && !repo.getCreatedAt().equals(date)){return;}
+                    if (year != null && !(repo.getCreatedAt().toInstant().atZone(ZoneId.systemDefault()).getYear() == year)) {
+                        return;
+                    }
                     List<Dependency> list = e.getValue().getValue();
-                    list.removeIf(d->!d.groupId().equals(group)||!d.artifactId().equals(artifact));
+                    list.removeIf(d -> !d.groupId().equals(group) || !d.artifactId().equals(artifact));
                     for (Dependency d : list)
-                        put(d.version(),getOrDefault(d.version(),0)+1);
+                        put(d.version(), getOrDefault(d.version(), 0) + 1);
                 });
             }};
 
@@ -273,8 +289,8 @@ public class BackendService {
         DependencyData data = new DependencyData();
 
         File file = new File("backend/data/DependencyAnalysis/Entries/");
-        if(!file.exists()){
-            if(!file.mkdirs()){
+        if (!file.exists()) {
+            if (!file.mkdirs()) {
                 throw new IOException("Failed to create Entries directory");
             }
         }
@@ -284,16 +300,17 @@ public class BackendService {
             Repository r = item.getRepository();
             r = gitHubAPI.repositoryAPI.getRepository(r.getUrl());
 
-            List<Dependency> ls = null;
+            List<Dependency> ls = new ArrayList<>();
             try {
-                ls = Analyzer.parseDependency(gitHubAPI.fileAPI.getFileRaw(item.getRawFileURI()));
+                List<Dependency> res = Analyzer.parseDependency(gitHubAPI.fileAPI.getFileRaw(item.getRawFileURI()));
+                if (res != null) ls = res;
             } catch (Exception e) {
                 logger.error("Error encountered during parsing, ", e);
             } finally {
                 Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
             }
 
-            List<User> userList = null;
+            List<User> userList = new ArrayList<>();
             try {
                 userList = gitHubAPI.repositoryAPI.getContributors(r);
             } catch (Exception e) {

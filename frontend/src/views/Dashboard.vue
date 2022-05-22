@@ -270,6 +270,13 @@
           >
             submit
           </button>
+          <hr>
+          <button
+              class="float-middle -mt-7 border-b border-green-600 text-green-600"
+              v-on:click="testAxiosResult"
+          >
+            Test API
+          </button>
           <button
               class="float-right -mt-7 border-b border-green-600 text-green-600"
               v-on:click="updateTopUsedDependency"
@@ -676,15 +683,14 @@ export default {
   inject: ['axios']
   ,
 methods:{
-    handle(){
+    testAxiosResult(){
       let component = this
       this.axios //Automatically
-          .post("http://localhost:8443/API", year)
+          .get("data/paratest", {date: "1994-01-01"})
           .then(successResponse => {
             // console.log(successResponse.data)
             if (successResponse.status === 200) {
               //Modify data there
-
               // console.log(component.topUsedDependencyData)
             }
           })
@@ -697,7 +703,7 @@ methods:{
     updateTopUsedDependency() {
       let component = this
       this.axios //Automatically
-          .get('/data/top-used-dependencies')
+          .get('/data/top-used-dependencies?count=30')
           .then(successResponse => {
             console.log(successResponse.data)
             if (successResponse.status === 200) {

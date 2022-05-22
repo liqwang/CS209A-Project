@@ -129,129 +129,29 @@
       "contributions" : 14
     } ],
     "value" : [ {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-tools-common",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.hornetq",
+      "artifactId" : "hornetq-jms-server",
+      "version" : "2.3.5.Final-redhat-2"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-ws-addr",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.hornetq",
+      "artifactId" : "hornetq-commons",
+      "version" : "2.3.5.Final-redhat-2"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-bindings-xml",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.hornetq",
+      "artifactId" : "hornetq-server",
+      "version" : "2.3.5.Final-redhat-2"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-tools-wsdlto-core",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.hornetq",
+      "artifactId" : "hornetq-journal",
+      "version" : "2.3.5.Final-redhat-2"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-databinding-aegis",
-      "version" : "2.6.8.redhat-7"
+      "groupId" : "org.hornetq",
+      "artifactId" : "hornetq-jms-client",
+      "version" : "2.3.5.Final-redhat-2"
     }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-ws-mex",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-ws-security",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-databinding-jaxb",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-management",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-bindings-soap",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-ws-rm",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-tools-wsdlto-frontend-jaxws",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-transports-jms",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-frontend-jaxws",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-tools-java2ws",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-transports-local",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-tools-wsdlto-databinding-jaxb",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf.xjcplugins",
-      "artifactId" : "cxf-xjc-boolean",
-      "version" : "2.6.0.redhat-4"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-frontend-simple",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf.services.sts",
-      "artifactId" : "cxf-services-sts-core",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-transports-http",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-ws-policy",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-bindings-coloc",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-bindings-object",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-tools-validator",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf.xjcplugins",
-      "artifactId" : "cxf-xjc-dv",
-      "version" : "2.6.0.redhat-4"
-    }, {
-      "groupId" : "org.apache.cxf.xjcplugins",
-      "artifactId" : "cxf-xjc-ts",
-      "version" : "2.6.0.redhat-4"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-core",
-      "version" : "2.6.8.redhat-7"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-frontend-jaxws",
-      "version" : "2.6.8"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-databinding-jaxb",
-      "version" : "2.6.8"
-    }, {
-      "groupId" : "org.apache.cxf",
-      "artifactId" : "cxf-rt-transports-http",
-      "version" : "2.6.8"
+      "groupId" : "org.hornetq",
+      "artifactId" : "hornetq-core-client",
+      "version" : "2.3.5.Final-redhat-2"
     } ]
   }
 }
