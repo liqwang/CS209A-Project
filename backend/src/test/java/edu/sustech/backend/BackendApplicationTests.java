@@ -31,11 +31,6 @@ class BackendApplicationTests {
     }
 
     @Test
-    void functionalityTestQ1() {
-        System.out.println(backendService.getTopUsedDependencies());
-    }
-
-    @Test
     void writePermissionTestQ2() throws FileNotFoundException {
         backendService.testWrite();
     }

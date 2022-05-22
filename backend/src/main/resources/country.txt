@@ -1,3 +1,4 @@
+CN
 China
 PKU
 THU
@@ -74,6 +75,7 @@ Taiwan
 Taipei
 Taipeh
 
+US
 United States
 USA
 Stanford
@@ -153,6 +155,7 @@ Wisconsin
 Wyoming
 Austin
 
+JP
 Japan
 Tokyo
 Kyoto
@@ -164,14 +167,18 @@ Kobe
 Sapporo
 Fukuoka
 
+SG
 Singapore
 
+PH
 Philippines
 Manila
 
+KR
 Korea
 Seoul
 
+AU
 Australia
 New South Wales
 Sydney
