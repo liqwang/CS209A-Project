@@ -249,19 +249,41 @@
           }"
         ></apexchart>
         <div class="wrapper-button mt-3">
-          <select
-              name=""
-              id=""
-              class="dark:bg-gray-800 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-300 border max-w-lg px-4 py-3 block rounded-md text-gray-500 dark:text-gray-400"
-          >
-            <option value="">Last 7 years</option>
-          </select>
+          <div>
+            <span>Year</span>
+            <select class="dark:bg-gray-800 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-300 border max-w-lg px-4 py-3 block rounded-md text-gray-500 dark:text-gray-400">
+              <option value="0" disabled selected >Choose your year</option>
+              <option value="1" v-on:click="year=2022">2022</option>
+              <option value="2" v-on:click="year=2021">2021</option>
+              <option value="3" v-on:click="year=2020">2020</option>
+              <option value="4" v-on:click="year=2019">2019</option>
+              <option value="5" v-on:click="year=2018">2018</option>
+              <option value="6" v-on:click="year=2017">2017</option>
+              <option value="7" v-on:click="year=2016">2016</option>
+              <option value="8" v-on:click="year=2015">2015</option>
+              <option value="9" v-on:click="year=2014">2014</option>
+            </select>
+          </div>
           <button
-              class="uppercase float-right -mt-7 border-b border-green-600 text-green-600"
+              class="float-middle -mt-7 border-b border-green-600 text-green-600"
+              v-on:click="fetch"
+          >
+            submit
+          </button>
+          <button
+              class="float-right -mt-7 border-b border-green-600 text-green-600"
               v-on:click="updateTopUsedDependency"
           >
             Refresh
           </button>
+          <div>
+          <button
+              class="float-middle -mt-7 border-b border-green-600 text-green-600"
+              v-on:click="updateTopUsedVersion"
+          >
+            TopUsed
+          </button>
+          </div>
         </div>
       </div>
     </div>
@@ -415,13 +437,13 @@
             <td class="px-6 py-4">
                 <span
                     class="text-green-800 bg-green-300 px-3 py-1 rounded-md"
-                    v-if="items.statusQuery == 'completed'"
+                    v-if="items.statusQuery === 'completed'"
                 >
                   {{ items.statusQuery }}
                 </span>
               <span
                   class="text-purple-800 bg-purple-300 px-3 py-1 rounded-md"
-                  v-else-if="items.statusQuery == 'progress'"
+                  v-else-if="items.statusQuery === 'progress'"
               >
                   {{ items.statusQuery }}
                 </span>
@@ -442,7 +464,6 @@
             id=""
             class="dark:bg-gray-800 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-300 border max-w-lg px-4 py-3 block rounded-md text-gray-500 dark:text-gray-400"
         >
-          <option value="">Last 7 hours</option>
         </select>
         <button
             class="uppercase float-right -mt-7 border-b border-gray-700 text-gray-600"
@@ -463,6 +484,9 @@ export default {
   name: "Dashboard",
   data() {
     return {
+
+        Year:2022 , //要传递的值1
+
       // for more guide apexchart.js
       // https://apexcharts.com/docs/chart-types/line-chart/
 
@@ -651,12 +675,46 @@ export default {
   },
   inject: ['axios']
   ,
-  methods: {
+methods:{
+    handle(){
+      let component = this
+      this.axios //Automatically
+          .post("http://localhost:8443/API", year)
+          .then(successResponse => {
+            // console.log(successResponse.data)
+            if (successResponse.status === 200) {
+              //Modify data there
+
+              // console.log(component.topUsedDependencyData)
+            }
+          })
+          .catch(failResponse => {
+            console.log('Error on retrieving data.')
+            console.log(failResponse);
+          })
+    },
     //Get the response from backend
     updateTopUsedDependency() {
       let component = this
       this.axios //Automatically
           .get('/data/top-used-dependencies')
+          .then(successResponse => {
+            console.log(successResponse.data)
+            if (successResponse.status === 200) {
+              //Modify data there
+              component.topUsedDependencyData.series[0].data = successResponse.data
+              console.log(component.topUsedDependencyData)
+            }
+          })
+          .catch(failResponse => {
+            console.log('Error on retrieving data.')
+            console.log(failResponse);
+          })
+    },
+    updateTopUsedVersion() {
+      let component = this
+      this.axios //Automatically
+          .get('/data/top-used-version')
           .then(successResponse => {
             console.log(successResponse.data)
             if (successResponse.status === 200) {
