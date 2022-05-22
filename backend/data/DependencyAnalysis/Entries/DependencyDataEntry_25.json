@@ -1,0 +1,233 @@
+{
+  "key" : {
+    "id" : 21819127,
+    "node_id" : "MDEwOlJlcG9zaXRvcnkyMTgxOTEyNw==",
+    "name" : "kie-wb-distributions-6.1.0.CR1",
+    "full_name" : "hernsys/kie-wb-distributions-6.1.0.CR1",
+    "owner" : {
+      "login" : "hernsys",
+      "id" : 4635913,
+      "node_id" : "MDQ6VXNlcjQ2MzU5MTM=",
+      "avatar_url" : "https://avatars.githubusercontent.com/u/4635913?v=4",
+      "gravatar_id" : "",
+      "url" : "https://api.github.com/users/hernsys",
+      "html_url" : "https://github.com/hernsys",
+      "followers_url" : "https://api.github.com/users/hernsys/followers",
+      "following_url" : "https://api.github.com/users/hernsys/following{/other_user}",
+      "gists_url" : "https://api.github.com/users/hernsys/gists{/gist_id}",
+      "starred_url" : "https://api.github.com/users/hernsys/starred{/owner}{/repo}",
+      "subscriptions_url" : "https://api.github.com/users/hernsys/subscriptions",
+      "organizations_url" : "https://api.github.com/users/hernsys/orgs",
+      "repos_url" : "https://api.github.com/users/hernsys/repos",
+      "events_url" : "https://api.github.com/users/hernsys/events{/privacy}",
+      "received_events_url" : "https://api.github.com/users/hernsys/received_events",
+      "type" : "User",
+      "site_admin" : false
+    },
+    "private" : false,
+    "html_url" : "https://github.com/hernsys/kie-wb-distributions-6.1.0.CR1",
+    "fork" : false,
+    "url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1",
+    "created_at" : 1405341892000,
+    "updated_at" : 1409684640000,
+    "pushed_at" : 1644448874000,
+    "size" : 3846,
+    "stargazers_count" : 0,
+    "watchers_count" : 0,
+    "language" : "Java",
+    "forks_count" : 0,
+    "open_issues_count" : 12,
+    "default_branch" : "master",
+    "forks_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/forks",
+    "keys_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/keys{/key_id}",
+    "collaborators_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/collaborators{/collaborator}",
+    "teams_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/teams",
+    "hooks_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/hooks",
+    "issue_events_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/issues/events{/number}",
+    "events_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/events",
+    "assignees_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/assignees{/user}",
+    "branches_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/branches{/branch}",
+    "tags_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/tags",
+    "blobs_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/git/blobs{/sha}",
+    "git_tags_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/git/tags{/sha}",
+    "git_refs_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/git/refs{/sha}",
+    "trees_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/git/trees{/sha}",
+    "statuses_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/statuses/{sha}",
+    "languages_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/languages",
+    "stargazers_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/stargazers",
+    "contributors_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/contributors",
+    "subscribers_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/subscribers",
+    "subscription_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/subscription",
+    "commits_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/commits{/sha}",
+    "git_commits_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/git/commits{/sha}",
+    "comments_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/comments{/number}",
+    "issue_comment_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/issues/comments{/number}",
+    "contents_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/contents/{+path}",
+    "compare_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/compare/{base}...{head}",
+    "merges_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/merges",
+    "archive_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/{archive_format}{/ref}",
+    "downloads_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/downloads",
+    "issues_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/issues{/number}",
+    "pulls_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/pulls{/number}",
+    "milestones_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/milestones{/number}",
+    "notifications_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/notifications{?since,all,participating}",
+    "labels_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/labels{/name}",
+    "releases_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/releases{/id}",
+    "deployments_url" : "https://api.github.com/repos/hernsys/kie-wb-distributions-6.1.0.CR1/deployments",
+    "git_url" : "git://github.com/hernsys/kie-wb-distributions-6.1.0.CR1.git",
+    "ssh_url" : "git@github.com:hernsys/kie-wb-distributions-6.1.0.CR1.git",
+    "clone_url" : "https://github.com/hernsys/kie-wb-distributions-6.1.0.CR1.git",
+    "svn_url" : "https://github.com/hernsys/kie-wb-distributions-6.1.0.CR1",
+    "forks" : 0,
+    "open_issues" : 12,
+    "watchers" : 0,
+    "topics" : [ ],
+    "has_issues" : true,
+    "has_projects" : true,
+    "has_pages" : false,
+    "has_wiki" : true,
+    "has_downloads" : true,
+    "archived" : false,
+    "disabled" : false,
+    "visibility" : "public",
+    "permissions" : {
+      "admin" : false,
+      "maintain" : false,
+      "push" : false,
+      "triage" : false,
+      "pull" : true
+    },
+    "text_matches" : [ ],
+    "temp_clone_token" : "",
+    "allow_forking" : true,
+    "is_template" : false,
+    "network_count" : 0,
+    "subscribers_count" : 1
+  },
+  "value" : {
+    "key" : [ {
+      "login" : "hernsys",
+      "id" : 4635913,
+      "node_id" : "MDQ6VXNlcjQ2MzU5MTM=",
+      "avatar_url" : "https://avatars.githubusercontent.com/u/4635913?v=4",
+      "gravatar_id" : "",
+      "url" : "https://api.github.com/users/hernsys",
+      "html_url" : "https://github.com/hernsys",
+      "followers_url" : "https://api.github.com/users/hernsys/followers",
+      "subscriptions_url" : "https://api.github.com/users/hernsys/subscriptions",
+      "organizations_url" : "https://api.github.com/users/hernsys/orgs",
+      "repos_url" : "https://api.github.com/users/hernsys/repos",
+      "received_events_url" : "https://api.github.com/users/hernsys/received_events",
+      "type" : "User",
+      "following_url" : "https://api.github.com/users/hernsys/following{/other_user}",
+      "gists_url" : "https://api.github.com/users/hernsys/gists{/gist_id}",
+      "starred_url" : "https://api.github.com/users/hernsys/starred{/owner}{/repo}",
+      "events_url" : "https://api.github.com/users/hernsys/events{/privacy}",
+      "location" : "Argentina",
+      "site_admin" : false,
+      "text_matches" : [ ],
+      "contributions" : 14
+    } ],
+    "value" : [ {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-kie",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-drools",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-jbpm-minimal",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-sonatype-aether",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-ant",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-codehouse-plexus",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-maven",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-mvel",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-poi",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "com-google-protobuf",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-sonatype-sisu",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-sonatype-plexus",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-maven-wagon",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "com-opensymphony-quartz",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-junit",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-apache-xmlbeans",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "aopalliance",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "com-thoughtworks-xstream",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org.antlr",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-hamcrest",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-osgi",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "xmlpull",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "xpp3",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-jsoup",
+      "version" : "${project.version}"
+    }, {
+      "groupId" : "org.kie.modules",
+      "artifactId" : "org-jboss-solder",
+      "version" : "${project.version}"
+    } ]
+  }
+}
