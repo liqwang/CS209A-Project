@@ -71,6 +71,9 @@ public class BackendServiceImpl implements BackendService {
     private final HashMap<String, Integer> mysqlHeatMap = new HashMap<>();
 
     {
+        initMaps();
+    }
+    public void initMaps(){
         if (dependencyData == null) {
             try {
                 dependencyData = readLocalDependencyData();
@@ -152,7 +155,8 @@ public class BackendServiceImpl implements BackendService {
     @Override
     @Async
     public void readLocalData() throws IOException {
-        readLocalDependencyData();
+        dependencyData = readLocalDependencyData();
+        initMaps();
 //        readLocalLog4jIPRData();
     }
 

@@ -111,7 +111,7 @@ public class DependencyController {
         return ResponseEntity.ok("OK. Updated test sample data.");
     }
 
-    @RequestMapping("data/reloadLocalData")
+    @RequestMapping("data/reload-local-data")
     public ResponseEntity<String> reloadLocalData() {
         try {
             backendService.readLocalData();
