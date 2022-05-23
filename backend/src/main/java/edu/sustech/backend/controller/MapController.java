@@ -1,6 +1,6 @@
 package edu.sustech.backend.controller;
 
-import edu.sustech.backend.service.MapServiceImpl;
+import edu.sustech.backend.service.BackendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,10 +12,11 @@ import java.util.Map;
 public class MapController {
 	//Todo: {two-code}:{count}
 	@Autowired
-	private MapServiceImpl mapServiceImpl;
+	private BackendService backendService;
 
+	//group: org.springframework.*
 	@RequestMapping("spring")
 	public Map<String,Integer> getSpringData(){
-		return mapServiceImpl.getSpringData();
+		return backendService.getSpringData();
 	}
 }
