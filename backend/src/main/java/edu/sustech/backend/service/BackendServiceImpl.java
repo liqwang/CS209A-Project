@@ -69,6 +69,9 @@ public class BackendServiceImpl implements BackendService {
     private List<Issue> log4jIssues;
 
     private final HashMap<String, Integer> springHeatMap = new HashMap<>();
+    {
+        initSpringData();
+    }
 
     @Override
     public void updateLocalData() throws IOException, InterruptedException {
@@ -306,8 +309,7 @@ public class BackendServiceImpl implements BackendService {
         return data;
     }
 
-    @Override
-    public Map<String, Integer> getSpringData() {
+    public void initSpringData(){
         if (dependencyData == null) {
             try {
                 dependencyData = readLocalDependencyData();
@@ -339,6 +341,10 @@ public class BackendServiceImpl implements BackendService {
             });
         }
         logger.error("Can't get DependencyData");
+    }
+
+    @Override
+    public Map<String, Integer> getSpringData() {
         return springHeatMap;
     }
 
