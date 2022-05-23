@@ -81,7 +81,7 @@ public class BackendServiceImpl implements BackendService {
         if (dependencyData != null) {
             loadDependencyHeatMap("org.springframework");
             loadDependencyHeatMap("org.projectlombok");
-            loadDependencyHeatMap("lo4j");
+            loadDependencyHeatMap("log4j");
             loadDependencyHeatMap("mysql");
         }
         logger.error("Can't get DependencyData");
