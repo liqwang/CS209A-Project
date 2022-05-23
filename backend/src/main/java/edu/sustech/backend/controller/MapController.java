@@ -1,7 +1,6 @@
 package edu.sustech.backend.controller;
 
 import edu.sustech.backend.service.BackendService;
-import edu.sustech.backend.service.MapServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

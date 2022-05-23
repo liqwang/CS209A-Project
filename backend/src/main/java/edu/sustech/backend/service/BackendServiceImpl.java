@@ -61,17 +61,46 @@ public class BackendServiceImpl implements BackendService {
         gitHubAPI.searchAPI.setSuppressRateError(true);
     }
 
-    /**
-     * For storing the dependency data acquired.
-     */
     private static DependencyData dependencyData;
 
     private List<Issue> log4jIssues;
 
     private final HashMap<String, Integer> springHeatMap = new HashMap<>();
-
     {
-        initSpringData();
+        if (dependencyData == null) {
+            try {
+                dependencyData = readLocalDependencyData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if(dependencyData!=null){
+            initSpringData();
+        }
+        logger.error("Can't get DependencyData");
+    }
+
+    public void initSpringData() {
+        dependencyData.getData().forEach(repo -> {
+            //1加载Spring热力图数据
+            logger.debug("Loading Spring heat map...");
+            //1.1计算该仓库中spring依赖的数量
+            List<Dependency> dependencies = repo.getValue().getValue();
+            int springCount = (int) dependencies.stream().filter(dep -> dep.groupId().startsWith("org.springframework")).count();
+
+            //1.2加入该仓库中的国家使用spring的数量
+            List<User> users = repo.getValue().getKey();
+            for (User user : users) {
+                String location = user.getLocation();
+                for (String key : COUNTRY_MAP.keySet()) {
+                    String countryCode = COUNTRY_MAP.get(key);
+                    if (location != null && location.contains(key)) {
+                        springHeatMap.put(countryCode, springHeatMap.getOrDefault(countryCode, 0) + springCount);
+                    }
+                }
+            }
+            logger.debug("Successfully loaded spring heat map!");
+        });
     }
 
     @Override
@@ -310,40 +339,6 @@ public class BackendServiceImpl implements BackendService {
         return data;
     }
 
-    public void initSpringData() {
-        if (dependencyData == null) {
-            try {
-                dependencyData = readLocalDependencyData();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if (dependencyData != null) {
-            dependencyData.getData().forEach(repo -> {
-
-                //1加载Spring热力图数据
-                logger.debug("Loading Spring heat map...");
-
-                //1.1计算该仓库中spring依赖的数量
-                List<Dependency> dependencies = repo.getValue().getValue();
-                int springCount = (int) dependencies.stream().filter(dep -> dep.groupId().startsWith("org.springframework")).count();
-
-                //1.2加入该仓库中的国家使用spring的数量
-                List<User> users = repo.getValue().getKey();
-                for (User user : users) {
-                    String location = user.getLocation();
-                    for (String key : COUNTRY_MAP.keySet()) {
-                        if (location != null && location.contains(key)) {
-                            springHeatMap.put(key, springHeatMap.getOrDefault(key, 0) + springCount);
-                        }
-                    }
-                }
-                logger.debug("Successfully loaded spring heat map!");
-            });
-        }
-        logger.error("Can't get DependencyData");
-    }
-
     @Override
     public Map<String, Integer> getSpringData() {
         return springHeatMap;
@@ -393,7 +388,6 @@ public class BackendServiceImpl implements BackendService {
                     ls = res;
                     logger.info("Acquired " + ls.size() + " dependencies");
                 }
-                ;
             } catch (Exception e) {
                 logger.error("Error encountered during parsing, ", e);
             } finally {

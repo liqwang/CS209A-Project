@@ -2,13 +2,11 @@ package edu.sustech.backend.service;
 
 import edu.sustech.backend.entities.DependencyData;
 import edu.sustech.search.engine.github.models.issue.IPRResult;
-import org.springframework.lang.NonNullApi;
 import org.springframework.lang.Nullable;
 import org.springframework.scheduling.annotation.Async;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Map;
 
 public interface BackendService {
