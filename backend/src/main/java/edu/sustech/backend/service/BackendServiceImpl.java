@@ -65,7 +65,10 @@ public class BackendServiceImpl implements BackendService {
      * For storing the dependency data acquired.
      */
     private static DependencyData dependencyData;
+
     private List<Issue> log4jIssues;
+
+    private final HashMap<String, Integer> springHeatMap = new HashMap<>();
 
     @Override
     public void updateLocalData() throws IOException, InterruptedException {
@@ -76,14 +79,14 @@ public class BackendServiceImpl implements BackendService {
 //                .addLanguageOption("java")
 //                .setSorted(RepoSearchRequest.Sort.Stars)
         updateLocalDependencyData();
-        updateLocalLog4jIPRData();
+//        updateLocalLog4jIPRData();
     }
 
     @Override
     @Async
     public void readLocalData() throws IOException {
         readLocalDependencyData();
-        readLocalLog4jIPRData();
+//        readLocalLog4jIPRData();
     }
 
     @Override
@@ -302,8 +305,6 @@ public class BackendServiceImpl implements BackendService {
         }
         return data;
     }
-
-    private final HashMap<String, Integer> springHeatMap = new HashMap<>();
 
     @Override
     public Map<String, Integer> getSpringData() {
