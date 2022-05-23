@@ -32,7 +32,7 @@ public class TestController {
         RepositoryResult result = gitHubAPI.searchAPI.searchRepo(req, 100);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Results on request:" + req.getRequestStringRaw()).append("<br>");
+        sb.append("Results on request:" + req.getRequestStringUnmodified()).append("<br>");
         for (Repository r : result) {
             sb.append("Stars:" + r.getStargazersCount() + ", repo name: " + r.getFullName() + ", created at " + r.getCreatedAt()).append("<br>");
         }

@@ -24,6 +24,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.ZoneId;
@@ -82,12 +83,12 @@ public class BackendServiceImpl implements BackendService {
                 .addSearchKeyword("log4j")
                 .build();
 
-        IPRResult result = gitHubAPI.searchAPI.searchIPR(req, 3000, LOCAL_SEARCH_UPDATE_INTERVAL_MILLIS);
-        if (result != null) {
-            for (Issue i : result) {
-                log4jIssues.add(i);
-            }
-        }
+        List<HttpResponse<String>> result = gitHubAPI.searchAPI.searchRawLoop(req, 3000, LOCAL_SEARCH_UPDATE_INTERVAL_MILLIS);
+//        if (result != null) {
+//            for (Issue i : result) {
+//                log4jIssues.add(i);
+//            }
+//        }
 
         objectMapper.writeValue(new File("backend/data/Log4jIssueAnalysis/Entries/log4jiprdata.json"), log4jIssues);
         logger.info("Updated local log4j issues and pull requests data");

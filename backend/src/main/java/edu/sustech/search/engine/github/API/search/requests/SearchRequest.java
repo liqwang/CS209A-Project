@@ -80,7 +80,15 @@ public class SearchRequest {
         }
     }
 
-    public String getRequestStringRaw() {
+    /**
+     *
+     * @return the full request string without the <code>per_page</code> and <code>page</code> parameter
+     */
+    public String getFullRequestStringWithoutPage(){
+        return "https://api.github.com/search/"+requestBuilder.toString();
+    }
+
+    public String getRequestStringUnmodified() {
         return requestBuilder.toString().concat("&per_page=" + per_page).concat("&page=" + page);
     }
 

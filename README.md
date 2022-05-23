@@ -1,3 +1,5 @@
+
+
 # CS209A Project Report
 
 **Frontend: 宋一鸣 12011609**
@@ -10,14 +12,26 @@
 
 ## Overview
 
-In this project, we make two main parts:
+___
+
+In this project, we mainly discuss two major issues:
 
 - Hot dependencies in pom.xml
 - Tool used contribution in different countries
 
-The project's architecture is **Vue + SpringBoot**, so the frontend and backend can split, and we use **Json** as data exchange format
+The architecture of the project is **Vue + SpringBoot**. The development of frontend and backend are splited, and as a result any of them can work separately. The interaction between the frontend and the backend are achieved through Rest API, and we use **Json** as the data exchange format.
+
+In this report, we will introduce the features related to the evaluation and the structure of this project.
+
+## Features
+
+___
 
 
+
+## Project Structure
+
+___
 
 ## Frontend
 
@@ -158,6 +172,8 @@ File tree
 
 ### Controller
 
+___
+
 #### getTopUsedDependencies
 
 ```java
@@ -224,9 +240,11 @@ This method updates all the data for frontend by invoking the GitHub Search Engi
 
 ### GitHub Search Engine
 
+___
+
 To make the searching process more fluently, automatically and more robust, we introduce the GitHub Search Engine.
 
-This GitHub Search Engine has iterated *several* times, been published to GitHub and has till now released several packages of different versions. You can check them on [IskXCr/GitHubSearchEngine: A GitHub search engine for backend application](https://github.com/IskXCr/GitHubSearchEngine). To load the GitHub Search Engine from GitHub Packages, you may need to configure your local ``.m2`` maven repository settings (which is typically under the user folder, if Windows is considered).
+This GitHub Search Engine has iterated *several* times, been published to GitHub and has till now released several packages of different versions. You can check them on [IskXCr/GitHubSearchEngine: A GitHub search engine for backend application](https://github.com/IskXCr/GitHubSearchEngine). To load the GitHub Search Engine from GitHub Packages, you may need to configure your local ``.m2`` maven repository settings (which is typically under the ``Users/{UserName}`` folder, if Windows is considered).
 
 #### File Tree
 
@@ -355,13 +373,51 @@ edu.sustech
     └───stackoverflow
 ```
 
-#### Functionality
+#### Functionality & Features
 
-The engine has a ***fully functional implementation*** of the search function of the GitHub Rest API (```SearchAPI```) and provides Java abstractions for dealing with objects present in GitHub (for example, ``Repository``, ``User``, ``Issues``, ``Commits``, etc. Those existing models can be found inside the ```models``` directory in the source code). It also provides additional ***partially implemented*** APIs such as ```UserAPI```, ```RepositoryAPI``` and ```RateAPI``` for other needs such as tracing user locations and attain the information related to real-time GitHub rate limits.
+The engine has a ***full implementation*** of the search function of the GitHub Rest API (```SearchAPI```) and provides*** Java abstractions*** for dealing with entities present in GitHub (for example, ``Repository``, ``User``, ``Issues``, ``Commits``, etc. Those existing models can be found inside the ```models``` directory in the source code). It also provides additional ***partially implemented*** APIs such as ```UserAPI```, ```RepositoryAPI``` and ```RateAPI``` for other needs such as tracing user locations and attain the information related to real-time GitHub rate limits, get the contributions of an user to a specific repository, etc.
+
+Search requests and along with other operations can be constructed through ***pure Java codes*** and be passed to the ```SearchAPI``` or ```RepositoryAPI```, etc. In the implementation of the ```SearchAPI```, all http responses received and the process of parsing , error/exception processing and loop fetching (fetch until results acquired are more than or equals to the desired number of results, which is a parameter that can be either specified or left to ``Integer.MAX_VALUE``) are ***hidden at default*** from the caller. The user of this engine is able to manipulate the interaction with the GitHub SearchEngine (***without*** even learning the GitHub RestAPI) in a Java way and does not need to care about the inner processing and handling. Advanced manipulations of the engine can also be done with specified request parameters and through the usage of the generic methods pre-implemented.
+
+All APIs are extended from the basic class ``RestAPI``. ```RestAPI``` provides the basic functionality to communicate with the GitHub RestAPI, retreiving data from it, and parse the result into a required object.
+
+##### searchLoopFetching method
+
+```java
+		public AppendableResult searchLoopFetching(SearchRequest request1, AppendableResult origin, AppendableResultParser p, int count, long timeIntervalMillis) throws InterruptedException, IOException {...}
+
+```
+
+##### searchLoopFetching method (Generic)
+
+This method needs the target class to implement ```AppendableResult``` interface for combining result data from different responses.
+
+```java
+/**
+     * This method uses while loop to request for search results.
+     * Please notice that the GitHub REST API may severely restrict your ability to query the result.
+     * <br>
+     * If too often the secondary rate limit is encountered, please increase the <code>timeIntervalMillis</code>
+     * (a typical recommendation might be <code>18000</code>), and run this method in another thread.
+     *
+     * @param <T>                Result type
+     * @param request1           Request (will create another copy)
+     * @param targetClazz        Target class for object mapper
+     * @param count              Target Item count. Note that the actual items retrieved might be more
+     * @param timeIntervalMillis Preferred time interval between requests
+     * @return CodeResult
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends AppendableResult> T searchType(SearchRequest request1, Class<T> targetClazz, int count, long timeIntervalMillis) throws IOException, InterruptedException {
+        return (T) searchLoopFetching(request1, s -> convert(s, targetClazz), count, timeIntervalMillis); //It must be T, so no worry.
+    }
+```
 
 An automatical loop for dealing with the common exceptions, including ```timeout```, ```RateLimitExceeded``` has been constructed to improve the user experience when in autonomous mode.
 
-#### Basic Usage
+#### Basic Usage (A demonstration)
 
 ##### Build a request
 
@@ -377,13 +433,16 @@ Similar searches can be done on ```Issues```, ```Pull Requests```, ```Commits```
 ##### Search in GitHub
 
 ```
+	//Register the API
+	private final GitHubAPI gitHubAPI = GitHubAPI.registerAPI(PersonalAccessToken);
+	
 	CodeResult result1 = gitHubAPI.searchAPI.searchCode(req1, count, LOCAL_SEARCH_UPDATE_INTERVAL_MILLIS);
 ```
 
 ##### Query the results
 
 ```java
-	for(CodeItem item: CodeResult){
+	for(CodeItem item: result1){
         
         Repository repo = item.getRepository();
         System.out.println(repo.getFullName() + ", " + item.getName());
@@ -403,9 +462,11 @@ Similar searches can be done on ```Issues```, ```Pull Requests```, ```Commits```
 
 **All** items related to the **search** part of the GitHub RestAPI has been implemented. See the file tree above to get more info.
 
+These objects provides a basic but complex abstraction of entities on the GitHub website. At the same time, all the objects are POJOs and can be easily serialized and deserialized.
+
 #### Implementation of the GitHub Search Engine (Partially)
 
-###### 
+See the source code.
 
 #### Documentations
 

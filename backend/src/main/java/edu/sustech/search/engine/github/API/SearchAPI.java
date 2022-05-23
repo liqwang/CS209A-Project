@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 public class SearchAPI extends RestAPI {
 
@@ -270,7 +271,7 @@ public class SearchAPI extends RestAPI {
     public AppendableResult searchLoopFetching(SearchRequest request1, AppendableResult origin, AppendableResultParser p, int count, long timeIntervalMillis) throws InterruptedException, IOException {
 
         SearchRequest request = new SearchRequest(request1);
-        logger.info("Starting to fetch results on request[" + request.getRequestStringRaw() + "]. Target number: " + count);
+        logger.info("Starting to fetch results on request[" + request.getRequestStringUnmodified() + "]. Target number: " + count);
         request.setResultPerPage(count);
 
         int cnt = 0;
@@ -324,7 +325,7 @@ public class SearchAPI extends RestAPI {
 
         setSuppressResponseError(false);
 
-        logger.info("Results have been gathered on request [" + request.getRequestStringRaw() + "]");
+        logger.info("Results have been gathered on request [" + request.getRequestStringUnmodified() + "]");
 
         return result;
     }
@@ -351,6 +352,14 @@ public class SearchAPI extends RestAPI {
 
     public String searchRaw(SearchRequest request) throws IOException, InterruptedException {
         return search(request).body();
+    }
+
+    public List<HttpResponse<String>> searchRawLoop(SearchRequest request, int targetPageCount, long timeIntervalMillis) throws IOException, InterruptedException {
+        if (isProvidingTextMatchEnabled) {
+            return getHttpResponseLoopFetching(URI.create(Transformer.preTransformURI("https://api.github.com/search/" + request.getRequestString())), acceptSchema, targetPageCount, timeIntervalMillis);
+        } else {
+            return getHttpResponseLoopFetching(URI.create(Transformer.preTransformURI("https://api.github.com/search/" + request.getRequestString())), targetPageCount, timeIntervalMillis);
+        }
     }
 
     public HttpResponse<String> search(SearchRequest request) throws IOException, InterruptedException {
