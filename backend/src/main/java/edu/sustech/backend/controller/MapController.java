@@ -18,4 +18,20 @@ public class MapController {
 	public Map<String,Integer> getSpringData(){
 		return backendService.getSpringData();
 	}
+
+	@RequestMapping("lombok")
+	public Map<String,Integer> getLombokData(){
+		return backendService.getLombokData();
+	}
+
+	@RequestMapping("log4j")
+	public Map<String,Integer> getLog4jData(){
+		return backendService.getLog4jData();
+	}
+
+	@RequestMapping("mysql")
+	public Map<String,Integer> getMysqlData(){
+		return backendService.getMysqlData();
+	}
+
 }

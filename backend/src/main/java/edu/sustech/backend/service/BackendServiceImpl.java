@@ -66,6 +66,9 @@ public class BackendServiceImpl implements BackendService {
     private List<Issue> log4jIssues;
 
     private final HashMap<String, Integer> springHeatMap = new HashMap<>();
+    private final HashMap<String, Integer> lombokHeatMap = new HashMap<>();
+    private final HashMap<String, Integer> log4jHeatMap = new HashMap<>();
+    private final HashMap<String, Integer> mysqlHeatMap = new HashMap<>();
     {
         if (dependencyData == null) {
             try {
@@ -75,32 +78,58 @@ public class BackendServiceImpl implements BackendService {
             }
         }
         if(dependencyData!=null){
-            initSpringData();
+            loadDependencyHeatMap("org.springframework");
+            loadDependencyHeatMap("org.projectlombok");
+            loadDependencyHeatMap("lo4j");
+            loadDependencyHeatMap("mysql");
         }
         logger.error("Can't get DependencyData");
     }
 
-    public void initSpringData() {
+    public void loadDependencyHeatMap(String dependency) {
+        HashMap<String,Integer> targetHeatMap=switch(dependency){
+            case "org.springframework"->springHeatMap;
+            case "org.projectlombok"->lombokHeatMap;
+            case "log4j"->log4jHeatMap;
+            case "mysql"->mysqlHeatMap;
+        };
         dependencyData.getData().forEach(repo -> {
-            //1加载Spring热力图数据
-            logger.debug("Loading Spring heat map...");
-            //1.1计算该仓库中spring依赖的数量
+            //1加载dependency热力图数据
+            logger.debug("Loading "+dependency+" heat map...");
+            //1.1计算该仓库中dependency依赖的数量
             List<Dependency> dependencies = repo.getValue().getValue();
-            int springCount = (int) dependencies.stream().filter(dep -> dep.groupId().startsWith("org.springframework")).count();
+            int springCount = (int) dependencies.stream().filter(dep -> dep.groupId().startsWith(dependency)).count();
 
-            //1.2加入该仓库中的国家使用spring的数量
+            //1.2加入该仓库中的国家使用dependency的数量
             List<User> users = repo.getValue().getKey();
             for (User user : users) {
                 String location = user.getLocation();
                 for (String key : COUNTRY_MAP.keySet()) {
                     String countryCode = COUNTRY_MAP.get(key);
                     if (location != null && location.contains(key)) {
-                        springHeatMap.put(countryCode, springHeatMap.getOrDefault(countryCode, 0) + springCount);
+                        targetHeatMap.put(countryCode, targetHeatMap.getOrDefault(countryCode, 0) + springCount);
                     }
                 }
             }
-            logger.debug("Successfully loaded spring heat map!");
+            logger.debug("Successfully loaded "+dependency+" heat map!");
         });
+    }
+
+    @Override
+    public Map<String, Integer> getSpringData() {
+        return springHeatMap;
+    }
+
+    public Map<String,Integer> getLombokData(){
+        return lombokHeatMap;
+    }
+
+    public Map<String,Integer> getLog4jData(){
+        return log4jHeatMap;
+    }
+
+    public Map<String,Integer> getMysqlData(){
+        return mysqlHeatMap;
     }
 
     @Override
@@ -337,11 +366,6 @@ public class BackendServiceImpl implements BackendService {
             }
         }
         return data;
-    }
-
-    @Override
-    public Map<String, Integer> getSpringData() {
-        return springHeatMap;
     }
 
     @Override

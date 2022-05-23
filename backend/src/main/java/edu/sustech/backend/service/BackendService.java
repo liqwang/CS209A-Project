@@ -35,6 +35,12 @@ public interface BackendService {
 
     Map<String, Integer> getSpringData();
 
+    Map<String,Integer> getLombokData();
+
+    Map<String, Integer> getLog4jData();
+
+    Map<String,Integer> getMysqlData();
+
     void updateLocalDependencyData() throws IOException, InterruptedException;
 
     void updateLocalDependencyData(int count) throws IOException, InterruptedException;
