@@ -43,11 +43,8 @@
     </div>
 
     <div>
-      <Map :country-data="{
-        US: 100,
-        CA: 120,
-        UK: 400,
-      }"/>
+      <Map :country-data="updateCountryDependencyData.series"/>
+
     </div>
     <div>
       <button>Update</button>
@@ -497,7 +494,9 @@ export default {
       Year: 2022,
       // for more guide apexchart.js
       // https://apexcharts.com/docs/chart-types/line-chart/
-
+      updateCountryDependencyData:{
+        data:{US:100, CA:120, RU:4000}
+      },
       topUsedDependencyData: {
         series: [{
           data: [{
@@ -685,6 +684,16 @@ export default {
   inject: ['axios']
   ,
   methods: {
+    onMouseEnterMapCountry(countryCode) {
+      this.showMapOverlay = true
+      // Update your data/property to be displayed on the overlay.
+    },
+    onMouseLeaveMapCountry() {
+      this.showMapOverlay = false
+    },
+    onClickMapCountry(data) {
+      console.log('Click Country', data)
+    },
     handle() {
       const e = document.getElementById("YearOption");
       const year = e.options[e.selectedIndex].value;
@@ -727,6 +736,28 @@ export default {
             console.log(failResponse);
           })
     },
+    updateCountryDependency(){
+      let component = this
+      // this.axios //Automatically
+      //     .get('Spring')
+      //     .then(successResponse => {
+      //       console.log(successResponse.data)
+      //       if (successResponse.status === 200) {
+      //         //Modify data there
+      //         component.updateCountryDependencyData.series[0].data = successResponse.data
+      //         console.log(component.topUsedDependencyData)
+      //       }
+      //     })
+      //     .catch(failResponse => {
+      //       console.log('Error on retrieving data.')
+      //       console.log(failResponse);
+      //     })
+      component.updateCountryDependencyData.data={
+        US:100,
+        CA:120,
+        RU:4000
+      }
+    },
     updateTopUsedVersion() {
       let component = this
       this.axios //Automatically
@@ -747,9 +778,11 @@ export default {
     updateArtifactByGroupId() {
 
     }
+
   },
   mounted: function () {
-    this.updateTopUsedDependency()
+    this.updateTopUsedDependency();
+    this.updateCountryDependency()
   },
 };
 </script>
