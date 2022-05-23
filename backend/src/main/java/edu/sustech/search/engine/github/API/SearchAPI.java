@@ -326,7 +326,7 @@ public class SearchAPI extends RestAPI {
 
         setSuppressResponseError(false);
 
-        logger.info("Results have been gathered on request [" + request.getRequestStringUnmodified() + "]");
+        logger.info("Results have been gathered on request [" + request.getFullRequestStringWithoutPage() + "]");
 
         return result;
     }
