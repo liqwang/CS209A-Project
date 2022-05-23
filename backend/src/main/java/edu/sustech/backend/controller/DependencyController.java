@@ -54,8 +54,9 @@ public class DependencyController {
     public ResponseEntity<String> getTopUsedVersion(
             @RequestParam(value = "group", required = false) String group,
             @RequestParam(value = "arifact", required = false) String artifact,
-            @RequestParam(value = "year", required = false) Integer year) {
-        String s = backendService.getTopUsedVersions(group, artifact, year);
+            @RequestParam(value = "year", required = false) Integer year,
+            @RequestParam(value = "count", required = false, defaultValue = "10")Integer count) {
+        String s = backendService.getTopUsedVersions(group, artifact, year, count);
         return ResponseEntity.ok(s);
     }
 

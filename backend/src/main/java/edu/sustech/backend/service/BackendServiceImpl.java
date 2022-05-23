@@ -124,7 +124,7 @@ public class BackendServiceImpl implements BackendService {
     }
 
     @Override
-    public String getTopUsedDependencies(@Nullable String group, @Nullable Integer year, int dataCount) {
+    public String getTopUsedDependencies(@Nullable String group, @Nullable Integer year, @Nullable Integer dataCount) {
         if (dependencyData == null) {
             try {
                 dependencyData = readLocalDependencyData();
@@ -152,7 +152,7 @@ public class BackendServiceImpl implements BackendService {
 
             dependencyMap.entrySet().stream()
                     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .limit(dataCount)
+                    .limit(dataCount == null ? 10 : dataCount)
                     .forEach(e -> result.add(new BarChartItem<>(e.getKey(), e.getValue())));
             try {
                 return objectMapper.writeValueAsString(result);
@@ -164,7 +164,7 @@ public class BackendServiceImpl implements BackendService {
     }
 
     @Override
-    public String getTopUsedVersions(String group, String artifact, @Nullable Integer year) {
+    public String getTopUsedVersions(@Nullable String group, @Nullable String artifact, @Nullable Integer year, @Nullable Integer dataCount) {
         if (dependencyData == null) {
             try {
                 dependencyData = readLocalDependencyData();
@@ -180,7 +180,12 @@ public class BackendServiceImpl implements BackendService {
                         return;
                     }
                     List<Dependency> list = e.getValue().getValue();
-                    list.removeIf(d -> !d.groupId().equals(group) || !d.artifactId().equals(artifact));
+                    if (group != null) {
+                        list.removeIf(d -> !d.groupId().equals(group));
+                    }
+                    if (artifact != null) {
+                        list.removeIf(d -> !d.artifactId().equals(artifact));
+                    }
                     for (Dependency d : list)
                         put(d.version(), getOrDefault(d.version(), 0) + 1);
                 });
@@ -190,8 +195,8 @@ public class BackendServiceImpl implements BackendService {
 
             versionMap.entrySet().stream()
                     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .limit(10)
-                    .forEach(e -> result.add(new BarChartItem<>(e.getKey(), e.getValue())));
+                    .limit(dataCount == null ? 10 : dataCount)
+                    .forEach(e -> result.add(new BarChartItem<>(e.getKey() == null ? "<null>" : e.getKey(), e.getValue())));
             try {
                 return objectMapper.writeValueAsString(result);
             } catch (JsonProcessingException e) {
@@ -311,7 +316,7 @@ public class BackendServiceImpl implements BackendService {
         }
 
         int cnt = 0;
-        for (CodeItem item: result1.getItems()) {
+        for (CodeItem item : result1.getItems()) {
 //        for (int i = cnt; i < result1.getItems().size(); i++) {
 //            CodeItem item = result1.getItems().get(i);
             logger.info("Acquiring item " + (cnt + 1) + " on BackendService");

@@ -2,6 +2,7 @@ package edu.sustech.backend.service;
 
 import edu.sustech.backend.entities.DependencyData;
 import edu.sustech.search.engine.github.models.issue.IPRResult;
+import org.springframework.lang.NonNullApi;
 import org.springframework.lang.Nullable;
 import org.springframework.scheduling.annotation.Async;
 
@@ -23,9 +24,9 @@ public interface BackendService {
 
     String getDependencyUsageWithLocation();
 
-    String getTopUsedDependencies(@Nullable String group, @Nullable Integer year, int dataCount);
+    String getTopUsedDependencies(@Nullable String group, @Nullable Integer year, @Nullable Integer dataCount);
 
-    String getTopUsedVersions(@Nullable String group, @Nullable String artifact, @Nullable Integer year);
+    String getTopUsedVersions(@Nullable String group, @Nullable String artifact, @Nullable Integer year, @Nullable Integer dataCount);
 
     String getAvailableGroupSelections();
 
