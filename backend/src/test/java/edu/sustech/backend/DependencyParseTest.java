@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class DependencyParseTest {
-	@Test
+//	@Test
 	void dependencyParseTest() throws IOException {
 //		String content = Files.readString(Path.of("src/main/resources/test.pom.xml"));
 		String content= """

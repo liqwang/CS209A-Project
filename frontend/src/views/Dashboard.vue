@@ -43,7 +43,7 @@
     </div>
 
     <div>
-      <Map :country-data="updateCountryDependencyData.series"/>
+      <Map :country-data="countryData.data"/>
 
     </div>
     <div>
@@ -492,10 +492,8 @@ export default {
   data() {
     return {
       Year: 2022,
-      // for more guide apexchart.js
-      // https://apexcharts.com/docs/chart-types/line-chart/
-      updateCountryDependencyData:{
-        data:{US:100, CA:120, RU:4000}
+      countryData: {
+        data: {US: 100, CA: 120, RU: 4000}
       },
       topUsedDependencyData: {
         series: [{
@@ -699,7 +697,7 @@ export default {
       const year = e.options[e.selectedIndex].value;
       let component = this
       this.axios //Automatically
-          .get("/data/top-used-dependencies?", {params: {"group": null, "artifact": null, "year": year}})
+          .get("/data/top-used-dependencies?", {params: {"group": null, "year": year, "count": null}})
           .then(successResponse => {
             // console.log(successResponse.data)
             if (successResponse.status === 200) {
@@ -728,7 +726,8 @@ export default {
             if (successResponse.status === 200) {
               //Modify data there
               component.topUsedDependencyData.series[0].data = successResponse.data
-              console.log(component.topUsedDependencyData)
+              // console.log(component.topUsedDependencyData)
+              console.log("Successfully updated top used dependencies.")
             }
           })
           .catch(failResponse => {
@@ -736,7 +735,7 @@ export default {
             console.log(failResponse);
           })
     },
-    updateCountryDependency(){
+    updateCountryDependency() {
       let component = this
       // this.axios //Automatically
       //     .get('Spring')
@@ -752,10 +751,10 @@ export default {
       //       console.log('Error on retrieving data.')
       //       console.log(failResponse);
       //     })
-      component.updateCountryDependencyData.data={
-        US:100,
-        CA:120,
-        RU:4000
+      component.countryData.data = {
+        US: 100,
+        CA: 120,
+        RU: 4000
       }
     },
     updateTopUsedVersion() {

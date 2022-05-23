@@ -69,6 +69,7 @@ public class BackendServiceImpl implements BackendService {
     private final HashMap<String, Integer> lombokHeatMap = new HashMap<>();
     private final HashMap<String, Integer> log4jHeatMap = new HashMap<>();
     private final HashMap<String, Integer> mysqlHeatMap = new HashMap<>();
+
     {
         if (dependencyData == null) {
             try {
@@ -77,7 +78,7 @@ public class BackendServiceImpl implements BackendService {
                 e.printStackTrace();
             }
         }
-        if(dependencyData!=null){
+        if (dependencyData != null) {
             loadDependencyHeatMap("org.springframework");
             loadDependencyHeatMap("org.projectlombok");
             loadDependencyHeatMap("lo4j");
@@ -87,15 +88,19 @@ public class BackendServiceImpl implements BackendService {
     }
 
     public void loadDependencyHeatMap(String dependency) {
-        HashMap<String,Integer> targetHeatMap=switch(dependency){
-            case "org.springframework"->springHeatMap;
-            case "org.projectlombok"->lombokHeatMap;
-            case "log4j"->log4jHeatMap;
-            case "mysql"->mysqlHeatMap;
+        HashMap<String, Integer> targetHeatMap = switch (dependency) {
+            case "org.springframework" -> springHeatMap;
+            case "org.projectlombok" -> lombokHeatMap;
+            case "log4j" -> log4jHeatMap;
+            case "mysql" -> mysqlHeatMap;
+            default -> null;
         };
+        if (targetHeatMap == null) {
+            return;
+        }
         dependencyData.getData().forEach(repo -> {
             //1加载dependency热力图数据
-            logger.debug("Loading "+dependency+" heat map...");
+            logger.debug("Loading " + dependency + " heat map...");
             //1.1计算该仓库中dependency依赖的数量
             List<Dependency> dependencies = repo.getValue().getValue();
             int springCount = (int) dependencies.stream().filter(dep -> dep.groupId().startsWith(dependency)).count();
@@ -111,7 +116,7 @@ public class BackendServiceImpl implements BackendService {
                     }
                 }
             }
-            logger.debug("Successfully loaded "+dependency+" heat map!");
+            logger.debug("Successfully loaded " + dependency + " heat map!");
         });
     }
 
@@ -120,15 +125,15 @@ public class BackendServiceImpl implements BackendService {
         return springHeatMap;
     }
 
-    public Map<String,Integer> getLombokData(){
+    public Map<String, Integer> getLombokData() {
         return lombokHeatMap;
     }
 
-    public Map<String,Integer> getLog4jData(){
+    public Map<String, Integer> getLog4jData() {
         return log4jHeatMap;
     }
 
-    public Map<String,Integer> getMysqlData(){
+    public Map<String, Integer> getMysqlData() {
         return mysqlHeatMap;
     }
 

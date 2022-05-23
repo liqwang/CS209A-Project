@@ -12,27 +12,27 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
 class BackendApplicationTests {
-
-    @Autowired
-    private BackendServiceImpl backendServiceImpl;
-
-    @Test
-    void contextLoads() {
-    }
-
-    @Test
-    void dataTestQ1() {
-        try {
-            backendServiceImpl.updateLocalDependencyData();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            fail();
-        }
-    }
-
-    @Test
-    void writePermissionTestQ2() throws FileNotFoundException {
-        backendServiceImpl.testWrite();
-    }
+//
+//    @Autowired
+//    private BackendServiceImpl backendServiceImpl;
+//
+//    @Test
+//    void contextLoads() {
+//    }
+//
+//    @Test
+//    void dataTestQ1() {
+//        try {
+//            backendServiceImpl.updateLocalDependencyData();
+//        } catch (IOException | InterruptedException e) {
+//            e.printStackTrace();
+//            fail();
+//        }
+//    }
+//
+//    @Test
+//    void writePermissionTestQ2() throws FileNotFoundException {
+//        backendServiceImpl.testWrite();
+//    }
 
 }
