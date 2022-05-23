@@ -40,7 +40,7 @@ public class BackendServiceImpl implements BackendService {
 
     static {
         try {
-            String[] countries = Files.readString(Path.of("backend/src/main/resources/country.txt")).split("\\r\\n\\r\\n");
+            String[] countries = Files.readString(Path.of("backend/data/country.txt")).split("\\r\\n\\r\\n");
             for (String country : countries) {
                 String[] locations = country.split("\\r\\n");
                 String countryCode = locations[0];
