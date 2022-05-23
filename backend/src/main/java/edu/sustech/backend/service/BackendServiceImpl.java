@@ -40,7 +40,7 @@ public class BackendServiceImpl implements BackendService {
 
     static {
         try {
-            String[] countries = Files.readString(Path.of("src/main/resources/country.txt")).split("\\r\\n\\r\\n");
+            String[] countries = Files.readString(Path.of("backend/src/main/resources/country.txt")).split("\\r\\n\\r\\n");
             for (String country : countries) {
                 String[] locations = country.split("\\r\\n");
                 String countryCode = locations[0];
@@ -69,6 +69,7 @@ public class BackendServiceImpl implements BackendService {
     private List<Issue> log4jIssues;
 
     private final HashMap<String, Integer> springHeatMap = new HashMap<>();
+
     {
         initSpringData();
     }
@@ -309,7 +310,7 @@ public class BackendServiceImpl implements BackendService {
         return data;
     }
 
-    public void initSpringData(){
+    public void initSpringData() {
         if (dependencyData == null) {
             try {
                 dependencyData = readLocalDependencyData();
@@ -321,7 +322,7 @@ public class BackendServiceImpl implements BackendService {
             dependencyData.getData().forEach(repo -> {
 
                 //1加载Spring热力图数据
-                logger.debug("Loading Spring hotmap...");
+                logger.debug("Loading Spring heat map...");
 
                 //1.1计算该仓库中spring依赖的数量
                 List<Dependency> dependencies = repo.getValue().getValue();
@@ -332,12 +333,12 @@ public class BackendServiceImpl implements BackendService {
                 for (User user : users) {
                     String location = user.getLocation();
                     for (String key : COUNTRY_MAP.keySet()) {
-                        if (location.contains(key)) {
+                        if (location != null && location.contains(key)) {
                             springHeatMap.put(key, springHeatMap.getOrDefault(key, 0) + springCount);
                         }
                     }
                 }
-                logger.debug("Loading Spring heat map success!");
+                logger.debug("Successfully loaded spring heat map!");
             });
         }
         logger.error("Can't get DependencyData");
