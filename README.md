@@ -12,8 +12,6 @@
 
 ## Overview
 
-___
-
 In this project, we mainly discuss two major issues:
 
 - Hot dependencies in pom.xml
@@ -25,13 +23,9 @@ In this report, we will introduce the features related to the evaluation and the
 
 ## Features
 
-___
-
 
 
 ## Project Structure
-
-___
 
 ## Frontend
 
@@ -172,7 +166,6 @@ File tree
 
 ### Controller
 
-___
 
 #### getTopUsedDependencies
 
@@ -240,7 +233,6 @@ This method updates all the data for frontend by invoking the GitHub Search Engi
 
 ### GitHub Search Engine
 
-___
 
 To make the searching process more fluently, automatically and more robust, we introduce the GitHub Search Engine.
 
