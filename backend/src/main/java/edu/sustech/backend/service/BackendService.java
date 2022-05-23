@@ -38,11 +38,9 @@ public class BackendService {
 
     private final Logger logger = LogManager.getLogger(BackendService.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
-
-    {
-        gitHubAPI.searchAPI.setSuppressRateError(true);
-    }
+//    private final GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
+    private final GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
+    {gitHubAPI.searchAPI.setSuppressRateError(true);}
 
     /**
      * For storing the dependency data acquired.
@@ -139,7 +137,6 @@ public class BackendService {
                         list.removeIf(d -> !d.groupId().equals(group));
                     for (Dependency d : list)
                         put(d.artifactId(), getOrDefault(d.artifactId(), 0) + 1);
-
                 });
             }};
 

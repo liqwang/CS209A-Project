@@ -18,18 +18,18 @@ public class Analyzer {
         /**
          * Author: QuanQuan
          */
-        List<String> dependency_list = null;
+        List<String> dependencyList;
         try {
-            dependency_list = parseXmlContents(rawPomString, "dependency");
+            dependencyList = parseXmlContents(rawPomString, "dependency");
         } catch (StackOverflowError e) {
             logger.error(e);
             logger.error("Internal parsing failure.");
             return result;
         }
 
-        for (String s : dependency_list) {
-            String groupId = parseXmlContents(s, "groupId").get(0);
-            String artifactName = parseXmlContents(s, "artifactId").get(0);
+        for (String s : dependencyList) {
+            String groupId = parseXmlContents(s, "groupId").get(0); //因为是get(0)所以不会统计exclusions里的group
+            String artifactName = parseXmlContents(s, "artifactId").get(0); //因为是get(0)所以不会统计exclusions里的artifact
             List<String> versions = parseXmlContents(s, "version");
 
             String version = null;
@@ -59,8 +59,8 @@ public class Analyzer {
     private static List<String> parseXmlContents(String xmlSource, String label) {
         ArrayList<String> result = new ArrayList<>();
 
-        Matcher matcher = Pattern.compile("<" + label + ">(.|\n|\r)+?</" + label + ">").matcher(xmlSource);
-        while (matcher.find()) {
+        Matcher matcher = Pattern.compile("<" + label + ">(.|\\n|\\r)+?</" + label + ">").matcher(xmlSource);
+        while (matcher.find()) {//Todo: Bug出现在这一行，但我不知道为什么matcher.find()会StackOverFlow
             result.add(matcher.group().replaceAll("</?" + label + ">", ""));
         }
         return result;

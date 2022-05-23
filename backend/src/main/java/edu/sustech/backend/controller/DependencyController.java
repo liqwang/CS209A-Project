@@ -1,4 +1,4 @@
-package edu.sustech.backend.controller.API;
+package edu.sustech.backend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +15,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("api")
-public class APIController {
+public class DependencyController {
     public enum UpdateStatus {
         PROGRESS("In Progress"), SUCCESS("Success"), FAILED("Failed"), NOT_INITIATED("Not initiated");
 
@@ -107,9 +107,10 @@ public class APIController {
         return ResponseEntity.ok("OK. Reloaded data.");
     }
 
+    //Todo: The users with the most stars
+
     /**
      * Used for verifying the response received by Axios
-     *
      * @return Response Body in <code>String</code>
      */
     @CrossOrigin

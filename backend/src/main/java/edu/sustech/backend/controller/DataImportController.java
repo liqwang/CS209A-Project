@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This controller is deprecated, we use GitHub API instead of Jsoup
+ */
 @Controller
 @RequestMapping("/import")
 public class DataImportController {
@@ -119,5 +122,4 @@ public class DataImportController {
             contents.add(matcher.group().replaceAll("</?" + label + ">", ""));
         return contents;
     }
-
 }

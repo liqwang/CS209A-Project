@@ -143,7 +143,6 @@ File tree
 #### getTopUsedDependencies
 
 ```java
-@RequestMapping("data/top-used-dependencies")
 public ResponseEntity<String> getTopUsedDependencies(
     @RequestParam(value = "group", required = false) String group,
     @RequestParam(value = "date", required = false) Date date,
@@ -161,7 +160,6 @@ The frontend can also set no search param to get the general result
 #### getTopUsedVersions
 
 ```java
-@RequestMapping("data/top-used-version")
 public ResponseEntity<String> getTopUsedVersions(
     @RequestParam("group") String group,
     @RequestParam("arifact") String artifact,
@@ -177,7 +175,6 @@ This method returns the top used versions of specific **group**'s **artifact** i
 #### getGroups
 
 ```java
-@RequestMapping("groups")
 public String getGroups(){
     return backendService.getAvailableGroupSelections();
 }
@@ -190,7 +187,6 @@ This method returns the group list that the user can select
 #### update
 
 ```java
-@RequestMapping("local/update-all")
 public ResponseEntity<String> update() throws IOException, InterruptedException {
     if (status == UpdateStatus.NOT_INITIATED) {
         status = UpdateStatus.PROGRESS;
@@ -265,8 +261,6 @@ public interface VersionDao {
     </update>
 </mapper>
 ```
-
-
 
 
 
