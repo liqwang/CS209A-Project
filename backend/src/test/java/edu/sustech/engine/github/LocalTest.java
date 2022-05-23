@@ -1,9 +1,8 @@
 package edu.sustech.engine.github;
 
-import edu.sustech.backend.service.BackendService;
+import edu.sustech.backend.service.BackendServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.core.AutoConfigureCache;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.FileNotFoundException;
@@ -14,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 @SpringBootTest
 public class LocalTest {
     @Autowired
-    private BackendService backendService;
+    private BackendServiceImpl backendServiceImpl;
 
     @Test
     void getLocalData(){
         try {
-            backendService.updateLocalData();
+            backendServiceImpl.updateLocalData();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             fail();
@@ -35,7 +34,7 @@ public class LocalTest {
     @Test
     void testUpdateLocalDependencyData(){
         try {
-            backendService.updateLocalDependencyData(2);
+            backendServiceImpl.updateLocalDependencyData(2);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             fail();
@@ -45,8 +44,8 @@ public class LocalTest {
     @Test
     void testReadLocalDependencyData(){
         try{
-            backendService.readLocalDependencyData();
-            System.out.println(backendService.getDependencyData().getData());
+            backendServiceImpl.readLocalDependencyData();
+            System.out.println(backendServiceImpl.getDependencyData().getData());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,7 +54,7 @@ public class LocalTest {
 
     @Test
     void testWrite() throws FileNotFoundException {
-        backendService.testWrite();
+        backendServiceImpl.testWrite();
     }
 
 }

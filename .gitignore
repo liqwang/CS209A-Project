@@ -26,3 +26,5 @@ hs_err_pid*
 .idea
 Java2-Project.iml
 /backend/src/test/samples/
+backend/data/DependencyAnalysis/Entries/
+backend/data/DependencyAnalysis/DependencySearchResult.json

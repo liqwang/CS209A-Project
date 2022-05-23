@@ -93,7 +93,25 @@ File tree
                 card.vue
 ```
 
+#### Structure
 
+The whole frontend is based on ```NodeJs``` and ```Vue.js``` framework. The intention is to create a dynamic web application that allows user interaction from **web brosers** for an immersive user experience, and without the need to interact with the server API to change the web content. *In this project we used Windzo as a template* (See [sahrullahh/windzo: Free Open Source Template Dashboard Admin Vue Tailwind CSS (github.com)](https://github.com/sahrullahh/windzo)).
+
+The frontend and the backend uses **Rest API** to communicate: The frontend uses ```get``` method to get the data from the backend server. When necessary, it also uses ```post```  method to post configurations and operations to the backend server for further actions.
+
+```
+Navigation
+├───DashBoard
+├───ComponentTest
+│       ├───Accordion
+│       ├───Alert
+│       ├───Badges
+│       ├───Breadcumbs
+│       ├───Button
+│       ├───Card
+│       └───Badges
+└───OnlineTest
+```
 
 
 
@@ -143,6 +161,7 @@ File tree
 #### getTopUsedDependencies
 
 ```java
+@RequestMapping("data/top-used-dependencies")
 public ResponseEntity<String> getTopUsedDependencies(
     @RequestParam(value = "group", required = false) String group,
     @RequestParam(value = "date", required = false) Date date,
@@ -160,6 +179,7 @@ The frontend can also set no search param to get the general result
 #### getTopUsedVersions
 
 ```java
+@RequestMapping("data/top-used-version")
 public ResponseEntity<String> getTopUsedVersions(
     @RequestParam("group") String group,
     @RequestParam("arifact") String artifact,
@@ -175,6 +195,7 @@ This method returns the top used versions of specific **group**'s **artifact** i
 #### getGroups
 
 ```java
+@RequestMapping("groups")
 public String getGroups(){
     return backendService.getAvailableGroupSelections();
 }
@@ -187,6 +208,7 @@ This method returns the group list that the user can select
 #### update
 
 ```java
+@RequestMapping("local/update-all")
 public ResponseEntity<String> update() throws IOException, InterruptedException {
     if (status == UpdateStatus.NOT_INITIATED) {
         status = UpdateStatus.PROGRESS;
@@ -196,19 +218,202 @@ public ResponseEntity<String> update() throws IOException, InterruptedException 
 }
 ```
 
-This method updates all the data for frontend by invoking the github search engine
+This method updates all the data for frontend by invoking the GitHub Search Engine.
 
 
 
-### Github search engine
+### GitHub Search Engine
 
-To make our search request more convenient, we packaged some API for Java program using Github API
+To make the searching process more fluently, automatically and more robust, we introduce the GitHub Search Engine.
 
+This GitHub Search Engine has iterated *several* times, been published to GitHub and has till now released several packages of different versions. You can check them on [IskXCr/GitHubSearchEngine: A GitHub search engine for backend application](https://github.com/IskXCr/GitHubSearchEngine). To load the GitHub Search Engine from GitHub Packages, you may need to configure your local ``.m2`` maven repository settings (which is typically under the user folder, if Windows is considered).
 
+#### File Tree
 
-### Data persistence
+```
+edu.sustech
+└───engine
+    ├───github
+    │   ├───analyzer
+    │   │       Analyzer.java
+    │   │
+    │   ├───API
+    │   │   │   ContentAPI.java
+    │   │   │   FileAPI.java
+    │   │   │   GitHubAPI.java
+    │   │   │   RepositoryAPI.java
+    │   │   │   RequestRateExceededException.java
+    │   │   │   RestAPI.java
+    │   │   │   SearchAPI.java
+    │   │   │   UserAPI.java
+    │   │   │
+    │   │   ├───rate
+    │   │   │       ActionsRunnerRegistration.java
+    │   │   │       CodeScanningUpload.java
+    │   │   │       Core.java
+    │   │   │       Graphql.java
+    │   │   │       IntegrationManifest.java
+    │   │   │       Rate.java
+    │   │   │       RateLimitResult.java
+    │   │   │       Resources.java
+    │   │   │       Scim.java
+    │   │   │       Search.java
+    │   │   │       SourceImport.java
+    │   │   │
+    │   │   ├───repository
+    │   │   ├───search
+    │   │   │   │   ETag.java
+    │   │   │   │   InvalidResultException.java
+    │   │   │   │
+    │   │   │   └───requests
+    │   │   │           CodeSearchRequest.java
+    │   │   │           CommitSearchRequest.java
+    │   │   │           IPRSearchRequest.java
+    │   │   │           LabelSearchRequest.java
+    │   │   │           RepoSearchRequest.java
+    │   │   │           SearchRequest.java
+    │   │   │           TopicSearchRequest.java
+    │   │   │           UserSearchRequest.java
+    │   │   │
+    │   │   └───user
+    │   ├───models
+    │   │   │   Alias.java
+    │   │   │   APIErrorMessage.java
+    │   │   │   AppendableResult.java
+    │   │   │   Author.java
+    │   │   │   AuthorAssociation.java
+    │   │   │   CodeOfConduct.java
+    │   │   │   Dependency.java
+    │   │   │   Entry.java
+    │   │   │   License.java
+    │   │   │   Match.java
+    │   │   │   Milestone.java
+    │   │   │   OAuthToken.java
+    │   │   │   Owner.java
+    │   │   │   Parent.java
+    │   │   │   Permissions.java
+    │   │   │   Reactions.java
+    │   │   │   Related.java
+    │   │   │   State.java
+    │   │   │   TextMatch.java
+    │   │   │
+    │   │   ├───code
+    │   │   │       CodeItem.java
+    │   │   │       CodeResult.java
+    │   │   │
+    │   │   ├───commit
+    │   │   │       Commit.java
+    │   │   │       CommitItem.java
+    │   │   │       CommitResult.java
+    │   │   │       Tree.java
+    │   │   │       Verification.java
+    │   │   │
+    │   │   ├───content
+    │   │   │       ContentDirectory.java
+    │   │   │       ContentFile.java
+    │   │   │       Links.java
+    │   │   │       RawContent.java
+    │   │   │       SymlinkContent.java
+    │   │   │
+    │   │   ├───filetree
+    │   │   ├───githubapp
+    │   │   │       GitHubApp.java
+    │   │   │       Permissions.java
+    │   │   │
+    │   │   ├───issue
+    │   │   │       IPRResult.java
+    │   │   │       Issue.java
+    │   │   │
+    │   │   ├───label
+    │   │   │       Label.java
+    │   │   │       LabelResult.java
+    │   │   │
+    │   │   ├───pullrequests
+    │   │   │       PullRequest.java
+    │   │   │       PullRequestResult.java
+    │   │   │
+    │   │   ├───repository
+    │   │   │       Repository.java
+    │   │   │       RepositoryResult.java
+    │   │   │
+    │   │   ├───topic
+    │   │   │       Topic.java
+    │   │   │       TopicRelation.java
+    │   │   │       TopicResult.java
+    │   │   │
+    │   │   └───user
+    │   │           User.java
+    │   │           UserResult.java
+    │   │
+    │   ├───parser
+    │   │       JsonSchemaParser.java
+    │   │
+    │   ├───test
+    │   └───transformer
+    │           Transformer.java
+    │
+    └───stackoverflow
+```
 
-We use two methods for data persistence
+#### Functionality
+
+The engine has a ***fully functional implementation*** of the search function of the GitHub Rest API (```SearchAPI```) and provides Java abstractions for dealing with objects present in GitHub (for example, ``Repository``, ``User``, ``Issues``, ``Commits``, etc. Those existing models can be found inside the ```models``` directory in the source code). It also provides additional ***partially implemented*** APIs such as ```UserAPI```, ```RepositoryAPI``` and ```RateAPI``` for other needs such as tracing user locations and attain the information related to real-time GitHub rate limits.
+
+An automatical loop for dealing with the common exceptions, including ```timeout```, ```RateLimitExceeded``` has been constructed to improve the user experience when in autonomous mode.
+
+#### Basic Usage
+
+##### Build a request
+
+```java
+	CodeSearchRequest req1 = CodeSearchRequest.newBuilder()
+		.addSearchField(CodeSearchRequest.SearchBy.Filename, "pom.xml")
+		.addLanguageOption("Maven POM")
+		.build();
+```
+
+Similar searches can be done on ```Issues```, ```Pull Requests```, ```Commits```, ```Users```, ```Repositories```, ```RawFiles```
+
+##### Search in GitHub
+
+```
+	CodeResult result1 = gitHubAPI.searchAPI.searchCode(req1, count, LOCAL_SEARCH_UPDATE_INTERVAL_MILLIS);
+```
+
+##### Query the results
+
+```java
+	for(CodeItem item: CodeResult){
+        
+        Repository repo = item.getRepository();
+        System.out.println(repo.getFullName() + ", " + item.getName());
+        
+        //Get the list of contributors
+        List<User> userList = gitHubAPI.repositoryAPI.getContributors(repo);
+        
+        //Sort users by their contributions in the specific repository 
+		userList.sort(Comparator.comparingInt(User::getContributions).reversed());
+        for(User user: userList){
+            System.out.println(user.getLogin());
+        }
+    }
+```
+
+#### Abstractions
+
+**All** items related to the **search** part of the GitHub RestAPI has been implemented. See the file tree above to get more info.
+
+#### Implementation of the GitHub Search Engine (Partially)
+
+###### 
+
+#### Documentations
+
+Documentations will later be generated in the format of JavaDoc directly from those JavaDoc embedded in the code. The code implements the basic methods all as generic, and users are expected to check the documents of those generic methods when encountering specific problems with the implementation of a specifc method (that is related to a certain abstraction, for example ``User``).
+
+### Data Persistence
+
+We use two methods for data persistence:
 
 #### Database
 
@@ -262,17 +467,10 @@ public interface VersionDao {
 </mapper>
 ```
 
-
-
  #### File
 
-Besides the database, we also use files, which stores the json data
+Besides the database, we also use files, which stores the json data.
 
 
 
 ## Insights
-
-
-
-
-

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import edu.sustech.backend.service.BackendService;
+import edu.sustech.backend.service.BackendServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -34,6 +35,8 @@ public class DependencyController {
     @Autowired
     private BackendService backendService;
 
+    private Thread updateServiceThread;
+
     public UpdateStatus status = UpdateStatus.NOT_INITIATED;
 
     @CrossOrigin
@@ -50,7 +53,7 @@ public class DependencyController {
     @RequestMapping("data/top-used-version")
     public ResponseEntity<String> getTopUsedVersion(
             @RequestParam(value = "group", required = false) String group,
-            @RequestParam(value = "artifact",required = false) String artifact,
+            @RequestParam(value = "arifact", required = false) String artifact,
             @RequestParam(value = "year", required = false) Integer year) {
         String s = backendService.getTopUsedVersions(group, artifact, year);
         return ResponseEntity.ok(s);
@@ -80,10 +83,20 @@ public class DependencyController {
         return ResponseEntity.ok("OK. Update status: " + status);
     }
 
-    @Async
+
     public void updateData() throws IOException, InterruptedException {
-        backendService.updateLocalData();
-        status = UpdateStatus.SUCCESS;
+        if (updateServiceThread == null || !updateServiceThread.isAlive()) {
+            updateServiceThread = new Thread(() -> {
+                try {
+                    backendService.updateLocalData();
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                status = UpdateStatus.SUCCESS;
+            });
+            updateServiceThread.setName("BackendUpdateExec");
+            updateServiceThread.start();
+        }
     }
 
     @CrossOrigin
@@ -142,6 +155,6 @@ public class DependencyController {
         data.set("options", options);
         data.set("series", series);
 
-        return mpr.writerWithDefaultPrettyPrinter().writeValueAsString(data);
+        return mpr.writeValueAsString(data);
     }
 }

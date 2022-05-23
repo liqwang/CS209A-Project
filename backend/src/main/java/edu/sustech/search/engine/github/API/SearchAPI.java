@@ -278,7 +278,7 @@ public class SearchAPI extends RestAPI {
         HttpResponse<String> response;
         AppendableResult result = origin;
 
-        logger.warn("Suppressing responses from REST API");
+
         setSuppressResponseError(true);
 
         for (int loopCnt = 1; cnt < count && request.getResultPage() <= endPageCount; loopCnt++) {
@@ -322,7 +322,6 @@ public class SearchAPI extends RestAPI {
 
         request.setResultPage(1);
 
-        logger.warn("Recovering responses from REST API");
         setSuppressResponseError(false);
 
         logger.info("Results have been gathered on request [" + request.getRequestStringRaw() + "]");

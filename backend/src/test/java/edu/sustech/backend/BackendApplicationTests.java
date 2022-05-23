@@ -1,6 +1,6 @@
 package edu.sustech.backend;
 
-import edu.sustech.backend.service.BackendService;
+import edu.sustech.backend.service.BackendServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class BackendApplicationTests {
 
     @Autowired
-    private BackendService backendService;
+    private BackendServiceImpl backendServiceImpl;
 
     @Test
     void contextLoads() {
@@ -23,7 +23,7 @@ class BackendApplicationTests {
     @Test
     void dataTestQ1() {
         try {
-            backendService.updateLocalDependencyData();
+            backendServiceImpl.updateLocalDependencyData();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             fail();
@@ -32,7 +32,7 @@ class BackendApplicationTests {
 
     @Test
     void writePermissionTestQ2() throws FileNotFoundException {
-        backendService.testWrite();
+        backendServiceImpl.testWrite();
     }
 
 }

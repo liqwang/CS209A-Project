@@ -86,6 +86,7 @@ public class UserAPI extends RestAPI {
     }
 
     public HttpResponse<String> sendUserRequestDirect(URI uri) throws IOException, InterruptedException {
+        logger.info("Sending user request direct: " + uri);
         return getHttpResponse(uri);
     }
 

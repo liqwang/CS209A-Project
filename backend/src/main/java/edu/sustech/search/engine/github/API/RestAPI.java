@@ -135,7 +135,7 @@ public class RestAPI {
 
         StringBuilder uriRawContent = new StringBuilder(rawUri.toString() + "?&per_page=" + perPage + "&page=1");
         int lastIndex = uriRawContent.length() - 1;
-        logger.warn("Suppressing responses from REST API");
+        logger.debug("Suppressing responses from REST API");
         setSuppressResponseError(true);
 
         for (int loopCnt = 1; pageCount < targetPageCount && pageCount <= endPageCount; loopCnt++) {
@@ -160,12 +160,12 @@ public class RestAPI {
             logger.info("Result fetched: " + pageCount);
 
             if (pageCount < targetPageCount && pageCount <= endPageCount) {
-                logger.info("Waiting on time interval (millis) to fetch the next result: " + timeIntervalMillis);
+                logger.debug("Waiting on time interval (millis) to fetch the next result: " + timeIntervalMillis);
                 Thread.sleep(timeIntervalMillis);
             }
         }
 
-        logger.warn("Recovering responses from REST API");
+        logger.debug("Recovering responses from REST API");
         setSuppressResponseError(false);
 
         logger.info("Results have been gathered on request [" + rawUri.toString() + "]");
@@ -178,8 +178,7 @@ public class RestAPI {
     }
 
     public HttpResponse<String> getHttpResponse(URI uri, String acceptSchema) throws IOException, InterruptedException {
-        String tmpUri = uri.toString().replace("[", "%5b").replace("]", "%5d");
-        uri = URI.create(tmpUri);
+        uri = URI.create(Transformer.preTransformURI(uri.toString()));
 
         HttpRequest.Builder builder = HttpRequest.newBuilder();
         if (token != null) {
@@ -226,9 +225,9 @@ public class RestAPI {
      */
     public void setSuppressResponseError(boolean isErrorSuppressed) {
         if (isErrorSuppressed) {
-            logger.warn("Error suppression on http response is " + true + ". This may cause hidden problems.");
+            logger.debug("Error suppression on http response is " + true + ". This may cause hidden problems.");
         } else {
-            logger.warn("Error suppression on http response has been recovered.");
+            logger.debug("Error suppression on http response has been recovered.");
         }
         suppressResponseError = isErrorSuppressed;
     }
@@ -262,6 +261,12 @@ public class RestAPI {
         return convert(response.body(), RateLimitResult.class);
     }
 
+    /**
+     * Convert the object using the internal objectMapper created at instantiation.
+     * @param jsonContent JsonContent
+     * @param clazz Target class
+     * @return An instance of the target class parsed from the json content provided.
+     */
     public static <T> T convert(String jsonContent, Class<T> clazz) {
         try {
             return staticObjectMapper.readValue(jsonContent, clazz);
@@ -272,7 +277,11 @@ public class RestAPI {
         return null;
     }
 
-
+    /**
+     * This method parse the end page count from the response header.
+     * @param response Response to parse
+     * @return The end page count. <code>Integer.MAX_VALUE</code> will be assigned if not found.
+     */
     public static int parseEndPageCount(HttpResponse<String> response) {
         int result = Integer.MAX_VALUE;
         if (response.headers().firstValue("Link").isPresent()) {

@@ -28,8 +28,8 @@ public class Analyzer {
         }
 
         for (String s : dependencyList) {
-            String groupId = parseXmlContents(s, "groupId").get(0); //因为是get(0)所以不会统计exclusions里的group
-            String artifactName = parseXmlContents(s, "artifactId").get(0); //因为是get(0)所以不会统计exclusions里的artifact
+            String groupId = parseXmlContents(s, "groupId").get(0); // get(0) will not count those <groupID> in <exclusion>
+            String artifactName = parseXmlContents(s, "artifactId").get(0); // get(0) will not count those <artifactID> in <exclusion>
             List<String> versions = parseXmlContents(s, "version");
 
             String version = null;
@@ -60,7 +60,9 @@ public class Analyzer {
         ArrayList<String> result = new ArrayList<>();
 
         Matcher matcher = Pattern.compile("<" + label + ">(.|\\n|\\r)+?</" + label + ">").matcher(xmlSource);
-        while (matcher.find()) {//Todo: Bug出现在这一行，但我不知道为什么matcher.find()会StackOverFlow
+
+        //Todo: matcher.find() may cause StackOverflow Error due to its internal error
+        while (matcher.find()) {
             result.add(matcher.group().replaceAll("</?" + label + ">", ""));
         }
         return result;
