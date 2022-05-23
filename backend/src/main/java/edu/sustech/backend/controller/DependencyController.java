@@ -69,7 +69,7 @@ public class DependencyController {
     @CrossOrigin
     @RequestMapping("local/update-all")
     public ResponseEntity<String> update() throws IOException, InterruptedException {
-        if (status == UpdateStatus.NOT_INITIATED) {
+        if (status == UpdateStatus.NOT_INITIATED || status == UpdateStatus.SUCCESS) {
             status = UpdateStatus.PROGRESS;
             updateData();
         } else {
