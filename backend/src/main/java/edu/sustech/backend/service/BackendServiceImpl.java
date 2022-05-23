@@ -36,6 +36,23 @@ public class BackendServiceImpl implements BackendService {
     private static final long LOCAL_ITEM_UPDATE_INTERVAL_MILLIS = 400;
     private static final long LOCAL_MINOR_UPDATE_INTERVAL_MILLIS = 200;
 
+    private static final HashMap<String, String> COUNTRY_MAP = new HashMap<>();
+
+    static {
+        try {
+            String[] countries = Files.readString(Path.of("src/main/resources/country.txt")).split("\\r\\n\\r\\n");
+            for (String country : countries) {
+                String[] locations = country.split("\\r\\n");
+                String countryCode = locations[0];
+                for (int i = 1; i < locations.length; i++) {
+                    COUNTRY_MAP.put(locations[i], countryCode);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private final Logger logger = LogManager.getLogger(BackendServiceImpl.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
@@ -284,6 +301,44 @@ public class BackendServiceImpl implements BackendService {
             }
         }
         return data;
+    }
+
+    private final HashMap<String, Integer> springHeatMap = new HashMap<>();
+
+    @Override
+    public Map<String, Integer> getSpringData() {
+        if (dependencyData == null) {
+            try {
+                dependencyData = readLocalDependencyData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (dependencyData != null) {
+            dependencyData.getData().forEach(repo -> {
+
+                //1加载Spring热力图数据
+                logger.debug("Loading Spring hotmap...");
+
+                //1.1计算该仓库中spring依赖的数量
+                List<Dependency> dependencies = repo.getValue().getValue();
+                int springCount = (int) dependencies.stream().filter(dep -> dep.groupId().startsWith("org.springframework")).count();
+
+                //1.2加入该仓库中的国家使用spring的数量
+                List<User> users = repo.getValue().getKey();
+                for (User user : users) {
+                    String location = user.getLocation();
+                    for (String key : COUNTRY_MAP.keySet()) {
+                        if (location.contains(key)) {
+                            springHeatMap.put(key, springHeatMap.getOrDefault(key, 0) + springCount);
+                        }
+                    }
+                }
+                logger.debug("Loading Spring heat map success!");
+            });
+        }
+        logger.error("Can't get DependencyData");
+        return springHeatMap;
     }
 
     @Override

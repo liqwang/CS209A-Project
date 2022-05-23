@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Async;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 public interface BackendService {
     void updateLocalData() throws IOException, InterruptedException;
@@ -33,6 +34,8 @@ public interface BackendService {
     String getAvailableDependencySelections();
 
     DependencyData readLocalDependencyData() throws IOException;
+
+    Map<String, Integer> getSpringData();
 
     void updateLocalDependencyData() throws IOException, InterruptedException;
 

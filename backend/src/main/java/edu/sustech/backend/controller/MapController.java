@@ -1,5 +1,6 @@
 package edu.sustech.backend.controller;
 
+import edu.sustech.backend.service.BackendService;
 import edu.sustech.backend.service.MapServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +13,10 @@ import java.util.Map;
 public class MapController {
 	//Todo: {two-code}:{count}
 	@Autowired
-	private MapServiceImpl mapServiceImpl;
+	private BackendService backendService;
 
 	@RequestMapping("spring")
 	public Map<String,Integer> getSpringData(){
-		return mapServiceImpl.getSpringData();
+		return backendService.getSpringData();
 	}
 }
