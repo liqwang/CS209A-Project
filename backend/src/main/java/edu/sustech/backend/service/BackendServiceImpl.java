@@ -80,7 +80,7 @@ public class BackendServiceImpl implements BackendService {
         if(dependencyData!=null){
             loadDependencyHeatMap("org.springframework");
             loadDependencyHeatMap("org.projectlombok");
-            loadDependencyHeatMap("lo4j");
+            loadDependencyHeatMap("log4j");
             loadDependencyHeatMap("mysql");
         }
         logger.error("Can't get DependencyData");
@@ -92,6 +92,7 @@ public class BackendServiceImpl implements BackendService {
             case "org.projectlombok"->lombokHeatMap;
             case "log4j"->log4jHeatMap;
             case "mysql"->mysqlHeatMap;
+            default->new HashMap<>();
         };
         dependencyData.getData().forEach(repo -> {
             //1加载dependency热力图数据
