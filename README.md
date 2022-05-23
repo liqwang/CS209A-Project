@@ -375,18 +375,38 @@ edu.sustech
 
 #### Functionality & Features
 
-The engine has a ***full implementation*** of the search function of the GitHub Rest API (```SearchAPI```) and provides*** Java abstractions*** for dealing with entities present in GitHub (for example, ``Repository``, ``User``, ``Issues``, ``Commits``, etc. Those existing models can be found inside the ```models``` directory in the source code). It also provides additional ***partially implemented*** APIs such as ```UserAPI```, ```RepositoryAPI``` and ```RateAPI``` for other needs such as tracing user locations and attain the information related to real-time GitHub rate limits, get the contributions of an user to a specific repository, etc.
+The engine has a ***full implementation (except for acquiring Trees)***  of the search function of the GitHub Rest API (```SearchAPI```) and provides*** Java abstractions*** for dealing with entities present in GitHub (for example, ``Repository``, ``User``, ``Issues``, ``Commits``, etc. Those existing models can be found inside the ```models``` directory in the source code). It also provides additional ***partially implemented*** APIs such as ```UserAPI```, ```RepositoryAPI``` and ```RateAPI``` for other needs such as tracing user locations and attain the information related to real-time GitHub rate limits, get the contributions of an user to a specific repository, etc.
 
 Search requests and along with other operations can be constructed through ***pure Java codes*** and be passed to the ```SearchAPI``` or ```RepositoryAPI```, etc. In the implementation of the ```SearchAPI```, all http responses received and the process of parsing , error/exception processing and loop fetching (fetch until results acquired are more than or equals to the desired number of results, which is a parameter that can be either specified or left to ``Integer.MAX_VALUE``) are ***hidden at default*** from the caller. The user of this engine is able to manipulate the interaction with the GitHub SearchEngine (***without*** even learning the GitHub RestAPI) in a Java way and does not need to care about the inner processing and handling. Advanced manipulations of the engine can also be done with specified request parameters and through the usage of the generic methods pre-implemented.
 
-All APIs are extended from the basic class ``RestAPI``. ```RestAPI``` provides the basic functionality to communicate with the GitHub RestAPI, retreiving data from it, and parse the result into a required object.
+All APIs are extended from the basic class ``RestAPI``. ```RestAPI``` provides the basic functionality to communicate with the GitHub RestAPI, retrieving data from it, and parse the result into a required object.
+
+![image-20220523211104329](C:\Users\Ishik\AppData\Roaming\Typora\typora-user-images\image-20220523211104329.png)
+
+
+
+![image-20220523212251799](C:\Users\Ishik\AppData\Roaming\Typora\typora-user-images\image-20220523212251799.png)
+
+
+
+![image-20220523211717048](C:\Users\Ishik\AppData\Roaming\Typora\typora-user-images\image-20220523211717048.png)
+
+![image-20220523212133552](C:\Users\Ishik\AppData\Roaming\Typora\typora-user-images\image-20220523212133552.png)
+
+#### Major Implementations in the ``SearchAPI``
 
 ##### searchLoopFetching method
 
 ```java
-		public AppendableResult searchLoopFetching(SearchRequest request1, AppendableResult origin, AppendableResultParser p, int count, long timeIntervalMillis) throws InterruptedException, IOException {...}
+		public AppendableResult searchLoopFetching(SearchRequest request1, 
+                                                   @Nullable AppendableResult origin 
+                                                   AppendableResultParser p, 
+                                                   int count, 
+                                                   long timeIntervalMillis) throws InterruptedException, IOException {...}
 
 ```
+
+This method uses ``AppendableResult`` as both one of the parameters and the result. The ``AppendableResultParser`` is an ``@FunctionalInterface``, allowing the parsing and the manipulation of the object with unknown type.
 
 ##### searchLoopFetching method (Generic)
 
@@ -410,8 +430,14 @@ This method needs the target class to implement ```AppendableResult``` interface
      * @throws InterruptedException
      */
     @SuppressWarnings("unchecked")
-    public <T extends AppendableResult> T searchType(SearchRequest request1, Class<T> targetClazz, int count, long timeIntervalMillis) throws IOException, InterruptedException {
-        return (T) searchLoopFetching(request1, s -> convert(s, targetClazz), count, timeIntervalMillis); //It must be T, so no worry.
+    public <T extends AppendableResult> T searchType(SearchRequest request1, 
+                                                     Class<T> targetClazz, 
+                                                     int count, 
+                                                     long timeIntervalMillis) throws IOException, InterruptedException {
+        return (T) searchLoopFetching(request1, 
+                                      s -> convert(s, targetClazz), 
+                                      count, 
+                                      timeIntervalMillis); //It must be T, so no worry.
     }
 ```
 
@@ -423,7 +449,7 @@ An automatical loop for dealing with the common exceptions, including ```timeout
 
 ```java
 	CodeSearchRequest req1 = CodeSearchRequest.newBuilder()
-		.addSearchField(CodeSearchRequest.SearchBy.Filename, "pom.xml")
+        .addSearchField(CodeSearchRequest.SearchBy.Filename, "pom.xml")
 		.addLanguageOption("Maven POM")
 		.build();
 ```
@@ -432,11 +458,13 @@ Similar searches can be done on ```Issues```, ```Pull Requests```, ```Commits```
 
 ##### Search in GitHub
 
-```
+```java
 	//Register the API
 	private final GitHubAPI gitHubAPI = GitHubAPI.registerAPI(PersonalAccessToken);
 	
-	CodeResult result1 = gitHubAPI.searchAPI.searchCode(req1, count, LOCAL_SEARCH_UPDATE_INTERVAL_MILLIS);
+	CodeResult result1 = gitHubAPI.searchAPI.searchCode(req1, 
+                                                        count, 
+                                                       LOCAL_SEARCH_UPDATE_INTERVAL_MILLIS);
 ```
 
 ##### Query the results
