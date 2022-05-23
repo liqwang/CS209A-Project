@@ -66,6 +66,8 @@ public class Analyzer {
         while (matcherL.find()) {
             if (matcherR.find() && matcherL.end() < matcherR.start()) {
                 result.add(xmlSource.substring(matcherL.end(), matcherR.start()));
+            }else{
+                break;
             }
         }
         return result;
