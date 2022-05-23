@@ -59,13 +59,13 @@ public class Analyzer {
     private static List<String> parseXmlContents(String xmlSource, String label) {
         ArrayList<String> result = new ArrayList<>();
 
-        Matcher matcher = Pattern.compile("<\\/?" + label + ">").matcher(xmlSource);
+        Matcher matcherL = Pattern.compile("<" + label + ">").matcher(xmlSource);
+        Matcher matcherR = Pattern.compile("</" + label + ">").matcher(xmlSource);
 
         //Todo: matcher.find() may cause StackOverflow Error due to its internal error
-        while (matcher.find()) {
-            int m = matcher.end();
-            if (matcher.find()) {
-                result.add(xmlSource.substring(m, matcher.start()));
+        while (matcherL.find()) {
+            if (matcherR.find() && matcherL.end() < matcherR.start()) {
+                result.add(xmlSource.substring(matcherL.end(), matcherR.start()));
             }
         }
         return result;
