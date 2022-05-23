@@ -43,7 +43,7 @@
     </div>
 
     <div>
-      <Map :country-data="updateCountryDependencyData.series"/>
+      <Map :country-data="updateCountryDependencyData"/>
 
     </div>
     <div>
@@ -495,7 +495,7 @@ export default {
       // for more guide apexchart.js
       // https://apexcharts.com/docs/chart-types/line-chart/
       updateCountryDependencyData:{
-        data:{US:100, CA:120, RU:4000}
+        US:100, CA:120, RU:4000
       },
       topUsedDependencyData: {
         series: [{
@@ -752,7 +752,7 @@ export default {
       //       console.log('Error on retrieving data.')
       //       console.log(failResponse);
       //     })
-      component.updateCountryDependencyData.data={
+      component.updateCountryDependencyData={
         US:100,
         CA:120,
         RU:4000
