@@ -143,11 +143,12 @@ public class RestAPI {
 
             response = getHttpResponse(URI.create(Transformer.preTransformURI(uriRawContent.toString())), acceptSchema);
 
-            if (endPageCount == Integer.MAX_VALUE) {
-                endPageCount = parseEndPageCount(response);
-            }
 
             if (response != null) {
+                if (endPageCount == Integer.MAX_VALUE) {
+                    endPageCount = parseEndPageCount(response);
+                }
+
                 if (response.statusCode() == 200) {
                     result.add(response);
                     pageCount++;
@@ -195,8 +196,13 @@ public class RestAPI {
         HttpResponse<String> response;
         int deadLockCount = 0;
         do {
-            response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200) {
+            response = null;
+            try {
+                response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            } catch (IOException e) {
+                logger.error(e.getMessage() + " Caused by: " + e.getCause());
+            }
+            if (response != null && response.statusCode() != 200) {
 
 
                 APIErrorMessage message = objectMapper.readValue(response.body(), APIErrorMessage.class);
@@ -213,7 +219,7 @@ public class RestAPI {
                 }
             }
             Thread.sleep(DEFAULT_TIME_LIMIT_MILLIS);
-        } while (response.statusCode() != 200 && (deadLockCount++ < 3));
+        } while ((response == null || response.statusCode() != 200) && (deadLockCount++ < 3));
         return response;
     }
 
@@ -263,8 +269,9 @@ public class RestAPI {
 
     /**
      * Convert the object using the internal objectMapper created at instantiation.
+     *
      * @param jsonContent JsonContent
-     * @param clazz Target class
+     * @param clazz       Target class
      * @return An instance of the target class parsed from the json content provided.
      */
     public static <T> T convert(String jsonContent, Class<T> clazz) {
@@ -279,6 +286,7 @@ public class RestAPI {
 
     /**
      * This method parse the end page count from the response header.
+     *
      * @param response Response to parse
      * @return The end page count. <code>Integer.MAX_VALUE</code> will be assigned if not found.
      */

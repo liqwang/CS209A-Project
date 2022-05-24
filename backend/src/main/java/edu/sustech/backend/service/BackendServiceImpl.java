@@ -379,7 +379,7 @@ public class BackendServiceImpl implements BackendService {
 
     @Override
     public void resolveTransitiveDependency() throws IOException {
-        logger.info("Resolving transitive dependency data");
+        logger.info("Resolving transitive dependency data from existing files");
         DependencyData data = new DependencyData();
         File dir = new File("backend/data/DependencyAnalysis/Entries");
         File[] files = dir.listFiles();
@@ -466,7 +466,7 @@ public class BackendServiceImpl implements BackendService {
                 for (User user : userList) {
                     User rep = gitHubAPI.userAPI.getUser(user.getUrl());
                     user.setLocation(rep.getLocation());
-//                    Thread.sleep(LOCAL_MINOR_UPDATE_INTERVAL_MILLIS);
+                    Thread.sleep(LOCAL_MINOR_UPDATE_INTERVAL_MILLIS);
                 }
             }
             Entry<Repository, Entry<List<User>, List<Dependency>>> entry = new Entry<>(r, new Entry<>(userList, ls));

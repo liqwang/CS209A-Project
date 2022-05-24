@@ -272,7 +272,7 @@ public class SearchAPI extends RestAPI {
     public AppendableResult searchLoopFetching(SearchRequest request1, @Nullable AppendableResult origin, AppendableResultParser p, int count, long timeIntervalMillis) throws InterruptedException, IOException {
 
         SearchRequest request = new SearchRequest(request1);
-        logger.info("Starting to fetch results on request[" + request.getRequestStringUnmodified() + "]. Target number: " + count);
+        logger.info("Starting to fetch results on request[" + request.getFullRequestStringWithoutPage() + "]. Target number: " + count);
         request.setResultPerPage(count);
 
         int cnt = 0;
@@ -287,29 +287,31 @@ public class SearchAPI extends RestAPI {
             logger.info("Looping: " + loopCnt);
             response = search(request);
 
-            if (endPageCount == Integer.MAX_VALUE) {
-                endPageCount = parseEndPageCount(response);
-            }
-
-            AppendableResult result1 = p.parse(response.body());
-
-            if (result == null) {
-                if (result1 != null && result1.getItemCount() != 0) {
-                    result = result1;
-                    cnt = result.getItemCount();
-                    request.incrResultPage(1);
+            if (response != null) {
+                if (endPageCount == Integer.MAX_VALUE) {
+                    endPageCount = parseEndPageCount(response);
                 }
-            } else {
-                int incr = result.appendItems(result1);
-                if (incr != 0) {
-                    request.incrResultPage(1);
-                    cnt += incr;
+
+                AppendableResult result1 = p.parse(response.body());
+
+                if (result == null) {
+                    if (result1 != null && result1.getItemCount() != 0) {
+                        result = result1;
+                        cnt = result.getItemCount();
+                        request.incrResultPage(1);
+                    }
                 } else {
-                    if (!suppressRateError) {
-                        printRateLimit(response);
-                        RateLimitResult res = getRateLimit();
-                        logger.error("The search rate limit has been captured and will be shown on the next error:");
-                        logger.error(res.getResources().getSearch());
+                    int incr = result.appendItems(result1);
+                    if (incr != 0) {
+                        request.incrResultPage(1);
+                        cnt += incr;
+                    } else {
+                        if (!suppressRateError) {
+                            printRateLimit(response);
+                            RateLimitResult res = getRateLimit();
+                            logger.error("The search rate limit has been captured and will be shown on the next error:");
+                            logger.error(res.getResources().getSearch());
+                        }
                     }
                 }
             }
