@@ -231,6 +231,12 @@ This method updates all the data for frontend by invoking the GitHub Search Engi
 
 
 
+#### getSpringData
+
+
+
+
+
 ### GitHub Search Engine
 
 
@@ -520,7 +526,7 @@ We use two methods for data persistence:
 
 We use cloud **MySQL** database and **Mybatis** ORM framework
 
-.<img src="README.pictures/image-20220522220830677.png" alt="image-20220522220830677" style="zoom: 80%;" />
+.<img src="README.pictures/image-20220522220830677.png" alt="image-20220522220830677" style="zoom:80%;" />
 
 Here is an dto example
 
@@ -575,3 +581,4 @@ Besides the database, we also use files, which stores the json data.
 
 
 ## Insights
+

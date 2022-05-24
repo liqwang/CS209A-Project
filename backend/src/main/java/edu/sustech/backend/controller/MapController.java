@@ -33,7 +33,7 @@ public class MapController {
 
 	@RequestMapping("mysql")
 	public String getMysqlData() throws IOException {
-		return Files.readString(Path.of("data/DependencyAnalysis/heatmapData/mysql.json"));
+		return Files.readString(Path.of("backend/data/DependencyAnalysis/heatmapData/mysql.json"));
 	}
 
 //	@RequestMapping("spring")
