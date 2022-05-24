@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import edu.sustech.search.engine.github.models.Entry;
+import edu.sustech.search.engine.github.models.content.ContentFile;
 import edu.sustech.search.engine.github.models.repository.Repository;
 import edu.sustech.search.engine.github.models.user.User;
 import edu.sustech.search.engine.github.transformer.Transformer;
@@ -90,7 +91,7 @@ public class RepositoryAPI extends RestAPI {
                     }
                     User user = null;
                     convert(arrNode.get("user").toString(), User.class);
-                    if(user!=null) {
+                    if (user != null) {
                         result.add(new Entry<>(user, creationDate));
                     }
                 }
@@ -101,7 +102,8 @@ public class RepositoryAPI extends RestAPI {
 
 
     public Repository getRepository(URI uri) throws IOException, InterruptedException {
-        return convert(getRepositoryInfoDirect(uri).body(), Repository.class);
+        HttpResponse<String> response = getRepositoryInfoDirect(uri);
+        return response == null ? null : convert(response.body(), Repository.class);
     }
 
     public Repository getRepository(String repoFullName) throws IOException, InterruptedException {
@@ -110,7 +112,7 @@ public class RepositoryAPI extends RestAPI {
 
     public String getRepositoryInfoRaw(String repoFullName) throws IOException, InterruptedException {
         HttpResponse<String> response = getRepositoryInfo(repoFullName);
-        return response.body();
+        return response == null ? null : response.body();
     }
 
     public HttpResponse<String> getRepositoryInfo(String repoFullName) throws IOException, InterruptedException {

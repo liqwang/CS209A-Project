@@ -6,6 +6,7 @@ import edu.sustech.search.engine.github.models.repository.Repository;
 import edu.sustech.search.engine.github.transformer.Transformer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.net.URI;
@@ -26,11 +27,13 @@ public class ContentAPI extends edu.sustech.search.engine.github.API.RestAPI {
     }
 
     public ContentDirectory getContentDirectory(URI uri) throws IOException, InterruptedException {
-        return convert(getContentDirect(uri).body(), ContentDirectory.class);
+        HttpResponse<String> response = getContentDirect(uri);
+        return response == null ? null : convert(response.body(), ContentDirectory.class);
     }
 
     public ContentFile getContentFile(URI uri) throws IOException, InterruptedException {
-        return convert(getContentDirect(uri).body(), ContentFile.class);
+        HttpResponse<String> response = getContentDirect(uri);
+        return response == null ? null : convert(response.body(), ContentFile.class);
     }
 
     public String getContentRaw(Repository repo, String path) throws IOException, InterruptedException {
@@ -39,7 +42,8 @@ public class ContentAPI extends edu.sustech.search.engine.github.API.RestAPI {
     }
 
     public String getContentRaw(URI uri) throws IOException, InterruptedException {
-        return getContentDirect(uri).body();
+        HttpResponse<String> response = getContentDirect(uri);
+        return response == null ? null : response.body();
     }
 
     public HttpResponse<String> getContentDirect(URI uri) throws IOException, InterruptedException {

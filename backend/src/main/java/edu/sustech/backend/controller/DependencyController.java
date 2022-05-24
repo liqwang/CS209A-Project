@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import edu.sustech.backend.service.BackendService;
 import edu.sustech.backend.service.BackendServiceImpl;
+import edu.sustech.backend.service.UpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,9 @@ public class DependencyController {
 
     @Autowired
     private BackendService backendService;
+
+    @Autowired
+    private UpdateService updateService;
 
     private Thread updateServiceThread;
 
@@ -73,7 +78,7 @@ public class DependencyController {
             status = UpdateStatus.PROGRESS;
             updateData();
         } else {
-            return ResponseEntity.badRequest().body("Failed. The update is initiated: " + status);
+            return ResponseEntity.badRequest().body("<h1>Bad Request<h1><br>Failed. The update is initiated: " + status);
         }
         return ResponseEntity.ok("OK. Update status: " + status);
     }

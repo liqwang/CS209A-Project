@@ -272,8 +272,8 @@ public class SearchAPI extends RestAPI {
     public AppendableResult searchLoopFetching(SearchRequest request1, @Nullable AppendableResult origin, AppendableResultParser p, int count, long timeIntervalMillis) throws InterruptedException, IOException {
 
         SearchRequest request = new SearchRequest(request1);
-        logger.info("Starting to fetch results on request[" + request.getFullRequestStringWithoutPage() + "]. Target number: " + count);
         request.setResultPerPage(count);
+        logger.info("Starting to fetch results on request[" + request.getFullRequestStringWithoutPage() + "]. Target number: " + count);
 
         int cnt = 0;
         int endPageCount = Integer.MAX_VALUE;
@@ -354,7 +354,8 @@ public class SearchAPI extends RestAPI {
     }
 
     public String searchRaw(SearchRequest request) throws IOException, InterruptedException {
-        return search(request).body();
+        HttpResponse<String> response = search(request);
+        return response == null ? null : response.body();
     }
 
     public List<HttpResponse<String>> searchRawLoop(SearchRequest request, int targetPageCount, long timeIntervalMillis) throws IOException, InterruptedException {

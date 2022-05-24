@@ -68,7 +68,8 @@ public class UserAPI extends RestAPI {
     }
 
     public User getUser(URI uri) throws IOException, InterruptedException {
-        return convert(sendUserRequestDirect(uri).body(), User.class);
+        HttpResponse<String> response = sendUserRequestDirect(uri);
+        return response == null ? null : convert(response.body(), User.class);
     }
 
     public User getUser(String username) throws IOException, InterruptedException {
@@ -77,7 +78,7 @@ public class UserAPI extends RestAPI {
 
     public String getUserInfoRaw(String username) throws IOException, InterruptedException {
         HttpResponse<String> response = sendUserRequest(username);
-        return response.body();
+        return response == null ? null : response.body();
     }
 
 

@@ -58,11 +58,14 @@ public class RestAPI {
     }
 
     public String getHttpResponseRaw(URI uri) throws IOException, InterruptedException {
-        return getHttpResponse(uri).body();
+        HttpResponse<String> response = getHttpResponse(uri);
+        return response == null ? null : response.body();
     }
 
     public String getHttpResponseRaw(URI uri, String acceptSchema) throws IOException, InterruptedException {
-        return getHttpResponse(uri, acceptSchema).body();
+        HttpResponse<String> response = getHttpResponse(uri, acceptSchema);
+
+        return response == null ? null : response.body();
     }
 
     public List<String> getHttpResponseRawLoopFetching(URI rawUri, int targetPageCount) throws IOException, InterruptedException {
@@ -200,9 +203,11 @@ public class RestAPI {
             try {
                 response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             } catch (IOException e) {
-                logger.error(e.getMessage() + " Caused by: " + e.getCause());
+                logger.error(e.getLocalizedMessage() + " Caused by: " + e.getCause());
             }
-            if (response != null && response.statusCode() != 200) {
+            if (response == null) {
+                logger.error("Connection error upon receiving REST response from API. Check parameters, request intervals and etc. You may try again.");
+            } else if (response.statusCode() != 200) {
 
 
                 APIErrorMessage message = objectMapper.readValue(response.body(), APIErrorMessage.class);
@@ -264,7 +269,7 @@ public class RestAPI {
 
     public RateLimitResult getRateLimit() throws IOException, InterruptedException {
         HttpResponse<String> response = getHttpResponse(URI.create("https://api.github.com/rate_limit"));
-        return convert(response.body(), RateLimitResult.class);
+        return response == null ? null : convert(response.body(), RateLimitResult.class);
     }
 
     /**

@@ -24,7 +24,8 @@ public class FileAPI extends RestAPI {
 
 
     public String getFileRaw(URI uri) throws IOException, InterruptedException {
-        return getFileDirect(uri).body();
+        HttpResponse<String> response = getFileDirect(uri);
+        return response == null ? null : getFileDirect(uri).body();
     }
 
     public HttpResponse<String> getFileDirect(URI uri) throws IOException, InterruptedException {
