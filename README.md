@@ -379,17 +379,17 @@ Search requests and along with other operations can be constructed through ***pu
 
 All APIs are extended from the basic class ``RestAPI``. ```RestAPI``` provides the basic functionality to communicate with the GitHub RestAPI, retrieving data from it, and parse the result into a required object.
 
-![image-20220523211104329](C:\Users\Ishik\AppData\Roaming\Typora\typora-user-images\image-20220523211104329.png)
+<img src="README.pictures\image-20220523211104329.png" alt="image-20220523211104329"  />
 
 
 
-![image-20220523212251799](C:\Users\Ishik\AppData\Roaming\Typora\typora-user-images\image-20220523212251799.png)
+![image-20220523212251799](README.pictures\image-20220523212251799.png)
 
 
 
-![image-20220523211717048](C:\Users\Ishik\AppData\Roaming\Typora\typora-user-images\image-20220523211717048.png)
+![image-20220523211717048](README.pictures\image-20220523211717048.png)
 
-![image-20220523212133552](C:\Users\Ishik\AppData\Roaming\Typora\typora-user-images\image-20220523212133552.png)
+![image-20220523212133552](README.pictures\image-20220523212133552.png)
 
 #### Major Implementations in the ``SearchAPI``
 

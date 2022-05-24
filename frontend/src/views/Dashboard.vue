@@ -43,32 +43,33 @@
     </div>
     <div class="wrapper-button w-full box-border mt-4">
       <button
-          type="button" v-on:click="updateCountryDependency"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          type="button" v-on:click="updateCountryDependency('spring'); changeColor(1)"
+          class="text-white bg-blue-700 hover:bg-green-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
       >
-        Blue
+        Show Spring
       </button>
       <button
-          type="button" v-on:click="changeColor(3)"
-          class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+          type="button" v-on:click="updateCountryDependency('lombok'); changeColor(2)"
+          class="focus:outline-none text-white bg-blue-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
       >
-        Green
+        Show Lombok
       </button>
       <button
-          type="button" v-on:click="changeColor(1)"
+          type="button" v-on:click="updateCountryDependency('log4j'); changeColor(3)"
           class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
       >
-        Red
+        Show log4j
       </button>
       <button
-          type="button" v-on:click="changeColor(4)"
+          type="button" v-on:click="updateCountryDependency('mysql'); changeColor(4)"
           class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
       >
-        Purple
+        Show Mysql
       </button>
     </div>
     <div>
-      <Map ref="MapCp" :high-color="Map_colors.data[0].high_color" :low-color="Map_colors.data[0].low_color" :country-data="countryData.data"/>
+      <Map ref="MapCp" :high-color="Map_colors.data[0].high_color" :low-color="Map_colors.data[0].low_color"
+           :country-data="countryData.data"/>
 
     </div>
     <div>
@@ -532,25 +533,25 @@ export default {
       countryData: {
         data: {US: 100, CA: 120, RU: 4000}
       },
-      Map_colors:{
-        data:[
+      Map_colors: {
+        data: [
           {
-            high_color:'#E7042EFF',
-            low_color:'#E38585FF'
-          },{//red
-          high_color:'#E7042EFF',
-          low_color:'#E38585FF'
-        },//blue
+            high_color: '#E7042EFF',
+            low_color: '#E38585FF'
+          }, {//red
+            high_color: '#E7042EFF',
+            low_color: '#E38585FF'
+          },//blue
           {
             high_color: '#025ED9FF',
             low_color: '#5E92D7FF'
           },
           {//green
             high_color: '#02D92DFF',
-            low_color:"#9BC7A4FF"
+            low_color: "#9BC7A4FF"
           },
           {//purple
-            high_color:'#6400C9FF',
+            high_color: '#6400C9FF',
             low_color: '#AB8DCCFF'
           }
         ]
@@ -742,10 +743,10 @@ export default {
   inject: ['axios']
   ,
   methods: {
-    changeColor(e){
-console.log(e)
-       this.$refs.MapCp.highColor="#025ED9FF";
-      this.$refs.MapCp.lowColor="#5E92D7FF";
+    changeColor(targetColorNumber) {
+      console.log('Change target color to' + e)
+      this.$refs.MapCp.highColor = "#025ED9FF";
+      this.$refs.MapCp.lowColor = "#5E92D7FF";
     },
     onMouseEnterMapCountry(countryCode) {
       this.showMapOverlay = true
@@ -802,28 +803,20 @@ console.log(e)
             console.log(failResponse);
           })
     },
-    updateCountryDependency() {
+    updateCountryDependency(dependencyName) {
       let component = this
-      this.axios //Automaticallym
-          .get('/map/mysql')
+      this.axios //Automatically
+          .get('/map/' + dependencyName)
           .then(successResponse => {
-            console.log(1)
             console.log(successResponse.data)
             if (successResponse.status === 200) {
-              //Modify data there
               component.countryData.data = successResponse.data
-              console.log(component.topUsedDependencyData)
             }
           })
           .catch(failResponse => {
             console.log('Error on retrieving data.')
             console.log(failResponse);
           })
-      // component.countryData.data = {
-      //   US: 100,
-      //   CA: 120,
-      //   RU: 4000
-      // }
     },
     updateTopUsedVersion() {
       let component = this

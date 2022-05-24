@@ -2,6 +2,7 @@ package edu.sustech.backend.controller;
 
 import edu.sustech.backend.service.BackendService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,21 +17,25 @@ public class MapController {
 	@Autowired
 	private BackendService backendService;
 
+	@CrossOrigin
 	@RequestMapping("spring")
 	public Map<String,Integer> getSpringData(){
 		return backendService.getSpringData();
 	}
 
+	@CrossOrigin
 	@RequestMapping("lombok")
 	public Map<String,Integer> getLombokData(){
 		return backendService.getLombokData();
 	}
 
+	@CrossOrigin
 	@RequestMapping("log4j")
 	public Map<String,Integer> getLog4jData(){
 		return backendService.getLog4jData();
 	}
 
+	@CrossOrigin
 	@RequestMapping("mysql")
 	public String getMysqlData() throws IOException {
 		return Files.readString(Path.of("backend/data/DependencyAnalysis/heatmapData/mysql.json"));
