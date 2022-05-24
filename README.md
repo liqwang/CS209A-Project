@@ -578,5 +578,14 @@ Besides the database, we also use files, which stores the json data of the repo 
 
 
 
-## Insights
+### Dependency Analysis Insights
 
+``Log4j`` and ``JUnit`` has been the most dependencies along repositories sampled. We found that dependencies that are related to loggings and tests are widely used in the sampled repositories.
+
+``Lombok`` are used most frequently in China, ``Spring`` are adopted more frequently in the United States, and ``MySql`` are used quite frequently in China.
+
+Along the sampled repositories, it seemed that developers in China prefer to use more tools related to the editing, verifying and building process of the whole lifecycle in Maven-based projects, whereas developers in the United States seems to be developing small network servers, or micro-services more (which indirectly results in the trending usage of ``Spring`` and its related transitive dependencies, along with other dependencies that provides a more frequently used result).
+
+We found that developers are more concentrated in the European region, and that developers in China have contributed more that many western countries. People in South America has also contributed a lot, but the numbers are relatively much lower when compared to developers in China.
+
+We found that the GitHub Rest API frequently occur secondary-rate-limitations, which is not good for web-scraping and data collection and analysis. Thus, we have only about 1000 sampled data.
