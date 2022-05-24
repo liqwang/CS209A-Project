@@ -587,7 +587,6 @@ export default {
       },
       // chart data area
       optionsArea: {
-        fontFamily: "Segoe UI, sans-serif",
         stroke: {
           curve: "straight",
         },
@@ -603,7 +602,7 @@ export default {
           type: "gradient",
           gradient: {
             shadeIntensity: 1,
-            opacityFrom: 0.7,
+            opacityFrom: 0.4,
             opacityTo: 0.9,
             stops: [0, 90, 100],
           },
@@ -993,8 +992,8 @@ export default {
     this.updateTopUsedDependency()
     this.updateCountryDependency("spring")
     let scriptSource = document.createElement('script')
-    this.testAm5Charts()
-    this.testAm5Charts()
+    // this.testAm5Charts()
+    // this.testAm5Charts()
     // scriptSource.setAttribute()
   },
 };
