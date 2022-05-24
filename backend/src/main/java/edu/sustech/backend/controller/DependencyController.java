@@ -101,7 +101,7 @@ public class DependencyController {
     }
 
     @CrossOrigin
-    @RequestMapping("data/test/dependencyUpdate")
+    @RequestMapping("data/test/dependency-update")
     public ResponseEntity<String> getDependencyUpdate(@RequestParam(value = "count", defaultValue = "10") Integer count) {
         try {
             backendService.updateLocalDependencyData(count);
@@ -111,7 +111,7 @@ public class DependencyController {
         return ResponseEntity.ok("OK. Updated test sample data.");
     }
 
-    @RequestMapping("data/reload-local-data")
+    @RequestMapping("local/reload-local-data")
     public ResponseEntity<String> reloadLocalData() {
         try {
             backendService.readLocalData();

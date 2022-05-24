@@ -33,6 +33,8 @@ public interface BackendService {
 
     DependencyData readLocalDependencyData() throws IOException;
 
+    void resolveTransitiveDependency() throws IOException;
+
     Map<String, Integer> getSpringData();
 
     Map<String,Integer> getLombokData();

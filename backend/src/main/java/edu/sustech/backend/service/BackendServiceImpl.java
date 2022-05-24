@@ -119,7 +119,7 @@ public class BackendServiceImpl implements BackendService {
                     }
                 }
             }
-            logger.debug("Successfully loaded " + dependency + " heat map!");
+            logger.debug("Successfully loaded " + dependency + " heat map.");
         });
     }
 
@@ -163,7 +163,7 @@ public class BackendServiceImpl implements BackendService {
     @Override
     public IPRResult readLocalLog4jIPRData() throws IOException {
         logger.info("Reading local log4j issues and pull requests data");
-        return objectMapper.readValue(new File("backend/data/Log4jIssueAnalysis/Entries/log4jiprdata.json"), IPRResult.class);
+        return objectMapper.readValue(new File("backend/data/Log4jIssueAnalysis/log4jiprdata.json"), IPRResult.class);
     }
 
     @Override
@@ -181,7 +181,7 @@ public class BackendServiceImpl implements BackendService {
 //            }
 //        }
 
-        objectMapper.writeValue(new File("backend/data/Log4jIssueAnalysis/Entries/log4jiprdata.json"), log4jIssues);
+        objectMapper.writeValue(new File("backend/data/Log4jIssueAnalysis/log4jiprdata.json"), log4jIssues);
         logger.info("Updated local log4j issues and pull requests data");
     }
 
@@ -378,6 +378,32 @@ public class BackendServiceImpl implements BackendService {
     }
 
     @Override
+    public void resolveTransitiveDependency() throws IOException {
+        logger.info("Resolving transitive dependency data");
+        DependencyData data = new DependencyData();
+        File dir = new File("backend/data/DependencyAnalysis/Entries");
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                String fileName = f.getName();
+                if (fileName.contains("DependencyDataEntry")) {
+                    Entry<Repository, Entry<List<User>, List<Dependency>>> entry = null;
+                    try {
+                        entry = objectMapper.readValue(f, new TypeReference<>() {
+                        });
+                    } catch (JsonProcessingException e) {
+                        logger.error(e);
+                    }
+                    if (entry != null) {
+                        data.getData().add(entry);
+                    }
+                }
+            }
+        }
+        return data;
+    }
+
+    @Override
     public void updateLocalDependencyData() throws IOException, InterruptedException {
         updateLocalDependencyData(1000);
     }
@@ -440,7 +466,7 @@ public class BackendServiceImpl implements BackendService {
                 for (User user : userList) {
                     User rep = gitHubAPI.userAPI.getUser(user.getUrl());
                     user.setLocation(rep.getLocation());
-                    Thread.sleep(LOCAL_MINOR_UPDATE_INTERVAL_MILLIS);
+//                    Thread.sleep(LOCAL_MINOR_UPDATE_INTERVAL_MILLIS);
                 }
             }
             Entry<Repository, Entry<List<User>, List<Dependency>>> entry = new Entry<>(r, new Entry<>(userList, ls));
