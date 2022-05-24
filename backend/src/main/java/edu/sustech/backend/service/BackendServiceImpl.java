@@ -107,7 +107,7 @@ public class BackendServiceImpl implements BackendService {
             logger.debug("Loading " + dependency + " heat map...");
             //1.1计算该仓库中dependency依赖的数量
             List<Dependency> dependencies = repo.getValue().getValue();
-            int springCount = (int) dependencies.stream().filter(dep -> dep.groupId().startsWith(dependency)).count();
+            int dependencyCount = (int) dependencies.stream().filter(dep -> dep.groupId().startsWith(dependency)).count();
 
             //1.2加入该仓库中的国家使用dependency的数量
             List<User> users = repo.getValue().getKey();
@@ -116,7 +116,7 @@ public class BackendServiceImpl implements BackendService {
                 for (String key : COUNTRY_MAP.keySet()) {
                     String countryCode = COUNTRY_MAP.get(key);
                     if (location != null && location.contains(key)) {
-                        targetHeatMap.put(countryCode, targetHeatMap.getOrDefault(countryCode, 0) + springCount);
+                        targetHeatMap.put(countryCode, targetHeatMap.getOrDefault(countryCode, 0) + dependencyCount);
                         break;
                     }
                 }
