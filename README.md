@@ -15,7 +15,14 @@
 In this project, we mainly discuss two major issues:
 
 - Hot dependencies in pom.xml
+
+  <img src="README.pictures/image-20220524224056789.png" alt="image-20220524224056789"  /![image-20220524232715622](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220524232715622.png)
+
 - Tool used contribution in different countries
+
+  <img src="README.pictures/image-20220524224155219.png" alt="image-20220524224155219" style="zoom:80%;" />
+  
+  
 
 The architecture of the project is **Vue + SpringBoot**. The development of frontend and backend are splited, and as a result any of them can work separately. The interaction between the frontend and the backend are achieved through Rest API, and we use **Json** as the data exchange format.
 
@@ -101,7 +108,7 @@ File tree
                 card.vue
 ```
 
-#### Structure
+### Structure
 
 The whole frontend is based on ```NodeJs``` and ```Vue.js``` framework. The intention is to create a dynamic web application that allows user interaction from **web brosers** for an immersive user experience, and without the need to interact with the server API to change the web content. *In this project we used Windzo as a template* (See [sahrullahh/windzo: Free Open Source Template Dashboard Admin Vue Tailwind CSS (github.com)](https://github.com/sahrullahh/windzo)).
 
@@ -121,7 +128,24 @@ Navigation
 └───OnlineTest
 ```
 
+#### DashBoard
 
+
+In this views, we implement two  main scenes.
+
+##### World Map
+
+In this scene, we can choose some groupIds  by some buttons, then the world map will display the number of the dependency，
+
+which is ordered by country and each country will generate a color based on the number of dependencies. (The color will be changed by the groupId.)
+
+![image-20220524232908001](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220524232908001.png![img](file:///E:\Tencent Files\1955435228\Image\Group2\Q[\I`\Q[I`27~C~$M@2C85H]LAB[3.png)
+
+Besides, we add some events in the map ,when the mouse passby some countries, it will display the amount of the dependencies of the country. 
+
+##### Barchart
+
+ 
 
 ## Backend
 
@@ -164,6 +188,17 @@ File tree
     └───dao
 ```
 
+##### Dependency Usage
+
+![image-20220524233605590](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220524233605590.png)
+
+
+
+In this part, we can statics the top used dependency.
+
+In order to improve the user's experience, we provide two select tables :
+
+![image-20220524234413345](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220524234413345.png)
 ### Controller
 
 
@@ -369,9 +404,7 @@ edu.sustech
 
 The engine has a ***full implementation (except for acquiring Trees)***  of the search function of the GitHub Rest API (```SearchAPI```) and provides*** Java abstractions*** for dealing with entities present in GitHub (for example, ``Repository``, ``User``, ``Issues``, ``Commits``, etc. Those existing models can be found inside the ```models``` directory in the source code). It also provides additional ***partially implemented*** APIs such as ```UserAPI```, ```RepositoryAPI``` and ```RateAPI``` for other needs such as tracing user locations and attain the information related to real-time GitHub rate limits, get the contributions of an user to a specific repository, etc.
 
-Search requests and along with other operations can be constructed through ***pure Java codes*** and be passed to the ```SearchAPI``` or ```RepositoryAPI```, etc. In the implementation of the ```SearchAPI```, all http responses received and the process of parsing , error/exception processing and loop fetching (fetch until results acquired are more than or equals to the desired number of results, which is a parameter that can be either specified or left to ``Integer.MAX_VALUE``) are ***hidden at default*** from the caller. 
-
-The user of this engine is able to manipulate the interaction with the GitHub SearchEngine (***without*** even learning the GitHub RestAPI) in a **Java** way and does **not** need to care about the inner processing and handling. Advanced manipulations of the engine can also be done with specified request parameters and through the usage of the generic methods pre-implemented.
+Search requests and along with other operations can be constructed through ***pure Java codes*** and be passed to the ```SearchAPI``` or ```RepositoryAPI```, etc. In the implementation of the ```SearchAPI```, all http responses received and the process of parsing , error/exception processing and loop fetching (fetch until results acquired are more than or equals to the desired number of results, which is a parameter that can be either specified or left to ``Integer.MAX_VALUE``) are ***hidden at default*** from the caller. The user of this engine is able to manipulate the interaction with the GitHub SearchEngine (***without*** even learning the GitHub RestAPI) in a Java way and does not need to care about the inner processing and handling. Advanced manipulations of the engine can also be done with specified request parameters and through the usage of the generic methods pre-implemented.
 
 All APIs are extended from the basic class ``RestAPI``. ```RestAPI``` provides the basic functionality to communicate with the GitHub RestAPI, retrieving data from it, and parse the result into a required object.
 
@@ -513,8 +546,6 @@ See the source code.
 #### Documentations
 
 Documentations will later be generated in the format of JavaDoc directly from those JavaDoc embedded in the code. The code implements the basic methods all as generic, and users are expected to check the documents of those generic methods when encountering specific problems with the implementation of a specifc method (that is related to a certain abstraction, for example ``User``).
-
-You may check the official document of this engine on our GitHub website.
 
 ### Data Persistence
 
