@@ -60,14 +60,14 @@ public class DependencyController {
             @RequestParam(value = "group", required = false) String group,
             @RequestParam(value = "arifact", required = false) String artifact,
             @RequestParam(value = "year", required = false) Integer year,
-            @RequestParam(value = "count", required = false, defaultValue = "10")Integer count) {
+            @RequestParam(value = "count", required = false, defaultValue = "10") Integer count) {
         String s = backendService.getTopUsedVersions(group, artifact, year, count);
         return ResponseEntity.ok(s);
     }
 
     @CrossOrigin
     @RequestMapping("groups")
-    public String getGroups(){
+    public String getGroups() {
         return backendService.getAvailableGroupSelections();
     }
 
@@ -116,6 +116,7 @@ public class DependencyController {
         return ResponseEntity.ok("OK. Updated test sample data.");
     }
 
+    @CrossOrigin
     @RequestMapping("local/reload-local-data")
     public ResponseEntity<String> reloadLocalData() {
         try {
@@ -130,6 +131,7 @@ public class DependencyController {
 
     /**
      * Used for verifying the response received by Axios
+     *
      * @return Response Body in <code>String</code>
      */
     @CrossOrigin
