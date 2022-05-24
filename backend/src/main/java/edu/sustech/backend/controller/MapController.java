@@ -10,7 +10,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/map")
 public class MapController {
-	//Todo: {two-code}:{count}
 	@Autowired
 	private BackendService backendService;
 

@@ -68,6 +68,9 @@ public class DataImportController {
                     System.out.println("已获得" + pomUrl);
                     for (String dependency : getContents(pom, "dependency")) {
                         String groupName = getContents(dependency, "groupId").get(0);
+                        if(groupName.equals("mysql")){
+                            System.out.println("-----------获得MySQL-----------");
+                        }
                         String artifactName = getContents(dependency, "artifactId").get(0);
                         List<String> versionRes = getContents(dependency, "version");
                         String versionName = "NULL";

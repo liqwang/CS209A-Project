@@ -116,6 +116,7 @@ public class BackendServiceImpl implements BackendService {
                     String countryCode = COUNTRY_MAP.get(key);
                     if (location != null && location.contains(key)) {
                         targetHeatMap.put(countryCode, targetHeatMap.getOrDefault(countryCode, 0) + springCount);
+                        break;
                     }
                 }
             }
