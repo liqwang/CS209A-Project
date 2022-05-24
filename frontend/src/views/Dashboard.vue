@@ -68,7 +68,7 @@
       </button>
     </div>
     <div>
-      <Map ref="MapCp" :high-color="Map_colors.data[0].high_color" :low-color="Map_colors.data[0].low_color"
+      <Map ref="MapCp" :high-color=mapCurrentColor.high_color :low-color=mapCurrentColor.low_color
            :country-data="countryData.data"/>
 
     </div>
@@ -279,8 +279,8 @@
             <select
                 id="YearOption"
                 class="dark:bg-gray-800 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-300 border max-w-lg px-4 py-3 block rounded-md text-gray-500 dark:text-gray-400"
-                v-on:change="handle">
-              <option value="0" disabled selected>Choose your year</option>
+                v-on:change="handleDependencyFilter">
+              <option value="Unselected" selected>Not selected</option>
               <option value=2022>2022</option>
               <option value=2021>2021</option>
               <option value=2020>2020</option>
@@ -298,8 +298,8 @@
             <select
                 id="GroupOption"
                 class="dark:bg-gray-800 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-300 border max-w-lg px-4 py-3 block rounded-md text-gray-500 dark:text-gray-400"
-                v-on:change="handle">
-              <option value="0" disabled selected>Choose your GroupId</option>
+                v-on:change="handleDependencyFilter">
+              <option value="Unselected" selected>Not selected</option>
               <option value="org.springframework">org.springframework</option>
               <option value="org.projectlombok">org.projectlombok</option>
               <option value="log4j">log4j</option>
@@ -533,26 +533,30 @@ export default {
       countryData: {
         data: {US: 100, CA: 120, RU: 4000}
       },
+      mapCurrentColor: {
+        high_color: '#E7042EFF',
+        low_color: '#E38585FF'
+      },
       Map_colors: {
         data: [
           {
             high_color: '#E7042EFF',
-            low_color: '#E38585FF'
+            low_color: '#ffffff'
           }, {//red
             high_color: '#E7042EFF',
-            low_color: '#E38585FF'
+            low_color: '#ffffff'
           },//blue
           {
             high_color: '#025ED9FF',
-            low_color: '#5E92D7FF'
+            low_color: '#ffffff'
           },
           {//green
             high_color: '#02D92DFF',
-            low_color: "#9BC7A4FF"
+            low_color: "#ffffff"
           },
           {//purple
             high_color: '#6400C9FF',
-            low_color: '#AB8DCCFF'
+            low_color: '#ffffff'
           }
         ]
       },
@@ -745,8 +749,10 @@ export default {
   methods: {
     changeColor(targetColorNumber) {
       console.log('Change target color to' + e)
-      this.$refs.MapCp.highColor = "#025ED9FF";
-      this.$refs.MapCp.lowColor = "#5E92D7FF";
+      let component = this
+
+      this.mapCurrentColor.highColor = this.Map_colors.data[targetColorNumber - 1].high_color
+      this.mapCurrentColor.lowColor = this.Map_colors.data[targetColorNumber - 1].low_color
     },
     onMouseEnterMapCountry(countryCode) {
       this.showMapOverlay = true
@@ -758,11 +764,33 @@ export default {
     onClickMapCountry(data) {
       console.log('Click Country', data)
     },
-    handle() {
-      const e = document.getElementById("YearOption");
-      const year = e.options[e.selectedIndex].value;
-      const a = document.getElementById("GroupOption");
-      const group = a.options[e.selectedIndex].value;
+    updateCountryDependency(dependencyName) {
+      let component = this
+      this.axios //Automatically
+          .get('/map/' + dependencyName)
+          .then(successResponse => {
+            console.log(successResponse.data)
+            if (successResponse.status === 200) {
+              component.countryData.data = successResponse.data
+            }
+          })
+          .catch(failResponse => {
+            console.log('Error on retrieving data.')
+            console.log(failResponse);
+          })
+    },
+    handleDependencyFilter() {
+      const yearSelection = document.getElementById("YearOption");
+      let year = yearSelection.options[yearSelection.selectedIndex].value;
+      const groupIdSelection = document.getElementById("GroupOption");
+      let group = groupIdSelection.options[groupIdSelection.selectedIndex].value;
+      if(group==="Unselected"){
+        group = null
+      }
+      if(year==="Unselected"){
+        year = null
+      }
+
       let component = this
       this.axios //Automatically
           .get("/data/top-used-dependencies?", {params: {"group": group, "year": year, "count": null}})
@@ -796,21 +824,6 @@ export default {
               component.topUsedDependencyData.series[0].data = successResponse.data
               // console.log(component.topUsedDependencyData)
               console.log("Successfully updated top used dependencies.")
-            }
-          })
-          .catch(failResponse => {
-            console.log('Error on retrieving data.')
-            console.log(failResponse);
-          })
-    },
-    updateCountryDependency(dependencyName) {
-      let component = this
-      this.axios //Automatically
-          .get('/map/' + dependencyName)
-          .then(successResponse => {
-            console.log(successResponse.data)
-            if (successResponse.status === 200) {
-              component.countryData.data = successResponse.data
             }
           })
           .catch(failResponse => {

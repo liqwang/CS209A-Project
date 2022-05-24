@@ -73,7 +73,8 @@ public class BackendServiceImpl implements BackendService {
     {
         initMaps();
     }
-    public void initMaps(){
+
+    public void initMaps() {
         if (dependencyData == null) {
             try {
                 dependencyData = readLocalDependencyData();
@@ -231,11 +232,13 @@ public class BackendServiceImpl implements BackendService {
                     if (year != null && !(repo.getCreatedAt().toInstant().atZone(ZoneId.systemDefault()).getYear() == year)) {
                         return;
                     }
-                    List<Dependency> list = e.getValue().getValue();
-                    if (group != null)
-                        list.removeIf(d -> !d.groupId().equals(group));
-                    for (Dependency d : list)
-                        put(d.artifactId(), getOrDefault(d.artifactId(), 0) + 1);
+                    e.getValue().getValue().stream().filter(d -> {
+                                if (group != null) {
+                                    return d.groupId().equals(group);
+                                }
+                                return true;
+                            })
+                            .forEach(d -> put(d.artifactId(), getOrDefault(d.artifactId(), 0) + 1));
 
                 });
             }};
@@ -271,15 +274,18 @@ public class BackendServiceImpl implements BackendService {
                     if (year != null && !(repo.getCreatedAt().toInstant().atZone(ZoneId.systemDefault()).getYear() == year)) {
                         return;
                     }
-                    List<Dependency> list = e.getValue().getValue();
-                    if (group != null) {
-                        list.removeIf(d -> !d.groupId().equals(group));
-                    }
-                    if (artifact != null) {
-                        list.removeIf(d -> !d.artifactId().equals(artifact));
-                    }
-                    for (Dependency d : list)
-                        put(d.version(), getOrDefault(d.version(), 0) + 1);
+                    e.getValue().getValue().stream().filter(d -> {
+                                if (group != null) {
+                                    return d.groupId().equals(group);
+                                }
+                                return true;
+                            }).filter(d->{
+                                if (artifact != null) {
+                                    return d.groupId().equals(artifact);
+                                }
+                                return true;
+                            })
+                            .forEach(d -> put(d.version(), getOrDefault(d.version(), 0) + 1));
                 });
             }};
 
@@ -375,6 +381,7 @@ public class BackendServiceImpl implements BackendService {
                 }
             }
         }
+        logger.info("Loaded " + data.getData().size() + " entries.");
         return data;
     }
 
