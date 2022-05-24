@@ -446,7 +446,21 @@ An automatical loop for dealing with the common exceptions, including ```timeout
 		.build();
 ```
 
-Similar searches can be done on ```Issues```, ```Pull Requests```, ```Commits```, ```Users```, ```Repositories```, ```RawFiles```
+Similar searches can be done on ```Issues```, ```Pull Requests```, ```Commits```, ```Users```, ```Repositories```, ```RawFiles```.
+
+![image-20220524122015328](C:\Users\Ishik\AppData\Roaming\Typora\typora-user-images\image-20220524122015328.png)
+
+A detailed list on how to  construct queries are listed below (the example only contains the method in ``CodeSearchRequest.RequestBuilder()``)
+
+![image-20220524122401246](C:\Users\Ishik\AppData\Roaming\Typora\typora-user-images\image-20220524122401246.png)
+
+![image-20220524122538763](C:\Users\Ishik\AppData\Roaming\Typora\typora-user-images\image-20220524122538763.png)
+
+Similarly will we have ``RepoSearchRequest``, ``IPRSearchRequest``, ``UserSearchRequest``, etc.
+
+Note that for ***all*** SearchRequests, the methods of them have been ***fully implemented***.
+
+#### Example Usage
 
 ##### Search in GitHub
 
@@ -454,6 +468,12 @@ Similar searches can be done on ```Issues```, ```Pull Requests```, ```Commits```
 	//Register the API
 	private final GitHubAPI gitHubAPI = GitHubAPI.registerAPI(PersonalAccessToken);
 	
+	CodeSearchRequest req1 = CodeSearchRequest.newBuilder()
+			.addSearchKeyword("dependency")
+			.addSearchField(CodeSearchRequest.SearchBy.Filename, "pom.xml")
+  			.addLanguageOption("Maven POM")
+			.build();
+
 	CodeResult result1 = gitHubAPI.searchAPI.searchCode(req1, 
                                                         count, 
                                                        LOCAL_SEARCH_UPDATE_INTERVAL_MILLIS);

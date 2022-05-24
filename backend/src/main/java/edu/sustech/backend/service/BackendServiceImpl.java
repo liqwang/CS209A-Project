@@ -412,6 +412,7 @@ public class BackendServiceImpl implements BackendService {
         logger.info("Updating local dependency data");
 
         CodeSearchRequest req1 = CodeSearchRequest.newBuilder()
+                .addSearchKeyword("dependency")
                 .addSearchField(CodeSearchRequest.SearchBy.Filename, "pom.xml")
                 .addLanguageOption("Maven POM")
                 .build();
