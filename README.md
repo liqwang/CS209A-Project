@@ -15,18 +15,17 @@
 In this project, we mainly discuss two major issues:
 
 - Hot dependencies in pom.xml
-
-  <img src="README.pictures/image-20220524224056789.png" alt="image-20220524224056789"  />
-
 - Tool used contribution in different countries
-
-  <img src="README.pictures/image-20220524224155219.png" alt="image-20220524224155219" style="zoom:80%;" />
 
 The architecture of the project is **Vue + SpringBoot**. The development of frontend and backend are splited, and as a result any of them can work separately. The interaction between the frontend and the backend are achieved through Rest API, and we use **Json** as the data exchange format.
 
 In this report, we will introduce the features related to the evaluation and the structure of this project.
 
+## Features
 
+
+
+## Project Structure
 
 ## Frontend
 
@@ -164,6 +163,71 @@ File tree
 └───resources
     └───dao
 ```
+
+### Controller
+
+
+#### getTopUsedDependencies
+
+```java
+@RequestMapping("data/top-used-dependencies")
+public ResponseEntity<String> getTopUsedDependencies(
+    @RequestParam(value = "group", required = false) String group,
+    @RequestParam(value = "date", required = false) Date date,
+    @RequestParam(value = "count", required = false, defaultValue = "10") Integer count) {
+    return ResponseEntity.ok(backendService.getTopUsedDependencies(group, date, count));
+}
+```
+
+This method returns the top used dependencies using specific param: **group、date、count**
+
+The frontend can also set no search param to get the general result
+
+
+
+#### getTopUsedVersions
+
+```java
+@RequestMapping("data/top-used-version")
+public ResponseEntity<String> getTopUsedVersions(
+    @RequestParam("group") String group,
+    @RequestParam("arifact") String artifact,
+    @RequestParam(value = "year", required = false) Integer year) {
+    return ResponseEntity.ok(backendService.getTopUsedVersions(group, artifact, year));
+}
+```
+
+This method returns the top used versions of specific **group**'s **artifact** in a specific **year(not neccessary)** to frontend
+
+
+
+#### getGroups
+
+```java
+@RequestMapping("groups")
+public String getGroups(){
+    return backendService.getAvailableGroupSelections();
+}
+```
+
+This method returns the group list that the user can select
+
+
+
+#### update
+
+```java
+@RequestMapping("local/update-all")
+public ResponseEntity<String> update() throws IOException, InterruptedException {
+    if (status == UpdateStatus.NOT_INITIATED) {
+        status = UpdateStatus.PROGRESS;
+        updateData();
+    } else {return ResponseEntity.badRequest().body("Failed. The update is initiated: " + status);}
+    return ResponseEntity.ok("OK. Update status: " + status);
+}
+```
+
+This method updates all the data for frontend by invoking the GitHub Search Engine.
 
 
 
@@ -510,223 +574,7 @@ public interface VersionDao {
 
  #### File
 
-Besides the database, we also use files, which stores the json data.
-
-
-
-### Controller
-
-
-#### getTopUsedDependencies
-
-```java
-@RequestMapping("data/top-used-dependencies")
-public ResponseEntity<String> getTopUsedDependencies(
-    @RequestParam(value = "group", required = false) String group,
-    @RequestParam(value = "date", required = false) Date date,
-    @RequestParam(value = "count", required = false, defaultValue = "10") Integer count) {
-    return ResponseEntity.ok(backendService.getTopUsedDependencies(group, date, count));
-}
-```
-
-This method returns the top used dependencies using specific param: **group、date、count**
-
-The frontend can also set no search param to get the general result
-
-
-
-#### getTopUsedVersions
-
-```java
-@RequestMapping("data/top-used-version")
-public ResponseEntity<String> getTopUsedVersions(
-    @RequestParam("group") String group,
-    @RequestParam("arifact") String artifact,
-    @RequestParam(value = "year", required = false) Integer year) {
-    return ResponseEntity.ok(backendService.getTopUsedVersions(group, artifact, year));
-}
-```
-
-This method returns the top used versions of specific **group**'s **artifact** in a specific **year(not neccessary)** to frontend
-
-
-
-#### getGroups
-
-```java
-@RequestMapping("groups")
-public String getGroups(){
-    return backendService.getAvailableGroupSelections();
-}
-```
-
-This method returns the group list that the user can select
-
-
-
-#### update
-
-```java
-@RequestMapping("local/update-all")
-public ResponseEntity<String> update() throws IOException, InterruptedException {
-    if (status == UpdateStatus.NOT_INITIATED) {
-        status = UpdateStatus.PROGRESS;
-        updateData();
-    } else {return ResponseEntity.badRequest().body("Failed. The update is initiated: " + status);}
-    return ResponseEntity.ok("OK. Update status: " + status);
-}
-```
-
-This method updates all the data for frontend by invoking the GitHub Search Engine.
-
-
-
-#### getSpringData
-
-```java
-@RequestMapping("spring")
-public Map<String,Integer> getSpringData(){
-	return backendService.getSpringData();
-}
-```
-
-This method returns the data for Spring Hotmap in the world, the map is `countrycode->count`, the other methods are similar to this
-
-
-
-### Dependency chart
-
-This is the core method in service layer, the method can filter, sort and limit the dependency with given parameters
-
-```java
-public String getTopUsedVersions(@Nullable String group, @Nullable String artifact, @Nullable Integer year, @Nullable Integer dataCount) {
-    if (dependencyData == null) {
-        try {
-            dependencyData = readLocalDependencyData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    if (dependencyData != null) {
-        HashMap<String, Integer> versionMap = new HashMap<>() {{
-            dependencyData.getData().forEach(e -> {
-                Repository repo = e.getKey();
-                if (year != null && !(repo.getCreatedAt().toInstant().atZone(ZoneId.systemDefault()).getYear() == year)) {
-                    return;
-                }
-                List<Dependency> list = e.getValue().getValue();
-                if (group != null) {
-                    list.removeIf(d -> !d.groupId().equals(group));
-                }
-                if (artifact != null) {
-                    list.removeIf(d -> !d.artifactId().equals(artifact));
-                }
-                for (Dependency d : list)
-                    put(d.version(), getOrDefault(d.version(), 0) + 1);
-            });
-        }};
-
-        List<BarChartItem<String, Integer>> result = new ArrayList<>();
-
-        versionMap.entrySet().stream()
-            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-            .limit(dataCount == null ? 10 : dataCount)
-            .forEach(e -> result.add(new BarChartItem<>(e.getKey() == null ? "<null>" : e.getKey(), e.getValue())));
-        try {
-            return objectMapper.writeValueAsString(result);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-    }
-    return "Internal parsing failure";
-}
-```
-
-
-
-### World heat map
-
-Because the location information in Github is not standard, it can be arbitrary string, so analyzing the user's location is difficult because some users may not enter their country name, insteadly they enter their country's code, city name, state name, province name, ...
-
-Here is an example, the location string is only a city in Germany
-
-.<img src="README.pictures/image-20220524220246160.png" alt="image-20220524220246160" style="zoom:80%;" />
-
-To solve this problem, we write **`country.txt`** so that some strings can map to its country, here is part of it
-
-```
-CN //The first line is the country code, where below strings are mapped to
-China
-PKU
-THU
-Heilongjiang
-Harbin
-Jilin
-Changchun
-Liaoning
-Shenyang
-...
-
-US //The first line is the country code, where below strings are mapped to
-United States
-USA
-Stanford
-MIT
-CMU
-UCB
-UCI
-San Francisco
-Los Angeles
-Chicago
-Boston
-Miami
-Florida
-...
-```
-
-Then we can load the `country.txt` to a **`HashMap`**  named `COUNTRY_MAP` for querying the users' country code conveniently
-
-```java
-private static final HashMap<String, String> COUNTRY_MAP = new HashMap<>();
-```
-
-
-
-This is the core method for loading the heat map with given dependency name
-
-```java
-public void loadDependencyHeatMap(String dependency) {
-    HashMap<String, Integer> targetHeatMap = switch (dependency) {
-        case "org.springframework" -> springHeatMap;
-        case "org.projectlombok" -> lombokHeatMap;
-        case "log4j" -> log4jHeatMap;
-        case "mysql" -> mysqlHeatMap;
-        ...    
-        default -> new HashMap<>();
-    };
-    dependencyData.getData().forEach(repo -> {
-        //1加载dependency热力图数据
-        logger.debug("Loading " + dependency + " heat map...");
-        //1.1计算该仓库中dependency依赖的数量
-        List<Dependency> dependencies = repo.getValue().getValue();
-        int dependencyCount = (int) dependencies.stream().filter(dep -> dep.groupId().startsWith(dependency)).count();
-
-        //1.2加入该仓库中的各个国家使用dependency的数量
-        List<User> users = repo.getValue().getKey();
-        for (User user : users) {
-            String location = user.getLocation();
-            for (String key : COUNTRY_MAP.keySet()) {
-                String countryCode = COUNTRY_MAP.get(key);
-                if (location != null && location.contains(key)) {
-                    targetHeatMap.put(countryCode, targetHeatMap.getOrDefault(countryCode, 0) + dependencyCount);
-                    break;
-                }
-            }
-        }
-        logger.debug("Successfully loaded " + dependency + " heat map.");
-    });
-}
-```
+Besides the database, we also use files, which stores the json data of the repo dependency information.
 
 
 
