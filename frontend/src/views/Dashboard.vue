@@ -41,9 +41,34 @@
         Heat Map
       </h1>
     </div>
-
+    <div class="wrapper-button w-full box-border mt-4">
+      <button
+          type="button" v-on:click="updateCountryDependency"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+      >
+        Blue
+      </button>
+      <button
+          type="button" v-on:click="changeColor(3)"
+          class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+      >
+        Green
+      </button>
+      <button
+          type="button" v-on:click="changeColor(1)"
+          class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+      >
+        Red
+      </button>
+      <button
+          type="button" v-on:click="changeColor(4)"
+          class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+      >
+        Purple
+      </button>
+    </div>
     <div>
-      <Map :country-data="countryData.data"/>
+      <Map ref="MapCp" :high-color="Map_colors.data[0].high_color" :low-color="Map_colors.data[0].low_color" :country-data="countryData.data"/>
 
     </div>
     <div>
@@ -266,7 +291,20 @@
               <option value=2014>2014</option>
             </select>
           </div>
-
+          <br>
+          <div>
+            <span>GroupId</span>
+            <select
+                id="GroupOption"
+                class="dark:bg-gray-800 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-300 border max-w-lg px-4 py-3 block rounded-md text-gray-500 dark:text-gray-400"
+                v-on:change="handle">
+              <option value="0" disabled selected>Choose your GroupId</option>
+              <option value="org.springframework">org.springframework</option>
+              <option value="org.projectlombok">org.projectlombok</option>
+              <option value="log4j">log4j</option>
+              <option value="mysql">mysql</option>
+            </select>
+          </div>
           <button
               class="float-middle -mt-7 border-b border-blue-300 text-blue-500"
               v-on:click="updateTopUsedDependency"
@@ -491,9 +529,31 @@ export default {
   name: "Dashboard",
   data() {
     return {
-      Year: 2022,
       countryData: {
         data: {US: 100, CA: 120, RU: 4000}
+      },
+      Map_colors:{
+        data:[
+          {
+            high_color:'#E7042EFF',
+            low_color:'#E38585FF'
+          },{//red
+          high_color:'#E7042EFF',
+          low_color:'#E38585FF'
+        },//blue
+          {
+            high_color: '#025ED9FF',
+            low_color: '#5E92D7FF'
+          },
+          {//green
+            high_color: '#02D92DFF',
+            low_color:"#9BC7A4FF"
+          },
+          {//purple
+            high_color:'#6400C9FF',
+            low_color: '#AB8DCCFF'
+          }
+        ]
       },
       topUsedDependencyData: {
         series: [{
@@ -682,6 +742,11 @@ export default {
   inject: ['axios']
   ,
   methods: {
+    changeColor(e){
+console.log(e)
+       this.$refs.MapCp.highColor="#025ED9FF";
+      this.$refs.MapCp.lowColor="#5E92D7FF";
+    },
     onMouseEnterMapCountry(countryCode) {
       this.showMapOverlay = true
       // Update your data/property to be displayed on the overlay.
@@ -695,9 +760,11 @@ export default {
     handle() {
       const e = document.getElementById("YearOption");
       const year = e.options[e.selectedIndex].value;
+      const a = document.getElementById("GroupOption");
+      const group = a.options[e.selectedIndex].value;
       let component = this
       this.axios //Automatically
-          .get("/data/top-used-dependencies?", {params: {"group": null, "year": year, "count": null}})
+          .get("/data/top-used-dependencies?", {params: {"group": group, "year": year, "count": null}})
           .then(successResponse => {
             // console.log(successResponse.data)
             if (successResponse.status === 200) {
@@ -737,25 +804,26 @@ export default {
     },
     updateCountryDependency() {
       let component = this
-      // this.axios //Automatically
-      //     .get('Spring')
-      //     .then(successResponse => {
-      //       console.log(successResponse.data)
-      //       if (successResponse.status === 200) {
-      //         //Modify data there
-      //         component.updateCountryDependencyData.series[0].data = successResponse.data
-      //         console.log(component.topUsedDependencyData)
-      //       }
-      //     })
-      //     .catch(failResponse => {
-      //       console.log('Error on retrieving data.')
-      //       console.log(failResponse);
-      //     })
-      component.countryData.data = {
-        US: 100,
-        CA: 120,
-        RU: 4000
-      }
+      this.axios //Automaticallym
+          .get('/map/mysql')
+          .then(successResponse => {
+            console.log(1)
+            console.log(successResponse.data)
+            if (successResponse.status === 200) {
+              //Modify data there
+              component.countryData.data = successResponse.data
+              console.log(component.topUsedDependencyData)
+            }
+          })
+          .catch(failResponse => {
+            console.log('Error on retrieving data.')
+            console.log(failResponse);
+          })
+      // component.countryData.data = {
+      //   US: 100,
+      //   CA: 120,
+      //   RU: 4000
+      // }
     },
     updateTopUsedVersion() {
       let component = this
