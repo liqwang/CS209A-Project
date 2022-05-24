@@ -400,7 +400,6 @@ public class BackendServiceImpl implements BackendService {
                 }
             }
         }
-        return data;
     }
 
     @Override
