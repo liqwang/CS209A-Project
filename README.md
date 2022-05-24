@@ -390,11 +390,11 @@ All APIs are extended from the basic class ``RestAPI``. ```RestAPI``` provides t
 ##### searchLoopFetching method
 
 ```java
-		public AppendableResult searchLoopFetching(SearchRequest request1, 
-                                                   @Nullable AppendableResult origin 
-                                                   AppendableResultParser p, 
-                                                   int count, 
-                                                   long timeIntervalMillis) throws InterruptedException, IOException {...}
+public AppendableResult searchLoopFetching(SearchRequest request1, 
+                                           @Nullable AppendableResult origin 
+                                           AppendableResultParser p, 
+                                           int count, 
+                                           long timeIntervalMillis) throws InterruptedException, IOException {...}
 
 ```
 
@@ -520,7 +520,7 @@ We use two methods for data persistence:
 
 We use cloud **MySQL** database and **Mybatis** ORM framework
 
-.<img src="README.pictures/image-20220522220830677.png" alt="image-20220522220830677" style="zoom:80%;" />
+.<img src="README.pictures/image-20220522220830677.png" alt="image-20220522220830677" style="zoom: 80%;" />
 
 Here is an dto example
 
