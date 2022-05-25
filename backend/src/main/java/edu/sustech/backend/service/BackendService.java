@@ -2,6 +2,7 @@ package edu.sustech.backend.service;
 
 import edu.sustech.backend.entities.DependencyData;
 import edu.sustech.backend.service.models.QueryItem;
+import edu.sustech.backend.service.models.ReactiveMapEntry;
 import edu.sustech.search.engine.github.models.issue.IPRResult;
 import org.springframework.lang.Nullable;
 import org.springframework.scheduling.annotation.Async;
@@ -36,6 +37,10 @@ public interface BackendService {
     DependencyData readLocalDependencyData() throws IOException;
 
     void resolveTransitiveDependency() throws IOException;
+
+    List<ReactiveMapEntry> loadDependencyHeatMapImpl(String dependency);
+
+    void loadDependencyHeatMap(String dependency);
 
     Map<String, Integer> getSpringData();
 

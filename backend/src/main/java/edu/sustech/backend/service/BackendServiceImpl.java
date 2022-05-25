@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.sustech.backend.entities.DependencyData;
 import edu.sustech.backend.service.models.QueryItem;
 import edu.sustech.backend.service.models.BarChartItem;
+import edu.sustech.backend.service.models.ReactiveMapEntry;
 import edu.sustech.search.engine.github.API.GitHubAPI;
 import edu.sustech.search.engine.github.API.search.requests.CodeSearchRequest;
 import edu.sustech.search.engine.github.API.search.requests.IPRSearchRequest;
@@ -95,6 +96,26 @@ public class BackendServiceImpl implements BackendService {
         logger.error("Map dependency data loaded complete.");
     }
 
+    @Override
+    public List<ReactiveMapEntry> loadDependencyHeatMapImpl(String dependency) {
+        List<ReactiveMapEntry> prefetchedData = null;
+        String resultPrefetchedData = switch (dependency) {
+            case "org.springframework" -> "spring";
+            case "org.projectlombok" -> "lombok";
+            case "log4j" -> "log4j";
+            case "mysql" -> "mysql";
+            default -> null;
+        };
+        try {
+            prefetchedData = objectMapper.readValue(new FileInputStream(new File("backend/data/DependencyAnalysis/heatMapData/" + resultPrefetchedData + ".json")), new TypeReference<>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return prefetchedData;
+    }
+
+    @Override
     public void loadDependencyHeatMap(String dependency) {
         HashMap<String, Integer> targetHeatMap = switch (dependency) {
             case "org.springframework" -> springHeatMap;
@@ -459,6 +480,11 @@ public class BackendServiceImpl implements BackendService {
 //            CodeItem item = result1.getItems().get(i);
             logger.info("Acquiring item " + (++cnt) + " on BackendService");
             Repository r = item.getRepository();
+
+            if (r.getStargazersCount() < 50) {
+                continue;
+            }
+
             r = gitHubAPI.repositoryAPI.getRepository(r.getUrl());
 
             List<Dependency> ls = new ArrayList<>();

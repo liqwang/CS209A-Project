@@ -181,6 +181,7 @@ public class RestAPI {
         return getHttpResponse(uri, "application/vnd.github.v3+json");
     }
 
+
     public HttpResponse<String> getHttpResponse(URI uri, String acceptSchema) throws IOException, InterruptedException {
         uri = URI.create(Transformer.preTransformURI(uri.toString()));
 

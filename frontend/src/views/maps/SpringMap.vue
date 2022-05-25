@@ -58,7 +58,7 @@ let countryData = {
   ]
 }
 
-const minColor = am5.color(0x4fde8d)
+const minColor = am5.color(0xd9ead3)
 const maxColor = am5.color(0x26c96d)
 
 export default {

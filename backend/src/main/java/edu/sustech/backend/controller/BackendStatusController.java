@@ -21,5 +21,4 @@ public class BackendStatusController {
         return backendService.readQueryStatus();
     }
 
-
 }

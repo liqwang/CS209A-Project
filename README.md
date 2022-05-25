@@ -16,13 +16,19 @@ In this project, we mainly discuss two major issues:
 
 - Hot dependencies in pom.xml
 
-  <img src="README.pictures/image-20220524224056789.png" alt="image-20220524224056789"  /![image-20220524232715622](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220524232715622.png)
+  ![image-20220525162622256](README.pictures\image-20220525162622256.png)
 
 - Tool used contribution in different countries
 
   <img src="README.pictures/image-20220524224155219.png" alt="image-20220524224155219" style="zoom:80%;" />
   
+  ![image-20220525162657598](README.pictures\image-20220525162657598.png)
   
+  ![image-20220525162738565](README.pictures\image-20220525162738565.png)
+  
+  ![image-20220525162750891](README.pictures\image-20220525162750891.png)
+  
+  ![image-20220525162805768](README.pictures\image-20220525162805768.png)
 
 The architecture of the project is **Vue + SpringBoot**. The development of frontend and backend are splited, and as a result any of them can work separately. The interaction between the frontend and the backend are achieved through Rest API, and we use **Json** as the data exchange format.
 
@@ -190,15 +196,10 @@ File tree
 
 ##### Dependency Usage
 
-![image-20220524233605590](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220524233605590.png)
-
-
-
 In this part, we can statics the top used dependency.
 
-In order to improve the user's experience, we provide two select tables :
+In order to improve the user's experience, we also provide two tables for filtering. See the figure in the headers.
 
-![image-20220524234413345](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20220524234413345.png)
 ### Controller
 
 

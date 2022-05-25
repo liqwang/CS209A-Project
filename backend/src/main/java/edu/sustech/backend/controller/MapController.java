@@ -22,6 +22,26 @@ public class MapController {
 
 	@CrossOrigin
 	@RequestMapping("spring")
+	public List<ReactiveMapEntry> getSpringDataImpl(){
+		return backendService.loadDependencyHeatMapImpl("org.springframework");
+
+	}
+
+	@CrossOrigin
+	@RequestMapping("lombok")
+	public List<ReactiveMapEntry> getLombokDataImpl(){
+		return backendService.loadDependencyHeatMapImpl("org.projectlombok");
+
+	}
+
+	@CrossOrigin
+	@RequestMapping("log4j")
+	public List<ReactiveMapEntry> getLog4jDataImpl(){
+		return backendService.loadDependencyHeatMapImpl("log4j");
+	}
+
+	@CrossOrigin
+	@RequestMapping("springOnlineFetch")
 	public List<ReactiveMapEntry> getSpringData(){
 		return backendService.getSpringData().entrySet().stream()
 				.map(e->new ReactiveMapEntry(e.getKey(),e.getValue()))
@@ -29,7 +49,7 @@ public class MapController {
 	}
 
 	@CrossOrigin
-	@RequestMapping("lombok")
+	@RequestMapping("lombokOnlineFetch")
 	public List<ReactiveMapEntry> getLombokData(){
 		return backendService.getLombokData().entrySet().stream()
 				.map(e->new ReactiveMapEntry(e.getKey(),e.getValue()))
@@ -37,7 +57,7 @@ public class MapController {
 	}
 
 	@CrossOrigin
-	@RequestMapping("log4j")
+	@RequestMapping("log4jOnlineFetch")
 	public List<ReactiveMapEntry> getLog4jData(){
 		return backendService.getLog4jData().entrySet().stream()
 				.map(e->new ReactiveMapEntry(e.getKey(),e.getValue()))
@@ -66,9 +86,10 @@ public class MapController {
 //	}
 
 	@CrossOrigin
-	@RequestMapping("mysql")
-	public String getMysqlData() throws IOException {
-		return Files.readString(Path.of("backend/data/DependencyAnalysis/heatmapData/mysql.json"));
+	@RequestMapping("mysqlImpl")
+	public List<ReactiveMapEntry> getMysqlData() throws IOException {
+		//prefetched
+		return backendService.loadDependencyHeatMapImpl("mysql");
 	}
 
 }
