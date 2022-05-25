@@ -17,52 +17,69 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/map")
 public class MapController {
-	@Autowired
-	private BackendService backendService;
+    @Autowired
+    private BackendService backendService;
 
-	@CrossOrigin
-	@RequestMapping("spring")
-	public List<ReactiveMapEntry> getSpringDataImpl(){
-		return backendService.loadDependencyHeatMapImpl("org.springframework");
+    @CrossOrigin
+    @RequestMapping("spring")
+    public List<ReactiveMapEntry> getSpringDataImpl() {
+        return backendService.loadDependencyHeatMapImpl("org.springframework");
 
-	}
+    }
 
-	@CrossOrigin
-	@RequestMapping("lombok")
-	public List<ReactiveMapEntry> getLombokDataImpl(){
-		return backendService.loadDependencyHeatMapImpl("org.projectlombok");
+    @CrossOrigin
+    @RequestMapping("lombok")
+    public List<ReactiveMapEntry> getLombokDataImpl() {
+        return backendService.loadDependencyHeatMapImpl("org.projectlombok");
 
-	}
+    }
 
-	@CrossOrigin
-	@RequestMapping("log4j")
-	public List<ReactiveMapEntry> getLog4jDataImpl(){
-		return backendService.loadDependencyHeatMapImpl("log4j");
-	}
+    @CrossOrigin
+    @RequestMapping("log4j")
+    public List<ReactiveMapEntry> getLog4jDataImpl() {
+        return backendService.loadDependencyHeatMapImpl("log4j");
+    }
 
-	@CrossOrigin
-	@RequestMapping("springOnlineFetch")
-	public List<ReactiveMapEntry> getSpringData(){
-		return backendService.getSpringData().entrySet().stream()
-				.map(e->new ReactiveMapEntry(e.getKey(),e.getValue()))
-				.collect(Collectors.toList());
-	}
 
-	@CrossOrigin
-	@RequestMapping("lombokOnlineFetch")
-	public List<ReactiveMapEntry> getLombokData(){
-		return backendService.getLombokData().entrySet().stream()
-				.map(e->new ReactiveMapEntry(e.getKey(),e.getValue()))
-				.collect(Collectors.toList());
-	}
+    @CrossOrigin
+    @RequestMapping("mysqlImpl")
+    public List<ReactiveMapEntry> getMysqlDataImpl() throws IOException {
+        //prefetched
+        return backendService.loadDependencyHeatMapImpl("mysql");
+    }
 
-	@CrossOrigin
-	@RequestMapping("log4jOnlineFetch")
-	public List<ReactiveMapEntry> getLog4jData(){
-		return backendService.getLog4jData().entrySet().stream()
-				.map(e->new ReactiveMapEntry(e.getKey(),e.getValue()))
-				.collect(Collectors.toList());
-	}
+    @CrossOrigin
+    @RequestMapping("springOnlineFetch")
+    public List<ReactiveMapEntry> getSpringData() {
+        return backendService.getSpringData().entrySet().stream()
+                .map(e -> new ReactiveMapEntry(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    @CrossOrigin
+    @RequestMapping("lombokOnlineFetch")
+    public List<ReactiveMapEntry> getLombokData() {
+        return backendService.getLombokData().entrySet().stream()
+                .map(e -> new ReactiveMapEntry(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    @CrossOrigin
+    @RequestMapping("log4jOnlineFetch")
+    public List<ReactiveMapEntry> getLog4jData() {
+        return backendService.getLog4jData().entrySet().stream()
+                .map(e -> new ReactiveMapEntry(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    @CrossOrigin
+    @RequestMapping("mysqlImpl")
+    public List<ReactiveMapEntry> getMysqlData() throws IOException {
+        //prefetched
+        return backendService.getMysqlData().entrySet().stream()
+                .map(e -> new ReactiveMapEntry(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
+    }
 
 
 //	@RequestMapping("spring")
@@ -85,11 +102,5 @@ public class MapController {
 //		return backendService.getMysqlData();
 //	}
 
-	@CrossOrigin
-	@RequestMapping("mysqlImpl")
-	public List<ReactiveMapEntry> getMysqlData() throws IOException {
-		//prefetched
-		return backendService.loadDependencyHeatMapImpl("mysql");
-	}
 
 }
