@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import edu.sustech.backend.service.BackendService;
 import edu.sustech.backend.service.BackendServiceImpl;
 import edu.sustech.backend.service.UpdateService;
+import edu.sustech.backend.service.models.ServerStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,16 @@ public class DependencyController {
     private Thread updateServiceThread;
 
     public UpdateStatus status = UpdateStatus.NOT_INITIATED;
+
+    @CrossOrigin
+    @RequestMapping("status/server-status")
+    @ResponseBody
+    public ServerStatus getServerStatus() {
+        return new ServerStatus(backendService.getSampledEntries(),
+                backendService.getSampleSize(),
+                status.toString(),
+                backendService.getSampleSize());
+    }
 
     @CrossOrigin
     @RequestMapping("data/top-used-dependencies")

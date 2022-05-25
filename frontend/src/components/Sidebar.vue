@@ -56,6 +56,94 @@
           </router-link>
         </div>
 
+        <div class="item mt-3">
+          <menu-accordion>
+            <template v-slot:icon>
+              <Icon icon="gg:components"/>
+            </template>
+            <template v-slot:title>Dependency Maps</template>
+            <template v-slot:content>
+              <router-link
+                  to="/maps/DependencyMap"
+                  exact
+                  class="w-full text-left block rounded-md p-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <span class="w-full"> Map Test</span>
+                  <span class="box-border mt-1 text-gray-500"> </span>
+              </router-link>
+
+              <router-link
+                  to="/maps/SpringMap"
+                  exact
+                  class="w-full text-left block rounded-md p-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <span class="w-full"> Spring Map </span>
+                  <span class="box-border mt-1 text-gray-500"> </span>
+              </router-link>
+
+              <router-link
+                  to="/maps/Log4jMap"
+                  exact
+                  class="w-full text-left block rounded-md p-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <span class="w-full"> Log4j Map </span>
+                  <span class="box-border mt-1 text-gray-500"> </span>
+              </router-link>
+
+              <router-link
+                  to="/maps/LombokMap"
+                  exact
+                  class="w-full text-left block rounded-md p-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <span class="w-full"> Lombok Map </span>
+                  <span class="box-border mt-1 text-gray-500"> </span>
+              </router-link>
+
+              <router-link
+                  to="/maps/MySQLMap"
+                  exact
+                  class="w-full text-left block rounded-md p-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <span class="w-full"> MySQL Map </span>
+                  <span class="box-border mt-1 text-gray-500"> </span>
+              </router-link>
+
+
+            </template>
+          </menu-accordion>
+        </div>
+
+        <div class="item">
+          <router-link
+              to="/TestPage"
+              exact
+              class="w-full flex text-left rounded-md box-border p-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+            <span class="mr-3 text-xl"><Icon icon="carbon:data-table"/></span>
+            <span class="w-full"> Test Page </span>
+          </router-link>
+        </div>
+
+
+        <div class="item mt-3">
+          <router-link to="/">
+            <button
+                class="text-gray-800 dark:text-gray-500 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 w-full flex text-left rounded-md box-border p-3"
+            >
+              <span class="mr-3 text-xl"><Icon icon="bi:table"/></span>
+              <span class="w-full"> Table </span>
+              <span class="box-border mt-1 text-gray-500"> </span>
+            </button>
+          </router-link>
+        </div>
+
+
+        <div class="item mt-3">
+          <router-link to="">
+            <button
+                class="text-gray-800 dark:text-gray-500 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 w-full flex text-left rounded-md box-border p-3"
+            >
+              <span class="mr-3 text-xl"><Icon icon="carbon:data-table"/></span>
+              <span class="w-full"> DataTables </span>
+              <span class="box-border mt-1 text-gray-500"> </span>
+            </button>
+          </router-link>
+        </div>
+
 
         <div class="item mt-3">
           <menu-accordion>
@@ -120,42 +208,6 @@
       </div>
 
 
-      <div class="item mt-3">
-        <router-link to="/">
-          <button
-              class="text-gray-800 dark:text-gray-500 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 w-full flex text-left rounded-md box-border p-3"
-          >
-            <span class="mr-3 text-xl"><Icon icon="bi:table"/></span>
-            <span class="w-full"> Table </span>
-            <span class="box-border mt-1 text-gray-500"> </span>
-          </button>
-        </router-link>
-      </div>
-
-
-      <div class="item mt-3">
-        <router-link to="">
-          <button
-              class="text-gray-800 dark:text-gray-500 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 w-full flex text-left rounded-md box-border p-3"
-          >
-            <span class="mr-3 text-xl"><Icon icon="carbon:data-table"/></span>
-            <span class="w-full"> DataTables </span>
-            <span class="box-border mt-1 text-gray-500"> </span>
-          </button>
-        </router-link>
-      </div>
-
-
-      <div class="item">
-        <router-link
-            to="/Online_Test"
-            exact
-            class="w-full flex text-left rounded-md box-border p-3 hover:bg-gray-100 dark:hover:bg-gray-700"
-        >
-          <span class="mr-3 text-xl"><Icon icon="bxs:dashboard"/></span>
-          <span class="w-full"> Online Test </span>
-        </router-link>
-      </div>
     </div>
   </nav>
 </template>

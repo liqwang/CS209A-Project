@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.sustech.backend.entities.DependencyData;
+import edu.sustech.backend.service.models.QueryItem;
 import edu.sustech.backend.service.models.BarChartItem;
 import edu.sustech.search.engine.github.API.GitHubAPI;
 import edu.sustech.search.engine.github.API.search.requests.CodeSearchRequest;
@@ -27,7 +28,9 @@ import java.io.*;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -87,8 +90,9 @@ public class BackendServiceImpl implements BackendService {
             loadDependencyHeatMap("org.projectlombok");
             loadDependencyHeatMap("log4j");
             loadDependencyHeatMap("mysql");
+            return;
         }
-        logger.error("Can't get DependencyData");
+        logger.error("Map dependency data loaded complete.");
     }
 
     public void loadDependencyHeatMap(String dependency) {
@@ -140,6 +144,12 @@ public class BackendServiceImpl implements BackendService {
 
     public Map<String, Integer> getMysqlData() {
         return mysqlHeatMap;
+    }
+
+    private List<QueryItem> requestQueryList;
+
+    {
+        readLocalQueryStatus();
     }
 
     @Override
@@ -279,7 +289,7 @@ public class BackendServiceImpl implements BackendService {
                                     return d.groupId().equals(group);
                                 }
                                 return true;
-                            }).filter(d->{
+                            }).filter(d -> {
                                 if (artifact != null) {
                                     return d.groupId().equals(artifact);
                                 }
@@ -428,8 +438,10 @@ public class BackendServiceImpl implements BackendService {
         CodeResult result1 = gitHubAPI.searchAPI.searchCode(req1, count, LOCAL_SEARCH_UPDATE_INTERVAL_MILLIS);
 //        CodeResult result1 = objectMapper.readValue(Files.readString(Path.of("backend/data/DependencyAnalysis/DependencySearchResult.json")), CodeResult.class);
 
-        objectMapper.writeValue(new File("backend/data/DependencyAnalysis/DependencySearchResult.json"), result1);
-
+        appendNewQueryStatus(new QueryItem("Query Request: " + req1.getFullRequestStringWithoutPage(),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                "GitHub",
+                "progress"));
 
         DependencyData data = new DependencyData();
 
@@ -441,10 +453,11 @@ public class BackendServiceImpl implements BackendService {
         }
 
         int cnt = 0;
+        int fileNameCnt = dependencyData.getData().size();
         for (CodeItem item : result1.getItems()) {
 //        for (int i = cnt; i < result1.getItems().size(); i++) {
 //            CodeItem item = result1.getItems().get(i);
-            logger.info("Acquiring item " + (cnt + 1) + " on BackendService");
+            logger.info("Acquiring item " + (++cnt) + " on BackendService");
             Repository r = item.getRepository();
             r = gitHubAPI.repositoryAPI.getRepository(r.getUrl());
 
@@ -480,11 +493,69 @@ public class BackendServiceImpl implements BackendService {
             Entry<Repository, Entry<List<User>, List<Dependency>>> entry = new Entry<>(r, new Entry<>(userList, ls));
             data.getData().add(entry);
 
-            objectMapper.writeValue(new File("backend/data/DependencyAnalysis/Entries/DependencyDataEntry_" + (cnt++) + ".json"), entry);
+            objectMapper.writeValue(new File("backend/data/DependencyAnalysis/Entries/DependencyDataEntry_" + (fileNameCnt++) + ".json"), entry);
 
         }
         dependencyData = data;
+        overwriteLastQueryStatus(new QueryItem("Query Request: " + req1.getFullRequestStringWithoutPage(),
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                "GitHub",
+                "completed"));
         logger.info("Updated local dependency data");
+    }
+
+    @Override
+    public Integer getSampledEntries() {
+        return dependencyData.getData().size();
+    }
+
+    @Override
+    public Integer getRequestCount() {
+        return requestQueryList.size();
+    }
+
+    @Override
+    public Integer getSampleSize() {
+        return ((Integer) dependencyData.getData().stream().mapToInt(value -> 1 + value.getValue().getValue().size() + value.getValue().getKey().size()).sum());
+    }
+
+    @Override
+    public void appendNewQueryStatus(QueryItem item) {
+        requestQueryList.add(item);
+        try {
+            objectMapper.writeValue(new FileOutputStream("backend/data/status/QueryStatus.status"), requestQueryList);
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    @Override
+    public void overwriteLastQueryStatus(QueryItem item) {
+        requestQueryList.set(requestQueryList.size() - 1, item);
+        try {
+            objectMapper.writeValue(new FileOutputStream("backend/data/status/QueryStatus.status"), requestQueryList);
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<QueryItem> readQueryStatus() {
+        return requestQueryList;
+    }
+
+    @Override
+    public void readLocalQueryStatus() {
+        logger.info("Reading local query status history");
+        try {
+            requestQueryList = objectMapper.readValue(Files.readString(Path.of("backend/data/status/QueryStatus.status")), new TypeReference<>() {
+            });
+        } catch (JsonProcessingException | FileNotFoundException e) {
+            logger.error(e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        logger.info("Successfully loaded local query status history");
     }
 
     @Override

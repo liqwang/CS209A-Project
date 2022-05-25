@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url:
-    username:
-    password:
+    url: jdbc:mysql://quanquancho.com:3306/java2?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: quanquan
+    password: wlqyanyalun008++
 
 debug: true
 

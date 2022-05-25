@@ -9,7 +9,12 @@ import Vbadges from "../views/components/badges.vue";
 import Vbreadcumb from "../views/components/breadcumbs.vue";
 import Vbutton from "../views/components/button.vue";
 import Vcard from "../views/components/card.vue";
-import Online_Test from "@/views/Online_Test";
+import TestPage from "../views/TestPage";
+import DependencyMap from "@/views/maps/DependencyMap";
+import Log4jMap from "@/views/maps/Log4jMap";
+import LombokMap from "@/views/maps/LombokMap";
+import MySQLMap from "@/views/maps/MySQLMap";
+import SpringMap from "@/views/maps/SpringMap";
 var appname = " - CS209A Project Test Page";
 
 
@@ -21,6 +26,36 @@ const routes = [
     name: "Dashboard",
     component: Dashboard,
     meta: { title: "Dashboard " + appname },
+  },
+  {
+    path: "/maps/DependencyMap",
+    name: "DependencyMap",
+    component: DependencyMap,
+    meta: { title: "Dependency Map" + appname },
+  },
+  {
+    path: "/maps/SpringMap",
+    name: "SpringMap",
+    component: SpringMap,
+    meta: { title: "Spring Map" + appname },
+  },
+  {
+    path: "/maps/Log4jMap",
+    name: "Log4jMap",
+    component: Log4jMap,
+    meta: { title: "Log4j Map" + appname },
+  },
+  {
+    path: "/maps/LombokMap",
+    name: "LombokMap",
+    component: LombokMap,
+    meta: { title: "Lombok Map" + appname },
+  },
+  {
+    path: "/maps/MySQLMap",
+    name: "MySQLMap",
+    component: MySQLMap,
+    meta: { title: "Dependency Map" + appname },
   },
 
   // Components based Routes
@@ -59,12 +94,6 @@ const routes = [
     name: "Vcard",
     component: Vcard,
     meta: { title: "Card" + appname },
-  },
-  {
-    path: "/Online_Test",
-    name: "Online_Test",
-    component: Online_Test,
-    meta: { title: "Online_Test" + appname },
   }
 ];
 

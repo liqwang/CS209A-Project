@@ -1,0 +1,86 @@
+[
+    {
+        "searchQuery": "Query test",
+        "date": "2022-5-05",
+        "source": "GitHub",
+        "statusQuery": "completed"
+    },
+    {
+        "searchQuery": "Query test",
+        "date": "2022-5-17",
+        "source": "GitHub",
+        "statusQuery": "completed"
+    },
+    {
+        "searchQuery": "Query test",
+        "date": "2022-5-18",
+        "source": "GitHub",
+        "statusQuery": "completed"
+    },
+    {
+        "searchQuery": "Query test",
+        "date": "2022-5-18",
+        "source": "GitHub",
+        "statusQuery": "completed"
+    },
+    {
+        "searchQuery": "Query test",
+        "date": "2022-5-18",
+        "source": "GitHub",
+        "statusQuery": "completed"
+    },
+    {
+        "searchQuery": "Query test",
+        "date": "2022-5-18",
+        "source": "GitHub",
+        "statusQuery": "completed"
+    },
+    {
+        "searchQuery": "Query test",
+        "date": "2022-5-18",
+        "source": "GitHub",
+        "statusQuery": "completed"
+    },
+    {
+        "searchQuery": "Query test",
+        "date": "2022-5-18",
+        "source": "GitHub",
+        "statusQuery": "completed"
+    },
+    {
+        "searchQuery": "Query test",
+        "date": "2022-5-18",
+        "source": "GitHub",
+        "statusQuery": "completed"
+    },
+    {
+        "searchQuery": "Query test",
+        "date": "2022-5-20",
+        "source": "GitHub",
+        "statusQuery": "interrrupted"
+    },
+    {
+        "searchQuery": "Query test",
+        "date": "2022-5-20",
+        "source": "GitHub",
+        "statusQuery": "cancelled"
+    },
+    {
+        "searchQuery": "Query test",
+        "date": "2022-5-24",
+        "source": "GitHub",
+        "statusQuery": "completed"
+    },
+    {
+        "searchQuery": "Query test",
+        "date": "2022-5-24",
+        "source": "GitHub",
+        "statusQuery": "completed"
+    },
+    {
+        "searchQuery": "Query Request",
+        "date": "2022-5-25",
+        "source": "GitHub",
+        "statusQuery": "interrrupted"
+    }
+]

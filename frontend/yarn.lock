@@ -11,6 +11,13 @@
     "event-pubsub" "4.3.0"
     "js-message" "1.0.7"
 
+"@amcharts/amcharts5-geodata@^5.0.3":
+  "integrity" "sha512-rQsFO6iGfLsXR4/8Tg/DFyZ5rfdRaYU1oFZ35mwhHlt/Cm+Kk2JW2wJ1EgXCKLsM4e0LpatD0jCIf471tjGEpg=="
+  "resolved" "https://registry.npmmirror.com/@amcharts/amcharts5-geodata/-/amcharts5-geodata-5.0.3.tgz"
+  "version" "5.0.3"
+  dependencies:
+    "@types/geojson" "^7946.0.8"
+
 "@amcharts/amcharts5@^5.2.5":
   "integrity" "sha512-DNtKYdWXwf84BFs+ptEHkk64Xu/cTAi69cxSl1t+VBqrh4ZuKxGvIHdGhuDG1BLFIkdeEjbG3rxF/A4HQpacrA=="
   "resolved" "https://registry.npmmirror.com/@amcharts/amcharts5/-/amcharts5-5.2.5.tgz"

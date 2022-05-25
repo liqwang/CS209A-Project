@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       width: {
-        sidebar: "300px",
+        sidebar: "320px",
         search: "300px",
       },
       rotate: {
