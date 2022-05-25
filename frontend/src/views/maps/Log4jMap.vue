@@ -58,8 +58,8 @@ let countryData = {
   ]
 }
 
-const minColor = am5.color(0x4677ab)
-const maxColor = am5.color(0x0c5099)
+const minColor = am5.color(0xeda9a9)
+const maxColor = am5.color(0xa00000)
 
 export default {
   name: "Log4jMap",
