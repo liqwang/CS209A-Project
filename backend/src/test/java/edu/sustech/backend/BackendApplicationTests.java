@@ -20,18 +20,18 @@ class BackendApplicationTests {
     void contextLoads() {
     }
 
-    @Test
-    void dataTestQ1() {
-        try {
-            backendServiceImpl.updateLocalDependencyData();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            fail();
-        }
-    }
+//    @Test
+//    void dataTestQ1() {
+//        try {
+//            backendServiceImpl.updateLocalDependencyData();
+//        } catch (IOException | InterruptedException e) {
+//            e.printStackTrace();
+//            fail();
+//        }
+//    }
 
-    @Test
-    void writePermissionTestQ2() throws FileNotFoundException {
-        backendServiceImpl.testWrite();
-    }
+//    @Test
+//    void writePermissionTestQ2() throws FileNotFoundException {
+//        backendServiceImpl.testWrite();
+//    }
 }

@@ -58,8 +58,8 @@ let countryData = {
   ]
 }
 
-const minColor = am5.color(0x4677ab)
-const maxColor = am5.color(0x0c5099)
+const minColor = am5.color(0x4fde8d)
+const maxColor = am5.color(0x26c96d)
 
 export default {
   name: "SpringMap",

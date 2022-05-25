@@ -44,11 +44,6 @@ public class MapController {
 				.collect(Collectors.toList());
 	}
 
-	@CrossOrigin
-	@RequestMapping("mysql")
-	public String getMysqlData() throws IOException {
-		return Files.readString(Path.of("backend/data/DependencyAnalysis/heatmapData/mysql.json"));
-	}
 
 //	@RequestMapping("spring")
 //	public Map<String,Integer> getSpringData(){
@@ -69,5 +64,11 @@ public class MapController {
 //	public Map<String,Integer> getMysqlData(){
 //		return backendService.getMysqlData();
 //	}
+
+	@CrossOrigin
+	@RequestMapping("mysql")
+	public String getMysqlData() throws IOException {
+		return Files.readString(Path.of("backend/data/DependencyAnalysis/heatmapData/mysql.json"));
+	}
 
 }
