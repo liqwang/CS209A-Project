@@ -82,7 +82,7 @@ export default {
     },
     loadCountryData() {
       this.axios
-          .get('/map/spring')
+          .get('/map/springImpl')
           .then(successResponse => {
             if (successResponse.status === 200) {
 

@@ -82,7 +82,7 @@ export default {
     },
     loadCountryData() {
       this.axios
-          .get('/map/mysql')
+          .get('/map/mysqlImpl')
           .then(successResponse => {
             if (successResponse.status === 200) {
 

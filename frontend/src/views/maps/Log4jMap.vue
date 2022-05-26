@@ -82,7 +82,7 @@ export default {
     },
     loadCountryData() {
       this.axios
-          .get('/map/log4j')
+          .get('/map/log4jImpl')
           .then(successResponse => {
             if (successResponse.status === 200) {
 

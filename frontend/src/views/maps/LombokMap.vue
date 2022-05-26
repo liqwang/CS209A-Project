@@ -82,7 +82,7 @@ export default {
     },
     loadCountryData() {
       this.axios
-          .get('/map/lombok')
+          .get('/map/lombokImpl')
           .then(successResponse => {
             if (successResponse.status === 200) {
 
