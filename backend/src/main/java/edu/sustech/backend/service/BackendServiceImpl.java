@@ -59,7 +59,7 @@ public class BackendServiceImpl implements BackendService {
 
     private final Logger logger = LogManager.getLogger(BackendServiceImpl.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
+    private final GitHubAPI gitHubAPI = GitHubAPI.registerAPI("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");
 
     {
         gitHubAPI.searchAPI.setSuppressRateError(true);
