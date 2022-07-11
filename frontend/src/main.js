@@ -1,5 +1,4 @@
 import {createApp} from "vue";
-import Vue from 'vue';
 import App from "./App.vue";
 import router from "./router";
 import {Icon} from "@iconify/vue";
@@ -13,7 +12,7 @@ import "./assets/sass/css/windzo.css";
 
 
 var axios = require('axios')
-axios.defaults.baseURL = 'http://localhost:8443/api'
+axios.defaults.baseURL = 'https://quanquancho.com:8443/api'
 
 
 const app = createApp(App);
