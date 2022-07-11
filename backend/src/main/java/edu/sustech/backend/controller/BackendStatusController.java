@@ -2,7 +2,6 @@ package edu.sustech.backend.controller;
 
 import edu.sustech.backend.service.models.QueryItem;
 import edu.sustech.backend.service.BackendService;
-import edu.sustech.backend.service.models.ServerStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

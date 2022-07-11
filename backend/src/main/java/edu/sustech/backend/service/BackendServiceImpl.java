@@ -4,34 +4,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.sustech.backend.entities.DependencyData;
-import edu.sustech.backend.service.models.QueryItem;
 import edu.sustech.backend.service.models.BarChartItem;
+import edu.sustech.backend.service.models.QueryItem;
 import edu.sustech.backend.service.models.ReactiveMapEntry;
-import edu.sustech.search.engine.github.API.GitHubAPI;
-import edu.sustech.search.engine.github.API.search.requests.CodeSearchRequest;
-import edu.sustech.search.engine.github.API.search.requests.IPRSearchRequest;
-import edu.sustech.search.engine.github.analyzer.Analyzer;
+import edu.sustech.backend.util.Util;
 import edu.sustech.search.engine.github.models.Dependency;
 import edu.sustech.search.engine.github.models.Entry;
-import edu.sustech.search.engine.github.models.code.CodeItem;
-import edu.sustech.search.engine.github.models.code.CodeResult;
-import edu.sustech.search.engine.github.models.issue.IPRResult;
-import edu.sustech.search.engine.github.models.issue.Issue;
 import edu.sustech.search.engine.github.models.repository.Repository;
 import edu.sustech.search.engine.github.models.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.net.http.HttpResponse;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -43,31 +33,25 @@ public class BackendServiceImpl implements BackendService {
     private static final HashMap<String, String> COUNTRY_MAP = new HashMap<>();
 
     static {
-        try {
-            String[] countries = Files.readString(Path.of("backend/data/country.txt")).split("\\r\\n\\r\\n");
-            for (String country : countries) {
-                String[] locations = country.split("\\r\\n");
-                String countryCode = locations[0];
-                for (int i = 1; i < locations.length; i++) {
-                    COUNTRY_MAP.put(locations[i], countryCode);
-                }
+        //May have bug because of Git
+        String[] countries = Util.readFile("data/country.txt").split("\\r\\n\\r\\n");
+        for (String country : countries) {
+            String[] locations = country.split("\\r\\n");
+            String countryCode = locations[0];
+            for (int i = 1; i < locations.length; i++) {
+                COUNTRY_MAP.put(locations[i], countryCode);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     private final Logger logger = LogManager.getLogger(BackendServiceImpl.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final GitHubAPI gitHubAPI = GitHubAPI.registerAPI("xxx");//the GitHub token
-
-    {
-        gitHubAPI.searchAPI.setSuppressRateError(true);
-    }
+//    private final GitHubAPI gitHubAPI = GitHubAPI.registerAPI("xxx");//the GitHub token
+//    {
+//        gitHubAPI.searchAPI.setSuppressRateError(true);
+//    }
 
     private static DependencyData dependencyData;
-
-    private List<Issue> log4jIssues;
 
     private final HashMap<String, Integer> springHeatMap = new HashMap<>();
     private final HashMap<String, Integer> lombokHeatMap = new HashMap<>();
@@ -107,8 +91,7 @@ public class BackendServiceImpl implements BackendService {
             default -> null;
         };
         try {
-            prefetchedData = objectMapper.readValue(new FileInputStream(new File("backend/data/DependencyAnalysis/heatMapData/" + resultPrefetchedData + ".json")), new TypeReference<>() {
-            });
+            prefetchedData = objectMapper.readValue(Util.readFile("data/DependencyAnalysis/heatmapData/" + resultPrefetchedData + ".json"), new TypeReference<>(){});
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -173,17 +156,17 @@ public class BackendServiceImpl implements BackendService {
         readLocalQueryStatus();
     }
 
-    @Override
-    public void updateLocalData() throws IOException, InterruptedException {
-        logger.info("Updating local data.");
-
-        //Update Dependency Analysis Result
+//    @Override
+//    public void updateLocalData() throws IOException, InterruptedException {
+//        logger.info("Updating local data.");
+//
+//        //Update Dependency Analysis Result
 //        RepoSearchRequest req3 = RepoSearchRequest.newBuilder()
 //                .addLanguageOption("java")
 //                .setSorted(RepoSearchRequest.Sort.Stars)
-        updateLocalDependencyData();
+//        updateLocalDependencyData();
 //        updateLocalLog4jIPRData();
-    }
+//    }
 
     @Override
     @Async
@@ -193,30 +176,24 @@ public class BackendServiceImpl implements BackendService {
 //        readLocalLog4jIPRData();
     }
 
-    @Override
-    public IPRResult readLocalLog4jIPRData() throws IOException {
-        logger.info("Reading local log4j issues and pull requests data");
-        return objectMapper.readValue(new File("backend/data/Log4jIssueAnalysis/log4jiprdata.json"), IPRResult.class);
-    }
-
-    @Override
-    public void updateLocalLog4jIPRData() throws IOException, InterruptedException {
-        logger.info("Updating local log4j issues and pull requests data");
-
-        IPRSearchRequest req = IPRSearchRequest.newBuilder()
-                .addSearchKeyword("log4j")
-                .build();
-
-        List<HttpResponse<String>> result = gitHubAPI.searchAPI.searchRawLoop(req, 3000, LOCAL_SEARCH_UPDATE_INTERVAL_MILLIS);
-//        if (result != null) {
-//            for (Issue i : result) {
-//                log4jIssues.add(i);
-//            }
-//        }
-
-        objectMapper.writeValue(new File("backend/data/Log4jIssueAnalysis/log4jiprdata.json"), log4jIssues);
-        logger.info("Updated local log4j issues and pull requests data");
-    }
+//    @Override
+//    public void updateLocalLog4jIPRData() throws IOException, InterruptedException {
+//        logger.info("Updating local log4j issues and pull requests data");
+//
+//        IPRSearchRequest req = IPRSearchRequest.newBuilder()
+//                .addSearchKeyword("log4j")
+//                .build();
+//
+//        List<HttpResponse<String>> result = gitHubAPI.searchAPI.searchRawLoop(req, 3000, LOCAL_SEARCH_UPDATE_INTERVAL_MILLIS);
+////        if (result != null) {
+////            for (Issue i : result) {
+////                log4jIssues.add(i);
+////            }
+////        }
+//
+//        objectMapper.writeValue(new File("backend/data/Log4jIssueAnalysis/log4jiprdata.json"), log4jIssues);
+//        logger.info("Updated local log4j issues and pull requests data");
+//    }
 
     @Override
     public DependencyData getDependencyData() {
@@ -361,8 +338,6 @@ public class BackendServiceImpl implements BackendService {
         return "Internal parsing failure.";
     }
 
-    //todo: finish this
-
     @Override
     public String getAvailableDependencySelections() {
         HashSet<String> dependencyList = new HashSet<>();
@@ -393,142 +368,104 @@ public class BackendServiceImpl implements BackendService {
     public DependencyData readLocalDependencyData() throws IOException {
         logger.info("Reading local dependency data");
         DependencyData data = new DependencyData();
-        File dir = new File("backend/data/DependencyAnalysis/Entries");
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (File f : files) {
-                String fileName = f.getName();
-                if (fileName.contains("DependencyDataEntry")) {
-                    Entry<Repository, Entry<List<User>, List<Dependency>>> entry = null;
-                    try {
-                        entry = objectMapper.readValue(f, new TypeReference<>() {
-                        });
-                    } catch (JsonProcessingException e) {
-                        logger.error(e);
-                    }
-                    if (entry != null) {
-                        data.getData().add(entry);
-                    }
-                }
-            }
+        Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(null).getResources("classpath:data/DependencyAnalysis/Entries/*.json");
+        for (Resource resource : resources) {
+            String json = Util.readInputStream(resource.getInputStream());
+            Entry<Repository, Entry<List<User>, List<Dependency>>> entry = objectMapper.readValue(json,new TypeReference<>(){});
+            data.getData().add(entry);
         }
         logger.info("Loaded " + data.getData().size() + " entries.");
         return data;
     }
 
-    @Override
-    public void resolveTransitiveDependency() throws IOException {
-        logger.info("Resolving transitive dependency data from existing files");
-        DependencyData data = new DependencyData();
-        File dir = new File("backend/data/DependencyAnalysis/Entries");
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (File f : files) {
-                String fileName = f.getName();
-                if (fileName.contains("DependencyDataEntry")) {
-                    Entry<Repository, Entry<List<User>, List<Dependency>>> entry = null;
-                    try {
-                        entry = objectMapper.readValue(f, new TypeReference<>() {
-                        });
-                    } catch (JsonProcessingException e) {
-                        logger.error(e);
-                    }
-                    if (entry != null) {
-                        data.getData().add(entry);
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
-    public void updateLocalDependencyData() throws IOException, InterruptedException {
-        updateLocalDependencyData(1000);
-    }
-
-    @Override
-    public void updateLocalDependencyData(int count) throws IOException, InterruptedException {
-        logger.info("Updating local dependency data");
-
-        CodeSearchRequest req1 = CodeSearchRequest.newBuilder()
-                .addSearchKeyword("dependency")
-                .addSearchField(CodeSearchRequest.SearchBy.Filename, "pom.xml")
-                .addLanguageOption("Maven POM")
-                .build();
-
-        CodeResult result1 = gitHubAPI.searchAPI.searchCode(req1, count, LOCAL_SEARCH_UPDATE_INTERVAL_MILLIS);
-//        CodeResult result1 = objectMapper.readValue(Files.readString(Path.of("backend/data/DependencyAnalysis/DependencySearchResult.json")), CodeResult.class);
-
-        appendNewQueryStatus(new QueryItem("Query Request: " + req1.getFullRequestStringWithoutPage(),
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                "GitHub",
-                "progress"));
-
-        DependencyData data = new DependencyData();
-
-        File file = new File("backend/data/DependencyAnalysis/Entries/");
-        if (!file.exists()) {
-            if (!file.mkdirs()) {
-                throw new IOException("Failed to create Entries directory");
-            }
-        }
-
-        int cnt = 0;
-        int fileNameCnt = dependencyData.getData().size();
-        for (CodeItem item : result1.getItems()) {
-//        for (int i = cnt; i < result1.getItems().size(); i++) {
-//            CodeItem item = result1.getItems().get(i);
-            logger.info("Acquiring item " + (++cnt) + " on BackendService");
-            Repository r = item.getRepository();
-
-            if (r.getStargazersCount() < 50) {
-                continue;
-            }
-
-            r = gitHubAPI.repositoryAPI.getRepository(r.getUrl());
-
-            List<Dependency> ls = new ArrayList<>();
-            try {
-                List<Dependency> res = Analyzer.parseDependency(gitHubAPI.fileAPI.getFileRaw(item.getRawFileURI()));
-                if (res != null) {
-                    ls = res;
-                    logger.info("Acquired " + ls.size() + " dependencies");
-                }
-            } catch (Exception e) {
-                logger.error("Error encountered during parsing, ", e);
-            } finally {
-                Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
-            }
-
-            List<User> userList = new ArrayList<>();
-            try {
-                userList = gitHubAPI.repositoryAPI.getContributors(r);
-            } catch (Exception e) {
-                logger.error("Error encountered during parsing, ", e);
-            } finally {
-                Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
-            }
-            if (userList != null) {
-                logger.info("Updating " + userList.size() + " users");
-                for (User user : userList) {
-                    User rep = gitHubAPI.userAPI.getUser(user.getUrl());
-                    user.setLocation(rep.getLocation());
-                    Thread.sleep(LOCAL_MINOR_UPDATE_INTERVAL_MILLIS);
-                }
-            }
-            Entry<Repository, Entry<List<User>, List<Dependency>>> entry = new Entry<>(r, new Entry<>(userList, ls));
-            data.getData().add(entry);
-
-            objectMapper.writeValue(new File("backend/data/DependencyAnalysis/Entries/DependencyDataEntry_" + (fileNameCnt++) + ".json"), entry);
-
-        }
-        dependencyData = data;
-        overwriteLastQueryStatus(new QueryItem("Query Request: " + req1.getFullRequestStringWithoutPage(),
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                "GitHub",
-                "completed"));
-        logger.info("Updated local dependency data");
-    }
+//    @Override
+//    public void updateLocalDependencyData() throws IOException, InterruptedException {
+//        updateLocalDependencyData(1000);
+//    }
+//
+//    @Override
+//    public void updateLocalDependencyData(int count) throws IOException, InterruptedException {
+//        logger.info("Updating local dependency data");
+//
+//        CodeSearchRequest req1 = CodeSearchRequest.newBuilder()
+//                .addSearchKeyword("dependency")
+//                .addSearchField(CodeSearchRequest.SearchBy.Filename, "pom.xml")
+//                .addLanguageOption("Maven POM")
+//                .build();
+//
+//        CodeResult result1 = gitHubAPI.searchAPI.searchCode(req1, count, LOCAL_SEARCH_UPDATE_INTERVAL_MILLIS);
+////        CodeResult result1 = objectMapper.readValue(Files.readString(Path.of("backend/data/DependencyAnalysis/DependencySearchResult.json")), CodeResult.class);
+//
+//        appendNewQueryStatus(new QueryItem("Query Request: " + req1.getFullRequestStringWithoutPage(),
+//                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+//                "GitHub",
+//                "progress"));
+//
+//        DependencyData data = new DependencyData();
+//
+//        File file = new File("backend/data/DependencyAnalysis/Entries/");
+//        if (!file.exists()) {
+//            if (!file.mkdirs()) {
+//                throw new IOException("Failed to create Entries directory");
+//            }
+//        }
+//
+//        int cnt = 0;
+//        int fileNameCnt = dependencyData.getData().size();
+//        for (CodeItem item : result1.getItems()) {
+////        for (int i = cnt; i < result1.getItems().size(); i++) {
+////            CodeItem item = result1.getItems().get(i);
+//            logger.info("Acquiring item " + (++cnt) + " on BackendService");
+//            Repository r = item.getRepository();
+//
+//            if (r.getStargazersCount() < 50) {
+//                continue;
+//            }
+//
+//            r = gitHubAPI.repositoryAPI.getRepository(r.getUrl());
+//
+//            List<Dependency> ls = new ArrayList<>();
+//            try {
+//                List<Dependency> res = Analyzer.parseDependency(gitHubAPI.fileAPI.getFileRaw(item.getRawFileURI()));
+//                if (res != null) {
+//                    ls = res;
+//                    logger.info("Acquired " + ls.size() + " dependencies");
+//                }
+//            } catch (Exception e) {
+//                logger.error("Error encountered during parsing, ", e);
+//            } finally {
+//                Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
+//            }
+//
+//            List<User> userList = new ArrayList<>();
+//            try {
+//                userList = gitHubAPI.repositoryAPI.getContributors(r);
+//            } catch (Exception e) {
+//                logger.error("Error encountered during parsing, ", e);
+//            } finally {
+//                Thread.sleep(LOCAL_ITEM_UPDATE_INTERVAL_MILLIS);
+//            }
+//            if (userList != null) {
+//                logger.info("Updating " + userList.size() + " users");
+//                for (User user : userList) {
+//                    User rep = gitHubAPI.userAPI.getUser(user.getUrl());
+//                    user.setLocation(rep.getLocation());
+//                    Thread.sleep(LOCAL_MINOR_UPDATE_INTERVAL_MILLIS);
+//                }
+//            }
+//            Entry<Repository, Entry<List<User>, List<Dependency>>> entry = new Entry<>(r, new Entry<>(userList, ls));
+//            data.getData().add(entry);
+//
+//            objectMapper.writeValue(new File("backend/data/DependencyAnalysis/Entries/DependencyDataEntry_" + (fileNameCnt++) + ".json"), entry);
+//
+//        }
+//        dependencyData = data;
+//        overwriteLastQueryStatus(new QueryItem("Query Request: " + req1.getFullRequestStringWithoutPage(),
+//                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+//                "GitHub",
+//                "completed"));
+//        logger.info("Updated local dependency data");
+//    }
 
     @Override
     public Integer getSampledEntries() {
@@ -542,7 +479,7 @@ public class BackendServiceImpl implements BackendService {
 
     @Override
     public Integer getSampleSize() {
-        return ((Integer) dependencyData.getData().stream().mapToInt(value -> 1 + value.getValue().getValue().size() + value.getValue().getKey().size()).sum());
+        return dependencyData.getData().stream().mapToInt(value -> 1 + value.getValue().getValue().size() + value.getValue().getKey().size()).sum();
     }
 
     @Override
@@ -574,12 +511,9 @@ public class BackendServiceImpl implements BackendService {
     public void readLocalQueryStatus() {
         logger.info("Reading local query status history");
         try {
-            requestQueryList = objectMapper.readValue(Files.readString(Path.of("backend/data/status/QueryStatus.status")), new TypeReference<>() {
-            });
-        } catch (JsonProcessingException | FileNotFoundException e) {
+            requestQueryList = objectMapper.readValue(Util.readFile("data/status/QueryStatus.status"), new TypeReference<>(){});
+        } catch (JsonProcessingException e) {
             logger.error(e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         logger.info("Successfully loaded local query status history");
     }

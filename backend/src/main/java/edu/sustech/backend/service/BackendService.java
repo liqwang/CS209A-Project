@@ -13,14 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 public interface BackendService {
-    void updateLocalData() throws IOException, InterruptedException;
+//    void updateLocalData() throws IOException, InterruptedException;
 
     @Async
     void readLocalData() throws IOException;
 
-    IPRResult readLocalLog4jIPRData() throws IOException;
-
-    void updateLocalLog4jIPRData() throws IOException, InterruptedException;
+//    void updateLocalLog4jIPRData() throws IOException, InterruptedException;
 
     DependencyData getDependencyData();
 
@@ -36,8 +34,6 @@ public interface BackendService {
 
     DependencyData readLocalDependencyData() throws IOException;
 
-    void resolveTransitiveDependency() throws IOException;
-
     List<ReactiveMapEntry> loadDependencyHeatMapImpl(String dependency);
 
     void loadDependencyHeatMap(String dependency);
@@ -50,9 +46,9 @@ public interface BackendService {
 
     Map<String,Integer> getMysqlData();
 
-    void updateLocalDependencyData() throws IOException, InterruptedException;
+//    void updateLocalDependencyData() throws IOException, InterruptedException;
 
-    void updateLocalDependencyData(int count) throws IOException, InterruptedException;
+//    void updateLocalDependencyData(int count) throws IOException, InterruptedException;
 
     void readLocalQueryStatus();
 

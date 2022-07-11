@@ -82,17 +82,17 @@ public class DependencyController {
         return backendService.getAvailableGroupSelections();
     }
 
-    @CrossOrigin
-    @RequestMapping("local/update-all")
-    public ResponseEntity<String> update() throws IOException, InterruptedException {
-        if (status == UpdateStatus.NOT_INITIATED || status == UpdateStatus.SUCCESS) {
-            status = UpdateStatus.PROGRESS;
-            updateData();
-        } else {
-            return ResponseEntity.badRequest().body("<h1>Bad Request<h1><br>Failed. The update is initiated: " + status);
-        }
-        return ResponseEntity.ok("OK. Update status: " + status);
-    }
+//    @CrossOrigin
+//    @RequestMapping("local/update-all")
+//    public ResponseEntity<String> update() throws IOException, InterruptedException {
+//        if (status == UpdateStatus.NOT_INITIATED || status == UpdateStatus.SUCCESS) {
+//            status = UpdateStatus.PROGRESS;
+//            updateData();
+//        } else {
+//            return ResponseEntity.badRequest().body("<h1>Bad Request<h1><br>Failed. The update is initiated: " + status);
+//        }
+//        return ResponseEntity.ok("OK. Update status: " + status);
+//    }
 
     @CrossOrigin
     @RequestMapping("local/update-status")
@@ -101,31 +101,31 @@ public class DependencyController {
     }
 
 
-    public void updateData() throws IOException, InterruptedException {
-        if (updateServiceThread == null || !updateServiceThread.isAlive()) {
-            updateServiceThread = new Thread(() -> {
-                try {
-                    backendService.updateLocalData();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-                status = UpdateStatus.SUCCESS;
-            });
-            updateServiceThread.setName("BackendUpdateExec");
-            updateServiceThread.start();
-        }
-    }
+//    public void updateData(){
+//        if (updateServiceThread == null || !updateServiceThread.isAlive()) {
+//            updateServiceThread = new Thread(() -> {
+//                try {
+//                    backendService.updateLocalData();
+//                } catch (IOException | InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                status = UpdateStatus.SUCCESS;
+//            });
+//            updateServiceThread.setName("BackendUpdateExec");
+//            updateServiceThread.start();
+//        }
+//    }
 
-    @CrossOrigin
-    @RequestMapping("data/test/dependency-update")
-    public ResponseEntity<String> getDependencyUpdate(@RequestParam(value = "count", defaultValue = "10") Integer count) {
-        try {
-            backendService.updateLocalDependencyData(count);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok("OK. Updated test sample data.");
-    }
+//    @CrossOrigin
+//    @RequestMapping("data/test/dependency-update")
+//    public ResponseEntity<String> getDependencyUpdate(@RequestParam(value = "count", defaultValue = "10") Integer count) {
+//        try {
+//            backendService.updateLocalDependencyData(count);
+//        } catch (IOException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        return ResponseEntity.ok("OK. Updated test sample data.");
+//    }
 
     @CrossOrigin
     @RequestMapping("local/reload-local-data")

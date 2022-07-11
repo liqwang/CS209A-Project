@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 /**
  * This controller is deprecated, we use GitHub API instead of Jsoup
  */
+@Deprecated
 @Controller
 @RequestMapping("/import")
 public class DataImportController {
