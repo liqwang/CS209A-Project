@@ -42,6 +42,8 @@ RUN cd /www/quanquancho/nginx/nginx-1.20.1 &&\
 # 重启profile
 # source /etc/profile
 
-# nginx             启动Nginx
-# nginx -s reload   重启Nginx
-# nginx -s stop     关闭Nginx
+# ./nginx             启动Nginx
+# ./nginx -s reload   重启Nginx
+# ./nginx -s stop     关闭Nginx
+
+# docker run --name=java2-project -it -v /root/nginx/html:/usr/local/nginx/html -p 80:80 java2-project:1.0 /bin/bash
